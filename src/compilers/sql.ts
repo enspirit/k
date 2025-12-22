@@ -11,6 +11,17 @@ export function compileToSQL(expr: Expr): string {
       }
       return expr.value.toString();
 
+    case 'date':
+      return `DATE '${expr.value}'`;
+
+    case 'datetime':
+      // Convert ISO8601 to PostgreSQL TIMESTAMP
+      return `TIMESTAMP '${expr.value.replace('T', ' ').replace('Z', '')}'`;
+
+    case 'duration':
+      // Convert ISO8601 duration to PostgreSQL INTERVAL
+      return `INTERVAL '${expr.value}'`;
+
     case 'variable':
       // In SQL context, variables are typically column names
       return expr.name;

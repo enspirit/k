@@ -8,6 +8,15 @@ export function compileToRuby(expr: Expr): string {
     case 'literal':
       return expr.value.toString();
 
+    case 'date':
+      return `Date.parse('${expr.value}')`;
+
+    case 'datetime':
+      return `DateTime.parse('${expr.value}')`;
+
+    case 'duration':
+      return `ActiveSupport::Duration.parse('${expr.value}')`;
+
     case 'variable':
       return expr.name;
 

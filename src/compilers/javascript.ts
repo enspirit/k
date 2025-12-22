@@ -8,6 +8,16 @@ export function compileToJavaScript(expr: Expr): string {
     case 'literal':
       return expr.value.toString();
 
+    case 'date':
+      return `new Date('${expr.value}')`;
+
+    case 'datetime':
+      return `new Date('${expr.value}')`;
+
+    case 'duration':
+      // Duration as ISO8601 string - requires a library like dayjs or moment
+      return `Duration.parse('${expr.value}')`;
+
     case 'variable':
       return expr.name;
 

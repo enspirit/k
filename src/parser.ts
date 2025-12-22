@@ -1,4 +1,4 @@
-import { Expr, literal, variable, binary, unary } from './ast';
+import { Expr, literal, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral } from './ast';
 
 /**
  * Token types
@@ -7,6 +7,9 @@ type TokenType =
   | 'NUMBER'
   | 'BOOLEAN'
   | 'IDENTIFIER'
+  | 'DATE'
+  | 'DATETIME'
+  | 'DURATION'
   | 'PLUS'
   | 'MINUS'
   | 'STAR'
@@ -78,6 +81,30 @@ class Lexer {
     return this.position + 1 < this.input.length ? this.input[this.position + 1] : '';
   }
 
+  private readStringContent(): string {
+    let str = '';
+    while (this.current && this.current !== '"') {
+      str += this.current;
+      this.advance();
+    }
+    return str;
+  }
+
+  private readDuration(): string {
+    // Read ISO8601 duration: P1D, PT1H30M, P1Y2M3DT4H5M6S, P2W, etc.
+    let duration = '';
+    duration += this.current; // P
+    this.advance();
+
+    // Read date part (Y, M, W, D) and/or time part (T followed by H, M, S)
+    while (this.current && /[0-9YMWDTHMS.]/.test(this.current)) {
+      duration += this.current;
+      this.advance();
+    }
+
+    return duration;
+  }
+
   nextToken(): Token {
     this.skipWhitespace();
 
@@ -90,6 +117,39 @@ class Lexer {
     // Numbers
     if (/[0-9]/.test(this.current)) {
       return { type: 'NUMBER', value: this.readNumber(), position: pos };
+    }
+
+    // Date/DateTime literals: d"..." or dt"..."
+    if (this.current === 'd') {
+      const nextChar = this.peek();
+      if (nextChar === '"') {
+        // Date literal: d"YYYY-MM-DD"
+        this.advance(); // skip 'd'
+        this.advance(); // skip '"'
+        const dateStr = this.readStringContent();
+        this.advance(); // skip closing '"'
+        return { type: 'DATE', value: dateStr, position: pos };
+      } else if (nextChar === 't') {
+        // Check for dt"..."
+        const afterDt = this.position + 2 < this.input.length ? this.input[this.position + 2] : '';
+        if (afterDt === '"') {
+          // DateTime literal: dt"ISO8601"
+          this.advance(); // skip 'd'
+          this.advance(); // skip 't'
+          this.advance(); // skip '"'
+          const datetimeStr = this.readStringContent();
+          this.advance(); // skip closing '"'
+          return { type: 'DATETIME', value: datetimeStr, position: pos };
+        }
+      }
+    }
+
+    // ISO8601 Duration: P1D, PT1H30M, P1Y2M3D, etc.
+    if (this.current === 'P') {
+      const durationStr = this.readDuration();
+      if (durationStr.length > 1) {
+        return { type: 'DURATION', value: durationStr, position: pos };
+      }
     }
 
     // Identifiers and keywords (true, false)
@@ -172,7 +232,7 @@ class Lexer {
  *   factor     -> power
  *   power      -> unary ('^' unary)*
  *   unary      -> ('!' | '-' | '+') unary | primary
- *   primary    -> NUMBER | BOOLEAN | IDENTIFIER | '(' expr ')'
+ *   primary    -> NUMBER | BOOLEAN | DATE | DATETIME | DURATION | IDENTIFIER | '(' expr ')'
  */
 export class Parser {
   private lexer: Lexer;
@@ -204,6 +264,21 @@ export class Parser {
     if (token.type === 'BOOLEAN') {
       this.eat('BOOLEAN');
       return literal(token.value === 'true');
+    }
+
+    if (token.type === 'DATE') {
+      this.eat('DATE');
+      return dateLiteral(token.value);
+    }
+
+    if (token.type === 'DATETIME') {
+      this.eat('DATETIME');
+      return dateTimeLiteral(token.value);
+    }
+
+    if (token.type === 'DURATION') {
+      this.eat('DURATION');
+      return durationLiteral(token.value);
     }
 
     if (token.type === 'IDENTIFIER') {
