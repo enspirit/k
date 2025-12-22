@@ -5,11 +5,11 @@
 export type Expr = Literal | Variable | BinaryOp | UnaryOp;
 
 /**
- * Numeric literal
+ * Literal value (number or boolean)
  */
 export interface Literal {
   type: 'literal';
-  value: number;
+  value: number | boolean;
 }
 
 /**
@@ -21,28 +21,34 @@ export interface Variable {
 }
 
 /**
- * Binary operation (e.g., +, -, *, /)
+ * Binary operation
  */
 export interface BinaryOp {
   type: 'binary';
-  operator: '+' | '-' | '*' | '/' | '%' | '^';
+  operator:
+    // Arithmetic
+    | '+' | '-' | '*' | '/' | '%' | '^'
+    // Comparison
+    | '<' | '>' | '<=' | '>=' | '==' | '!='
+    // Logical
+    | '&&' | '||';
   left: Expr;
   right: Expr;
 }
 
 /**
- * Unary operation (e.g., -, +)
+ * Unary operation
  */
 export interface UnaryOp {
   type: 'unary';
-  operator: '-' | '+';
+  operator: '-' | '+' | '!';
   operand: Expr;
 }
 
 /**
  * Helper functions to create AST nodes
  */
-export function literal(value: number): Literal {
+export function literal(value: number | boolean): Literal {
   return { type: 'literal', value };
 }
 

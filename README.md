@@ -10,14 +10,18 @@ that can be evaluated in different environments.
 ## Current Features
 
 - **Arithmetic expressions** with scalars and variables
+- **Boolean expressions** with comparison and logical operators
 - **Infix notation** (standard mathematical notation)
-- **Operators**: `+`, `-`, `*`, `/`, `%`, `^` (power)
-- **Unary operators**: `-`, `+`
+- **Arithmetic operators**: `+`, `-`, `*`, `/`, `%`, `^` (power)
+- **Comparison operators**: `<`, `>`, `<=`, `>=`, `==`, `!=`
+- **Logical operators**: `&&`, `||`, `!`
+- **Unary operators**: `-`, `+`, `!`
+- **Boolean literals**: `true`, `false`
 - **Parentheses** for grouping
 - **Multi-target compilation**:
-  - Ruby (using `**` for exponentiation)
-  - JavaScript (using `Math.pow()` for exponentiation)
-  - PostgreSQL (using `POWER()` for exponentiation)
+  - Ruby (using `**` for power, `&&`/`||`/`!` for boolean logic)
+  - JavaScript (using `Math.pow()` for power, `&&`/`||`/`!` for boolean logic)
+  - PostgreSQL (using `POWER()` for power, `AND`/`OR`/`NOT` for boolean logic, `TRUE`/`FALSE` for booleans)
 
 ## Installation
 
@@ -28,7 +32,7 @@ npm run build
 
 ## Usage
 
-### Parsing and Compiling
+### Parsing and Compiling Arithmetic Expressions
 
 ```typescript
 import { parse, compileToRuby, compileToJavaScript, compileToSQL } from './src';
@@ -46,6 +50,28 @@ const powerExpr = parse('2 ^ 3 + 1');
 console.log(compileToRuby(powerExpr));       // => 2 ** 3 + 1
 console.log(compileToJavaScript(powerExpr)); // => Math.pow(2, 3) + 1
 console.log(compileToSQL(powerExpr));        // => POWER(2, 3) + 1
+```
+
+### Boolean Expressions
+
+```typescript
+// Comparison operators
+const ast1 = parse('x > 10 && x < 100');
+console.log(compileToRuby(ast1));       // => x > 10 && x < 100
+console.log(compileToJavaScript(ast1)); // => x > 10 && x < 100
+console.log(compileToSQL(ast1));        // => x > 10 AND x < 100
+
+// Logical operators with boolean literals
+const ast2 = parse('active == true || admin == true');
+console.log(compileToRuby(ast2));       // => active == true || admin == true
+console.log(compileToJavaScript(ast2)); // => active == true || admin == true
+console.log(compileToSQL(ast2));        // => active == TRUE OR admin == TRUE
+
+// Negation
+const ast3 = parse('!disabled');
+console.log(compileToRuby(ast3));       // => !disabled
+console.log(compileToJavaScript(ast3)); // => !disabled
+console.log(compileToSQL(ast3));        // => NOT disabled
 ```
 
 ### Programmatic AST Construction
@@ -67,18 +93,25 @@ Run the examples:
 
 ```bash
 npm run build
-node dist/examples/basic.js
+node dist/examples/basic.js     # Arithmetic expressions
+node dist/examples/boolean.js   # Boolean expressions
+node dist/examples/demo.js      # Quick demo
 ```
 
 ## Grammar
 
 ```
-expr    -> term (('+' | '-') term)*
-term    -> factor (('*' | '/' | '%') factor)*
-factor  -> power
-power   -> unary ('^' unary)*
-unary   -> ('+' | '-') unary | primary
-primary -> NUMBER | IDENTIFIER | '(' expr ')'
+expr       -> logical_or
+logical_or -> logical_and ('||' logical_and)*
+logical_and -> equality ('&&' equality)*
+equality   -> comparison (('==' | '!=') comparison)*
+comparison -> addition (('<' | '>' | '<=' | '>=') addition)*
+addition   -> term (('+' | '-') term)*
+term       -> factor (('*' | '/' | '%') factor)*
+factor     -> power
+power      -> unary ('^' unary)*
+unary      -> ('!' | '-' | '+') unary | primary
+primary    -> NUMBER | BOOLEAN | IDENTIFIER | '(' expr ')'
 ```
 
 ## Project Structure
@@ -94,7 +127,9 @@ klang/
 │       ├── javascript.ts   # JavaScript code generator
 │       └── sql.ts          # PostgreSQL code generator
 ├── examples/
-│   └── basic.ts            # Usage examples
+│   ├── basic.ts            # Arithmetic expression examples
+│   ├── boolean.ts          # Boolean expression examples
+│   └── demo.ts             # Quick demo
 ├── package.json
 ├── tsconfig.json
 └── README.md
@@ -103,10 +138,10 @@ klang/
 ## Roadmap
 
 Future enhancements could include:
-- Comparison operators (`<`, `>`, `<=`, `>=`, `==`, `!=`)
-- Boolean operators (`&&`, `||`, `!`)
-- Conditional expressions (`if-then-else`)
+- String literals and string operations
+- Conditional expressions (`if-then-else` or ternary operator)
 - Function calls
+- Array/list literals
 - Type system
 - Optimizer for constant folding
 

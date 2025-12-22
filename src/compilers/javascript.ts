@@ -40,9 +40,13 @@ function needsParens(expr: Expr, parentOp: string, side: 'left' | 'right'): bool
   if (expr.type !== 'binary') return false;
 
   const precedence: Record<string, number> = {
-    '+': 1, '-': 1,
-    '*': 2, '/': 2, '%': 2,
-    '^': 3
+    '||': 0,
+    '&&': 1,
+    '==': 2, '!=': 2,
+    '<': 3, '>': 3, '<=': 3, '>=': 3,
+    '+': 4, '-': 4,
+    '*': 5, '/': 5, '%': 5,
+    '^': 6
   };
 
   const parentPrec = precedence[parentOp] || 0;
@@ -51,7 +55,7 @@ function needsParens(expr: Expr, parentOp: string, side: 'left' | 'right'): bool
   // Lower precedence always needs parens
   if (childPrec < parentPrec) return true;
 
-  // Right side of subtraction/division needs parens if same precedence
+  // Right side of certain operators needs parens if same precedence
   if (childPrec === parentPrec && side === 'right' && (parentOp === '-' || parentOp === '/')) {
     return true;
   }

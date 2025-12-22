@@ -6,14 +6,22 @@ import { Expr } from '../ast';
 export function compileToSQL(expr: Expr): string {
   switch (expr.type) {
     case 'literal':
+      if (typeof expr.value === 'boolean') {
+        return expr.value ? 'TRUE' : 'FALSE';
+      }
       return expr.value.toString();
 
     case 'variable':
       // In SQL context, variables are typically column names
       return expr.name;
 
-    case 'unary':
-      return `${expr.operator}${compileToSQL(expr.operand)}`;
+    case 'unary': {
+      const operand = compileToSQL(expr.operand);
+      if (expr.operator === '!') {
+        return `NOT ${operand}`;
+      }
+      return `${expr.operator}${operand}`;
+    }
 
     case 'binary': {
       const left = compileToSQL(expr.left);
@@ -24,6 +32,14 @@ export function compileToSQL(expr: Expr): string {
         return `POWER(${left}, ${right})`;
       }
 
+      // Convert logical operators to SQL syntax
+      let sqlOp: string = expr.operator;
+      if (expr.operator === '&&') {
+        sqlOp = 'AND';
+      } else if (expr.operator === '||') {
+        sqlOp = 'OR';
+      }
+
       // Add parentheses for nested expressions to preserve precedence
       const leftExpr = needsParens(expr.left, expr.operator, 'left')
         ? `(${left})`
@@ -32,7 +48,7 @@ export function compileToSQL(expr: Expr): string {
         ? `(${right})`
         : right;
 
-      return `${leftExpr} ${expr.operator} ${rightExpr}`;
+      return `${leftExpr} ${sqlOp} ${rightExpr}`;
     }
   }
 }
@@ -41,9 +57,13 @@ function needsParens(expr: Expr, parentOp: string, side: 'left' | 'right'): bool
   if (expr.type !== 'binary') return false;
 
   const precedence: Record<string, number> = {
-    '+': 1, '-': 1,
-    '*': 2, '/': 2, '%': 2,
-    '^': 3
+    '||': 0,
+    '&&': 1,
+    '==': 2, '!=': 2,
+    '<': 3, '>': 3, '<=': 3, '>=': 3,
+    '+': 4, '-': 4,
+    '*': 5, '/': 5, '%': 5,
+    '^': 6
   };
 
   const parentPrec = precedence[parentOp] || 0;
@@ -52,7 +72,7 @@ function needsParens(expr: Expr, parentOp: string, side: 'left' | 'right'): bool
   // Lower precedence always needs parens
   if (childPrec < parentPrec) return true;
 
-  // Right side of subtraction/division needs parens if same precedence
+  // Right side of certain operators needs parens if same precedence
   if (childPrec === parentPrec && side === 'right' && (parentOp === '-' || parentOp === '/')) {
     return true;
   }
