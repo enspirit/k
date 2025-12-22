@@ -30,6 +30,20 @@ npm install
 npm run build
 ```
 
+## Testing
+
+Klang includes a comprehensive test suite with 110+ tests covering:
+- Parser and lexer functionality
+- AST construction
+- All three target compilers
+- Integration tests
+- Edge cases and error handling
+
+Run the tests:
+```bash
+npm test
+```
+
 ## Usage
 
 ### Parsing and Compiling Arithmetic Expressions
