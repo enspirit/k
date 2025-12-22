@@ -7,7 +7,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "test": "node --test dist/**/*.test.js"
+    "test": "npm run build && node --test dist/**/*.test.js",
+    "test:watch": "tsc --watch & node --test --watch dist/**/*.test.js"
   },
   "keywords": ["compiler", "expression", "multi-target"],
   "author": "",
