@@ -1,2 +1,7 @@
-CASE WHEN 2 + 3 = 5 THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
-CASE WHEN 10 % 3 = 1 THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
+2 + 3
+2 + 3 * 4
+POWER(2, 3)
+POWER(2, 3) + 1
+(x + 5) * (y - 3) / 2
+-x + 10
+a % b + c / d

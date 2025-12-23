@@ -8,6 +8,7 @@
 import { parse } from '../src/parser';
 import { compileToJavaScript } from '../src/compilers/javascript';
 import { compileToRuby } from '../src/compilers/ruby';
+import { compileToSQL } from '../src';
 
 console.log('=== Simplified Acceptance Testing with assert() ===\n');
 
@@ -31,9 +32,11 @@ tests.forEach((test, i) => {
   const ast = parse(test);
   const jsCode = compileToJavaScript(ast);
   const rubyCode = compileToRuby(ast);
+  const sqlCode = compileToSQL(ast);
 
   console.log(`  JS:   ${jsCode}`);
   console.log(`  Ruby: ${rubyCode}`);
+  console.log(`  SQL:  ${sqlCode}`);
   console.log();
 });
 

@@ -1,2 +1,7 @@
-(function() { if (!(2 + 3 == 5)) throw new Error("Assertion failed"); return true; })()
-(function() { if (!(10 % 3 == 1)) throw new Error("Assertion failed"); return true; })()
+2 + 3
+2 + 3 * 4
+Math.pow(2, 3)
+Math.pow(2, 3) + 1
+(x + 5) * (y - 3) / 2
+-x + 10
+a % b + c / d

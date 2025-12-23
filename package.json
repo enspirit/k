@@ -8,7 +8,7 @@
     "build": "tsc",
     "watch": "tsc --watch",
     "test": "npm run build && node --test dist/**/*.test.js",
-    "test:watch": "tsc --watch & node --test --watch dist/**/*.test.js",
+    "test:watch": "tsc --watch & node --test --watch --test-only dist/**/*.test.js",
     "test:acceptance": "npm run build && node --test dist/src/acceptance.test.js",
     "docker:up": "docker compose up -d",
     "docker:down": "docker compose down",

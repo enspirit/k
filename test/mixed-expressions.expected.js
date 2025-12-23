@@ -1,0 +1,4 @@
+total * 1.1 > 1000
+price * quantity - discount
+value >= min && value <= max
+amount > 0 && (approved || amount < 1000)

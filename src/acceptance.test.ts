@@ -158,6 +158,7 @@ async function testAssertion(
     try {
       await evaluateSQL(sqlCode, variables);
     } catch (error) {
+      console.error(sqlCode, error);
       throw new Error(`SQL assertion failed for "${assertExpr}": ${error}`);
     }
   }
@@ -302,10 +303,10 @@ describe('Acceptance Tests - Temporal Keywords', () => {
 });
 
 describe('Acceptance Tests - Member Access', () => {
-  it('should access object property', async () => {
+  it.only('should access object property', async () => {
     await testAssertion('assert(person.age == 25)', {
       person: { age: 25, name: 'Alice' }
-    }, { skipSQL: true });
+    });
   });
 
   it('should access nested property', async () => {
