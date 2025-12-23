@@ -46,10 +46,12 @@ export function compileToSQL(expr: Expr): string {
 
     case 'unary': {
       const operand = compileToSQL(expr.operand);
+      // Add parentheses around binary expressions to preserve precedence
+      const operandExpr = expr.operand.type === 'binary' ? `(${operand})` : operand;
       if (expr.operator === '!') {
-        return `NOT ${operand}`;
+        return `NOT ${operandExpr}`;
       }
-      return `${expr.operator}${operand}`;
+      return `${expr.operator}${operandExpr}`;
     }
 
     case 'binary': {

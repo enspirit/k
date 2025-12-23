@@ -38,8 +38,12 @@ export function compileToJavaScript(expr: Expr): string {
       return `${expr.name}(${args.join(', ')})`;
     }
 
-    case 'unary':
-      return `${expr.operator}${compileToJavaScript(expr.operand)}`;
+    case 'unary': {
+      const operand = compileToJavaScript(expr.operand);
+      // Add parentheses around binary expressions to preserve precedence
+      const operandExpr = expr.operand.type === 'binary' ? `(${operand})` : operand;
+      return `${expr.operator}${operandExpr}`;
+    }
 
     case 'binary': {
       const left = compileToJavaScript(expr.left);

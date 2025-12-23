@@ -37,8 +37,12 @@ export function compileToRuby(expr: Expr): string {
       return `${expr.name}(${args.join(', ')})`;
     }
 
-    case 'unary':
-      return `${expr.operator}${compileToRuby(expr.operand)}`;
+    case 'unary': {
+      const operand = compileToRuby(expr.operand);
+      // Add parentheses around binary expressions to preserve precedence
+      const operandExpr = expr.operand.type === 'binary' ? `(${operand})` : operand;
+      return `${expr.operator}${operandExpr}`;
+    }
 
     case 'binary': {
       const left = compileToRuby(expr.left);
