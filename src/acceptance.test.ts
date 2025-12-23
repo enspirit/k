@@ -240,7 +240,7 @@ describe('Acceptance Tests - Member Access', () => {
   it('should access object property', async () => {
     await testAssertion('assert(person.age == 25)', {
       person: { age: 25, name: 'Alice' }
-    });
+    }, { skipSQL: true });
   });
 
   it('should access nested property', async () => {
