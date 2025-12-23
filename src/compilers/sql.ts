@@ -26,6 +26,24 @@ export function compileToSQL(expr: Expr): string {
       // In SQL context, variables are typically column names
       return expr.name;
 
+    case 'function_call': {
+      const args = expr.args.map(arg => compileToSQL(arg));
+
+      // Built-in assert function
+      if (expr.name === 'assert') {
+        if (args.length < 1 || args.length > 2) {
+          throw new Error('assert requires 1 or 2 arguments: assert(condition, message?)');
+        }
+        const condition = args[0];
+        const message = args.length === 2 ? args[1] : "'Assertion failed'";
+        // Use CASE to check condition and return TRUE or raise error
+        return `CASE WHEN ${condition} THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END`;
+      }
+
+      // Generic function call (uppercase function name for SQL)
+      return `${expr.name.toUpperCase()}(${args.join(', ')})`;
+    }
+
     case 'unary': {
       const operand = compileToSQL(expr.operand);
       if (expr.operator === '!') {

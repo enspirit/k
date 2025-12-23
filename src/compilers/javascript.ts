@@ -21,6 +21,23 @@ export function compileToJavaScript(expr: Expr): string {
     case 'variable':
       return expr.name;
 
+    case 'function_call': {
+      const args = expr.args.map(arg => compileToJavaScript(arg));
+
+      // Built-in assert function
+      if (expr.name === 'assert') {
+        if (args.length < 1 || args.length > 2) {
+          throw new Error('assert requires 1 or 2 arguments: assert(condition, message?)');
+        }
+        const condition = args[0];
+        const message = args.length === 2 ? args[1] : '"Assertion failed"';
+        return `(function() { if (!(${condition})) throw new Error(${message}); return true; })()`;
+      }
+
+      // Generic function call
+      return `${expr.name}(${args.join(', ')})`;
+    }
+
     case 'unary':
       return `${expr.operator}${compileToJavaScript(expr.operand)}`;
 

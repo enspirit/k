@@ -1,4 +1,4 @@
-import { Expr, literal, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral } from './ast';
+import { Expr, literal, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral, functionCall } from './ast';
 
 /**
  * Token types
@@ -18,6 +18,7 @@ type TokenType =
   | 'CARET'
   | 'LPAREN'
   | 'RPAREN'
+  | 'COMMA'
   | 'LT'
   | 'GT'
   | 'LTE'
@@ -209,6 +210,7 @@ class Lexer {
       case '^': return { type: 'CARET', value: char, position: pos };
       case '(': return { type: 'LPAREN', value: char, position: pos };
       case ')': return { type: 'RPAREN', value: char, position: pos };
+      case ',': return { type: 'COMMA', value: char, position: pos };
       case '<': return { type: 'LT', value: char, position: pos };
       case '>': return { type: 'GT', value: char, position: pos };
       case '!': return { type: 'NOT', value: char, position: pos };
@@ -232,7 +234,10 @@ class Lexer {
  *   factor     -> power
  *   power      -> unary ('^' unary)*
  *   unary      -> ('!' | '-' | '+') unary | primary
- *   primary    -> NUMBER | BOOLEAN | DATE | DATETIME | DURATION | IDENTIFIER | '(' expr ')'
+ *   primary    -> NUMBER | BOOLEAN | DATE | DATETIME | DURATION
+ *               | IDENTIFIER '(' (expr (',' expr)*)? ')'  // function call
+ *               | IDENTIFIER                               // variable
+ *               | '(' expr ')'
  */
 export class Parser {
   private lexer: Lexer;
@@ -282,8 +287,31 @@ export class Parser {
     }
 
     if (token.type === 'IDENTIFIER') {
+      const name = token.value;
       this.eat('IDENTIFIER');
-      return variable(token.value);
+
+      // Check if this is a function call
+      if (this.currentToken.type === 'LPAREN') {
+        this.eat('LPAREN');
+        const args: Expr[] = [];
+
+        // Parse arguments
+        // After eat(), currentToken changes - use type assertion to tell TypeScript
+        const tok = this.currentToken as Token;
+        if (tok.type !== 'RPAREN') {
+          args.push(this.expr());
+          while ((this.currentToken as Token).type === 'COMMA') {
+            this.eat('COMMA');
+            args.push(this.expr());
+          }
+        }
+
+        this.eat('RPAREN');
+        return functionCall(name, args);
+      }
+
+      // Otherwise, it's a variable
+      return variable(name);
     }
 
     if (token.type === 'LPAREN') {

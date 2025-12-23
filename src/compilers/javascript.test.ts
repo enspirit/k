@@ -255,3 +255,30 @@ describe('JavaScript Compiler - Date Arithmetic', () => {
     assert.strictEqual(compileToJavaScript(ast), "Duration.parse('PT1H30M').addTo(new Date('2024-01-15T10:00:00Z'))");
   });
 });
+
+describe('JavaScript Compiler - Function Calls', () => {
+  it('should compile assert with boolean condition', () => {
+    const ast = { type: 'function_call' as const, name: 'assert', args: [{ type: 'literal' as const, value: true }] };
+    assert.strictEqual(compileToJavaScript(ast), '(function() { if (!(true)) throw new Error("Assertion failed"); return true; })()');
+  });
+
+  it('should compile assert with comparison expression', () => {
+    const ast = {
+      type: 'function_call' as const,
+      name: 'assert',
+      args: [
+        { type: 'binary' as const, operator: '>' as const, left: { type: 'literal' as const, value: 5 }, right: { type: 'literal' as const, value: 3 } }
+      ]
+    };
+    assert.strictEqual(compileToJavaScript(ast), '(function() { if (!(5 > 3)) throw new Error("Assertion failed"); return true; })()');
+  });
+
+  it('should compile generic function call', () => {
+    const ast = {
+      type: 'function_call' as const,
+      name: 'foo',
+      args: [{ type: 'literal' as const, value: 42 }]
+    };
+    assert.strictEqual(compileToJavaScript(ast), 'foo(42)');
+  });
+});

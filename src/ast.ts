@@ -2,7 +2,7 @@
  * AST node types for Klang expressions
  */
 
-export type Expr = Literal | Variable | BinaryOp | UnaryOp | DateLiteral | DateTimeLiteral | DurationLiteral;
+export type Expr = Literal | Variable | BinaryOp | UnaryOp | DateLiteral | DateTimeLiteral | DurationLiteral | FunctionCall;
 
 /**
  * Literal value (number or boolean)
@@ -70,6 +70,15 @@ export interface UnaryOp {
 }
 
 /**
+ * Function call
+ */
+export interface FunctionCall {
+  type: 'function_call';
+  name: string;
+  args: Expr[];
+}
+
+/**
  * Helper functions to create AST nodes
  */
 export function literal(value: number | boolean): Literal {
@@ -98,4 +107,8 @@ export function binary(operator: BinaryOp['operator'], left: Expr, right: Expr):
 
 export function unary(operator: UnaryOp['operator'], operand: Expr): UnaryOp {
   return { type: 'unary', operator, operand };
+}
+
+export function functionCall(name: string, args: Expr[]): FunctionCall {
+  return { type: 'function_call', name, args };
 }

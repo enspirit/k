@@ -388,3 +388,50 @@ describe('Parser - Error Handling', () => {
     assert.throws(() => parse('2 3'), /Expected EOF/);
   });
 });
+
+describe('Parser - Function Calls', () => {
+  it('should parse function call with no arguments', () => {
+    const ast = parse('foo()');
+    assert.deepStrictEqual(ast, {
+      type: 'function_call',
+      name: 'foo',
+      args: []
+    });
+  });
+
+  it('should parse function call with one argument', () => {
+    const ast = parse('assert(true)');
+    assert.deepStrictEqual(ast, {
+      type: 'function_call',
+      name: 'assert',
+      args: [{ type: 'literal', value: true }]
+    });
+  });
+
+  it('should parse function call with multiple arguments', () => {
+    const ast = parse('max(5, 3)');
+    assert.strictEqual(ast.type, 'function_call');
+    const funcCall = ast as any;
+    assert.strictEqual(funcCall.name, 'max');
+    assert.strictEqual(funcCall.args.length, 2);
+    assert.strictEqual(funcCall.args[0].type, 'literal');
+    assert.strictEqual(funcCall.args[1].type, 'literal');
+  });
+
+  it('should parse nested function calls', () => {
+    const ast = parse('foo(bar(5))');
+    assert.strictEqual(ast.type, 'function_call');
+    const funcCall = ast as any;
+    assert.strictEqual(funcCall.name, 'foo');
+    assert.strictEqual(funcCall.args[0].type, 'function_call');
+    assert.strictEqual(funcCall.args[0].name, 'bar');
+  });
+
+  it('should parse function call with complex expression argument', () => {
+    const ast = parse('assert(2 + 3 == 5)');
+    assert.strictEqual(ast.type, 'function_call');
+    const funcCall = ast as any;
+    assert.strictEqual(funcCall.name, 'assert');
+    assert.strictEqual(funcCall.args[0].type, 'binary');
+  });
+});
