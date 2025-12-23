@@ -17,7 +17,7 @@ import { compileToSQL } from './compilers/sql';
  * - <name>.expected.sql - Expected SQL compilation
  */
 
-const TEST_DIR = join(__dirname, '../test');
+const TEST_DIR = join(__dirname, '../../test');
 
 interface TestSuite {
   name: string;
