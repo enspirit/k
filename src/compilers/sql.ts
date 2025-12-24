@@ -47,6 +47,11 @@ export function compileToSQL(expr: Expr, options?: SQLCompileOptions): string {
       }
       return expr.value.toString();
 
+    case 'string':
+      // SQL strings use single quotes, escape single quotes by doubling
+      const escapedSql = expr.value.replace(/'/g, "''");
+      return `'${escapedSql}'`;
+
     case 'date':
       return `DATE '${expr.value}'`;
 

@@ -1,10 +1,11 @@
-import { Expr, literal, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral, temporalKeyword, functionCall, memberAccess, letExpr, LetBinding } from './ast';
+import { Expr, literal, stringLiteral, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral, temporalKeyword, functionCall, memberAccess, letExpr, LetBinding } from './ast';
 
 /**
  * Token types
  */
 type TokenType =
   | 'NUMBER'
+  | 'STRING'
   | 'BOOLEAN'
   | 'IDENTIFIER'
   | 'DATE'
@@ -115,6 +116,26 @@ class Lexer {
     return str;
   }
 
+  private readSingleQuotedString(): string {
+    let str = '';
+    while (this.current && this.current !== "'") {
+      // Handle escape sequences
+      if (this.current === '\\' && this.peek() === "'") {
+        this.advance(); // skip backslash
+        str += "'";
+        this.advance();
+      } else if (this.current === '\\' && this.peek() === '\\') {
+        this.advance(); // skip first backslash
+        str += '\\';
+        this.advance();
+      } else {
+        str += this.current;
+        this.advance();
+      }
+    }
+    return str;
+  }
+
   private readDateOrDateTime(): string {
     // Read ISO8601 date or datetime: 2024-01-15 or 2024-01-15T10:30:00.123Z
     let dateStr = '';
@@ -210,6 +231,14 @@ class Lexer {
       if (durationStr.length > 1) {
         return { type: 'DURATION', value: durationStr, position: pos };
       }
+    }
+
+    // Single-quoted strings: 'hello world'
+    if (this.current === "'") {
+      this.advance(); // skip opening quote
+      const str = this.readSingleQuotedString();
+      this.advance(); // skip closing quote
+      return { type: 'STRING', value: str, position: pos };
     }
 
     // Identifiers and keywords (true, false, let, in, NOW, TODAY, TOMORROW, YESTERDAY)
@@ -397,6 +426,11 @@ export class Parser {
     if (token.type === 'DURATION') {
       this.eat('DURATION');
       return durationLiteral(token.value);
+    }
+
+    if (token.type === 'STRING') {
+      this.eat('STRING');
+      return stringLiteral(token.value);
     }
 
     if (token.type === 'IDENTIFIER') {

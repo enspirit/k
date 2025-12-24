@@ -44,6 +44,11 @@ export function compileToRuby(expr: Expr, options?: RubyCompileOptions): string 
     case 'literal':
       return expr.value.toString();
 
+    case 'string':
+      // Ruby double-quoted strings: escape backslash and double quote
+      const escaped = expr.value.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+      return `"${escaped}"`;
+
     case 'date':
       return `Date.parse('${expr.value}')`;
 

@@ -2,7 +2,7 @@
  * AST node types for Klang expressions
  */
 
-export type Expr = Literal | Variable | BinaryOp | UnaryOp | DateLiteral | DateTimeLiteral | DurationLiteral | TemporalKeyword | FunctionCall | MemberAccess | LetExpr;
+export type Expr = Literal | StringLiteral | Variable | BinaryOp | UnaryOp | DateLiteral | DateTimeLiteral | DurationLiteral | TemporalKeyword | FunctionCall | MemberAccess | LetExpr;
 
 /**
  * Literal value (number or boolean)
@@ -10,6 +10,14 @@ export type Expr = Literal | Variable | BinaryOp | UnaryOp | DateLiteral | DateT
 export interface Literal {
   type: 'literal';
   value: number | boolean;
+}
+
+/**
+ * String literal (single-quoted)
+ */
+export interface StringLiteral {
+  type: 'string';
+  value: string;
 }
 
 /**
@@ -122,6 +130,10 @@ export interface LetExpr {
  */
 export function literal(value: number | boolean): Literal {
   return { type: 'literal', value };
+}
+
+export function stringLiteral(value: string): StringLiteral {
+  return { type: 'string', value };
 }
 
 export function dateLiteral(value: string): DateLiteral {

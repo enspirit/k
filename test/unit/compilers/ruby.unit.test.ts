@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { compileToRuby } from '../../../src/compilers/ruby';
-import { literal, variable, binary, unary, letExpr } from '../../../src/ast';
+import { literal, stringLiteral, variable, binary, unary, letExpr } from '../../../src/ast';
 
 describe('Ruby Compiler - Literals', () => {
   it('should compile numeric literals', () => {
@@ -13,6 +13,28 @@ describe('Ruby Compiler - Literals', () => {
   it('should compile boolean literals', () => {
     assert.strictEqual(compileToRuby(literal(true)), 'true');
     assert.strictEqual(compileToRuby(literal(false)), 'false');
+  });
+});
+
+describe('Ruby Compiler - String Literals', () => {
+  it('should compile simple string', () => {
+    assert.strictEqual(compileToRuby(stringLiteral('hello')), '"hello"');
+  });
+
+  it('should compile string with spaces', () => {
+    assert.strictEqual(compileToRuby(stringLiteral('hello world')), '"hello world"');
+  });
+
+  it('should compile empty string', () => {
+    assert.strictEqual(compileToRuby(stringLiteral('')), '""');
+  });
+
+  it('should escape double quotes in output', () => {
+    assert.strictEqual(compileToRuby(stringLiteral('say "hi"')), '"say \\"hi\\""');
+  });
+
+  it('should escape backslashes in output', () => {
+    assert.strictEqual(compileToRuby(stringLiteral('a\\b')), '"a\\\\b"');
   });
 });
 

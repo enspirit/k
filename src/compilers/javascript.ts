@@ -45,6 +45,10 @@ export function compileToJavaScript(expr: Expr, options?: JavaScriptCompileOptio
     case 'literal':
       return expr.value.toString();
 
+    case 'string':
+      // Use JSON.stringify to handle escaping properly
+      return JSON.stringify(expr.value);
+
     case 'date':
       return `dayjs('${expr.value}')`;
 

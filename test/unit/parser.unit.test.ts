@@ -47,6 +47,56 @@ describe('Parser - Boolean Literals', () => {
   });
 });
 
+describe('Parser - String Literals', () => {
+  it('should parse simple single-quoted string', () => {
+    const ast = parse("'hello'");
+    assert.deepStrictEqual(ast, {
+      type: 'string',
+      value: 'hello'
+    });
+  });
+
+  it('should parse string with spaces', () => {
+    const ast = parse("'hello world'");
+    assert.deepStrictEqual(ast, {
+      type: 'string',
+      value: 'hello world'
+    });
+  });
+
+  it('should parse empty string', () => {
+    const ast = parse("''");
+    assert.deepStrictEqual(ast, {
+      type: 'string',
+      value: ''
+    });
+  });
+
+  it('should parse string with escaped single quote', () => {
+    const ast = parse("'it\\'s'");
+    assert.deepStrictEqual(ast, {
+      type: 'string',
+      value: "it's"
+    });
+  });
+
+  it('should parse string with escaped backslash', () => {
+    const ast = parse("'a\\\\b'");
+    assert.deepStrictEqual(ast, {
+      type: 'string',
+      value: 'a\\b'
+    });
+  });
+
+  it('should parse string with numbers', () => {
+    const ast = parse("'test123'");
+    assert.deepStrictEqual(ast, {
+      type: 'string',
+      value: 'test123'
+    });
+  });
+});
+
 describe('Parser - Variables', () => {
   it('should parse single letter variables', () => {
     const ast = parse('x');

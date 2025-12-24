@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { compileToJavaScript } from '../../../src/compilers/javascript';
-import { literal, variable, binary, unary, letExpr } from '../../../src/ast';
+import { literal, stringLiteral, variable, binary, unary, letExpr } from '../../../src/ast';
 
 describe('JavaScript Compiler - Literals', () => {
   it('should compile numeric literals', () => {
@@ -13,6 +13,28 @@ describe('JavaScript Compiler - Literals', () => {
   it('should compile boolean literals', () => {
     assert.strictEqual(compileToJavaScript(literal(true)), 'true');
     assert.strictEqual(compileToJavaScript(literal(false)), 'false');
+  });
+});
+
+describe('JavaScript Compiler - String Literals', () => {
+  it('should compile simple string', () => {
+    assert.strictEqual(compileToJavaScript(stringLiteral('hello')), '"hello"');
+  });
+
+  it('should compile string with spaces', () => {
+    assert.strictEqual(compileToJavaScript(stringLiteral('hello world')), '"hello world"');
+  });
+
+  it('should compile empty string', () => {
+    assert.strictEqual(compileToJavaScript(stringLiteral('')), '""');
+  });
+
+  it('should escape double quotes in output', () => {
+    assert.strictEqual(compileToJavaScript(stringLiteral('say "hi"')), '"say \\"hi\\""');
+  });
+
+  it('should escape backslashes in output', () => {
+    assert.strictEqual(compileToJavaScript(stringLiteral('a\\b')), '"a\\\\b"');
   });
 });
 

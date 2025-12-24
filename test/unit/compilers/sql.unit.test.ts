@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { compileToSQL } from '../../../src/compilers/sql';
-import { literal, variable, binary, unary, letExpr } from '../../../src/ast';
+import { literal, stringLiteral, variable, binary, unary, letExpr } from '../../../src/ast';
 
 describe('SQL Compiler - Literals', () => {
   it('should compile numeric literals', () => {
@@ -13,6 +13,28 @@ describe('SQL Compiler - Literals', () => {
   it('should compile boolean literals to uppercase', () => {
     assert.strictEqual(compileToSQL(literal(true)), 'TRUE');
     assert.strictEqual(compileToSQL(literal(false)), 'FALSE');
+  });
+});
+
+describe('SQL Compiler - String Literals', () => {
+  it('should compile simple string with single quotes', () => {
+    assert.strictEqual(compileToSQL(stringLiteral('hello')), "'hello'");
+  });
+
+  it('should compile string with spaces', () => {
+    assert.strictEqual(compileToSQL(stringLiteral('hello world')), "'hello world'");
+  });
+
+  it('should compile empty string', () => {
+    assert.strictEqual(compileToSQL(stringLiteral('')), "''");
+  });
+
+  it('should escape single quotes by doubling', () => {
+    assert.strictEqual(compileToSQL(stringLiteral("it's")), "'it''s'");
+  });
+
+  it('should handle multiple single quotes', () => {
+    assert.strictEqual(compileToSQL(stringLiteral("it's John's")), "'it''s John''s'");
   });
 });
 

@@ -116,6 +116,29 @@
       </section>
 
       <section class="doc-section">
+        <h2>Strings</h2>
+        <p>K supports single-quoted string literals.</p>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">String Literal</div>
+          <pre class="example-code">'hello world'</pre>
+          <p class="example-desc">Simple strings use single quotes.</p>
+        </div>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">String Comparison</div>
+          <pre class="example-code">assert('hello' == 'hello')</pre>
+          <p class="example-desc">Compare strings with <code>==</code> and <code>!=</code>.</p>
+        </div>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Escaped Quotes</div>
+          <pre class="example-code">'it\'s working'</pre>
+          <p class="example-desc">Escape single quotes with backslash.</p>
+        </div>
+      </section>
+
+      <section class="doc-section">
         <h2>Comparisons &amp; Booleans</h2>
         <p>Compare values and combine conditions with logical operators.</p>
 
