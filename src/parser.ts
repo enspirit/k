@@ -20,6 +20,8 @@ type TokenType =
   | 'RPAREN'
   | 'COMMA'
   | 'DOT'
+  | 'RANGE_INCL'
+  | 'RANGE_EXCL'
   | 'LT'
   | 'GT'
   | 'LTE'
@@ -43,6 +45,11 @@ interface Token {
 /**
  * Tokenizer for arithmetic expressions
  */
+interface LexerState {
+  position: number;
+  current: string;
+}
+
 class Lexer {
   private input: string;
   private position: number = 0;
@@ -51,6 +58,15 @@ class Lexer {
   constructor(input: string) {
     this.input = input;
     this.current = input[0] || '';
+  }
+
+  saveState(): LexerState {
+    return { position: this.position, current: this.current };
+  }
+
+  restoreState(state: LexerState): void {
+    this.position = state.position;
+    this.current = state.current;
   }
 
   private advance(): void {
@@ -67,6 +83,10 @@ class Lexer {
   private readNumber(): string {
     let num = '';
     while (this.current && /[0-9.]/.test(this.current)) {
+      // Stop before consuming '.' if it's part of '..' or '...' range operator
+      if (this.current === '.' && this.peek() === '.') {
+        break;
+      }
       num += this.current;
       this.advance();
     }
@@ -204,6 +224,15 @@ class Lexer {
       if (id === 'in') {
         return { type: 'IN', value: id, position: pos };
       }
+      if (id === 'and') {
+        return { type: 'AND', value: id, position: pos };
+      }
+      if (id === 'or') {
+        return { type: 'OR', value: id, position: pos };
+      }
+      if (id === 'not') {
+        return { type: 'NOT', value: id, position: pos };
+      }
       const temporalKeywords = ['NOW', 'TODAY', 'TOMORROW', 'YESTERDAY',
         'SOD', 'EOD', 'SOW', 'EOW', 'SOM', 'EOM', 'SOQ', 'EOQ', 'SOY', 'EOY'];
       if (temporalKeywords.includes(id)) {
@@ -252,6 +281,16 @@ class Lexer {
       this.advance();
       return { type: 'OR', value: '||', position: pos };
     }
+    // Range operators: .. (inclusive) and ... (exclusive)
+    if (char === '.' && next === '.') {
+      this.advance();
+      this.advance();
+      if (this.current === '.') {
+        this.advance();
+        return { type: 'RANGE_EXCL', value: '...', position: pos };
+      }
+      return { type: 'RANGE_INCL', value: '..', position: pos };
+    }
 
     // Single-character operators
     this.advance();
@@ -266,7 +305,8 @@ class Lexer {
       case '(': return { type: 'LPAREN', value: char, position: pos };
       case ')': return { type: 'RPAREN', value: char, position: pos };
       case ',': return { type: 'COMMA', value: char, position: pos };
-      case '.': return { type: 'DOT', value: char, position: pos };
+      case '.':
+        return { type: 'DOT', value: char, position: pos };
       case '<': return { type: 'LT', value: char, position: pos };
       case '>': return { type: 'GT', value: char, position: pos };
       case '!': return { type: 'NOT', value: char, position: pos };
@@ -295,6 +335,11 @@ class Lexer {
  *               | IDENTIFIER                               // variable
  *               | '(' expr ')'
  */
+interface ParserState {
+  lexerState: LexerState;
+  currentToken: Token;
+}
+
 export class Parser {
   private lexer: Lexer;
   private currentToken: Token;
@@ -302,6 +347,18 @@ export class Parser {
   constructor(input: string) {
     this.lexer = new Lexer(input);
     this.currentToken = this.lexer.nextToken();
+  }
+
+  private saveState(): ParserState {
+    return {
+      lexerState: this.lexer.saveState(),
+      currentToken: { ...this.currentToken }
+    };
+  }
+
+  private restoreState(state: ParserState): void {
+    this.lexer.restoreState(state.lexerState);
+    this.currentToken = state.currentToken;
   }
 
   private eat(tokenType: TokenType): void {
@@ -382,6 +439,11 @@ export class Parser {
       const expr = this.expr();
       this.eat('RPAREN');
       return expr;
+    }
+
+    // Handle let expressions (can appear anywhere an expression is expected)
+    if (token.type === 'LET') {
+      return this.letExpr();
     }
 
     throw new Error(`Unexpected token ${token.type} at position ${token.position}`);
@@ -478,6 +540,16 @@ export class Parser {
   private comparison(): Expr {
     let node = this.addition();
 
+    // Handle range membership: expr in expr..expr or expr in expr...expr
+    // Use speculative parsing - if no range operator found after IN, restore state
+    if (this.currentToken.type === 'IN') {
+      const result = this.tryParseRangeMembership(node);
+      if (result !== null) {
+        return result;
+      }
+      // Not a range expression, continue with normal parsing
+    }
+
     while (['LT', 'GT', 'LTE', 'GTE'].includes(this.currentToken.type)) {
       const token = this.currentToken;
 
@@ -537,6 +609,73 @@ export class Parser {
     }
 
     return node;
+  }
+
+  /**
+   * Try to parse range membership: expr in expr..expr or expr in expr...expr
+   * Returns null if this is not a range expression (e.g., it's 'in' from 'let...in')
+   */
+  private tryParseRangeMembership(node: Expr): Expr | null {
+    const savedState = this.saveState();
+
+    this.eat('IN');
+    const rangeStart = this.addition();
+
+    let inclusive: boolean;
+    if (this.currentToken.type === 'RANGE_INCL') {
+      this.eat('RANGE_INCL');
+      inclusive = true;
+    } else if (this.currentToken.type === 'RANGE_EXCL') {
+      this.eat('RANGE_EXCL');
+      inclusive = false;
+    } else {
+      // No range operator found - this is not a range expression
+      // Restore state and return null
+      this.restoreState(savedState);
+      return null;
+    }
+
+    const rangeEnd = this.addition();
+
+    return this.desugarRangeMembership(node, rangeStart, rangeEnd, inclusive);
+  }
+
+  /**
+   * Desugar range membership expression.
+   * `value in start..end` becomes `value >= start and value <= end`
+   * `value in start...end` becomes `value >= start and value < end`
+   *
+   * For complex expressions, wraps in let to avoid multiple evaluation.
+   */
+  private desugarRangeMembership(value: Expr, start: Expr, end: Expr, inclusive: boolean): Expr {
+    const isSimple = (e: Expr): boolean => {
+      return e.type === 'literal' || e.type === 'variable' ||
+             e.type === 'date' || e.type === 'datetime' ||
+             e.type === 'temporal_keyword';
+    };
+
+    const endOp = inclusive ? '<=' : '<';
+
+    if (isSimple(value) && isSimple(start) && isSimple(end)) {
+      // Direct expansion for simple expressions
+      return binary('&&',
+        binary('>=', value, start),
+        binary(endOp, value, end)
+      );
+    }
+
+    // Wrap in let to avoid multiple evaluation
+    return letExpr(
+      [
+        { name: '_v', value },
+        { name: '_lo', value: start },
+        { name: '_hi', value: end }
+      ],
+      binary('&&',
+        binary('>=', variable('_v'), variable('_lo')),
+        binary(endOp, variable('_v'), variable('_hi'))
+      )
+    );
   }
 
   private letExpr(): Expr {

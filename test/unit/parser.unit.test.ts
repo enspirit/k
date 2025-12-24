@@ -448,14 +448,18 @@ describe('Parser - Let Expressions', () => {
     }
   });
 
-  it('should parse let with multiple bindings', () => {
+  it('should parse let with multiple bindings (desugared to nested)', () => {
     const ast = parse('let x = 1, y = 2 in x + y');
+    // Multiple bindings are desugared to nested let expressions
     assert.strictEqual(ast.type, 'let');
     if (ast.type === 'let') {
-      assert.strictEqual(ast.bindings.length, 2);
+      assert.strictEqual(ast.bindings.length, 1);
       assert.strictEqual(ast.bindings[0].name, 'x');
-      assert.strictEqual(ast.bindings[1].name, 'y');
-      assert.strictEqual(ast.body.type, 'binary');
+      assert.strictEqual(ast.body.type, 'let');
+      if (ast.body.type === 'let') {
+        assert.strictEqual(ast.body.bindings[0].name, 'y');
+        assert.strictEqual(ast.body.body.type, 'binary');
+      }
     }
   });
 
@@ -488,10 +492,16 @@ describe('Parser - Let Expressions', () => {
 
   it('should parse let with function call in body', () => {
     const ast = parse('let x = 5, y = 3 in assert(x + y == 8)');
+    // Multiple bindings are desugared to nested let expressions
     assert.strictEqual(ast.type, 'let');
     if (ast.type === 'let') {
-      assert.strictEqual(ast.bindings.length, 2);
-      assert.strictEqual(ast.body.type, 'function_call');
+      assert.strictEqual(ast.bindings.length, 1);
+      assert.strictEqual(ast.bindings[0].name, 'x');
+      assert.strictEqual(ast.body.type, 'let');
+      if (ast.body.type === 'let') {
+        assert.strictEqual(ast.body.bindings[0].name, 'y');
+        assert.strictEqual(ast.body.body.type, 'function_call');
+      }
     }
   });
 
@@ -501,5 +511,90 @@ describe('Parser - Let Expressions', () => {
 
   it('should throw on let without binding value', () => {
     assert.throws(() => parse('let x in x'), /Expected ASSIGN/);
+  });
+});
+
+describe('Parser - Range Membership', () => {
+  it('should parse inclusive range with numeric literals', () => {
+    const ast = parse('5 in 1..10');
+    // Desugars to: 5 >= 1 && 5 <= 10
+    assert.strictEqual(ast.type, 'binary');
+    if (ast.type === 'binary') {
+      assert.strictEqual(ast.operator, '&&');
+      assert.strictEqual(ast.left.type, 'binary');
+      assert.strictEqual(ast.right.type, 'binary');
+      if (ast.left.type === 'binary') {
+        assert.strictEqual(ast.left.operator, '>=');
+      }
+      if (ast.right.type === 'binary') {
+        assert.strictEqual(ast.right.operator, '<=');
+      }
+    }
+  });
+
+  it('should parse exclusive range with numeric literals', () => {
+    const ast = parse('5 in 1...10');
+    // Desugars to: 5 >= 1 && 5 < 10
+    assert.strictEqual(ast.type, 'binary');
+    if (ast.type === 'binary') {
+      assert.strictEqual(ast.operator, '&&');
+      if (ast.right.type === 'binary') {
+        assert.strictEqual(ast.right.operator, '<');
+      }
+    }
+  });
+
+  it('should parse range with variable', () => {
+    const ast = parse('x in 0..100');
+    assert.strictEqual(ast.type, 'binary');
+    if (ast.type === 'binary') {
+      assert.strictEqual(ast.operator, '&&');
+    }
+  });
+
+  it('should parse range with temporal keywords', () => {
+    const ast = parse('x in TODAY..TOMORROW');
+    assert.strictEqual(ast.type, 'binary');
+    if (ast.type === 'binary') {
+      assert.strictEqual(ast.operator, '&&');
+    }
+  });
+
+  it('should parse complex range using let wrapper', () => {
+    const ast = parse('(a + b) in (x - 1)..(x + 1)');
+    // Complex expressions should desugar to nested let expressions
+    // (the let helper desugars multiple bindings into nested lets)
+    assert.strictEqual(ast.type, 'let');
+    if (ast.type === 'let') {
+      assert.strictEqual(ast.bindings.length, 1);
+      assert.strictEqual(ast.bindings[0].name, '_v');
+      // The body should be another let with _lo binding
+      assert.strictEqual(ast.body.type, 'let');
+    }
+  });
+
+  it('should parse range in larger expression', () => {
+    const ast = parse('x in 1..10 and y in 1..10');
+    assert.strictEqual(ast.type, 'binary');
+    if (ast.type === 'binary') {
+      assert.strictEqual(ast.operator, '&&');
+    }
+  });
+
+  it('should parse range nested in let expression', () => {
+    const ast = parse('let r = 5 in r in 1..10');
+    assert.strictEqual(ast.type, 'let');
+    if (ast.type === 'let') {
+      assert.strictEqual(ast.bindings[0].name, 'r');
+      assert.strictEqual(ast.body.type, 'binary');
+    }
+  });
+
+  it('should throw on range without end', () => {
+    assert.throws(() => parse('5 in 1..'), /Unexpected token/);
+  });
+
+  it('should throw on range without start', () => {
+    assert.throws(() => parse('5 in ..10'), /Unexpected token/);
   });
 });

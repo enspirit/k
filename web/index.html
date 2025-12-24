@@ -244,6 +244,35 @@
       </section>
 
       <section class="doc-section">
+        <h2>Range Membership</h2>
+        <p>Check if a value falls within a range using the <code>in</code> operator.</p>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Inclusive Range</div>
+          <pre class="example-code">5 in 1..10</pre>
+          <p class="example-desc">True if 5 &gt;= 1 AND 5 &lt;= 10. Both ends are included.</p>
+        </div>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Exclusive End Range</div>
+          <pre class="example-code">5 in 1...10</pre>
+          <p class="example-desc">True if 5 &gt;= 1 AND 5 &lt; 10. End is excluded (Ruby-style).</p>
+        </div>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Date Range Check</div>
+          <pre class="example-code">TODAY in SOY..EOY</pre>
+          <p class="example-desc">Check if today is within the current year.</p>
+        </div>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Combined Ranges</div>
+          <pre class="example-code">x in 0..100 and y in 0..100</pre>
+          <p class="example-desc">Multiple range checks with <code>and</code>/<code>or</code> keywords.</p>
+        </div>
+      </section>
+
+      <section class="doc-section">
         <h2>Compilation Modes</h2>
         <p>K supports two compilation modes for temporal expressions:</p>
 
