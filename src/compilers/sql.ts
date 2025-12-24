@@ -1,9 +1,45 @@
 import { Expr } from '../ast';
 
 /**
+ * SQL compilation options
+ */
+export interface SQLCompileOptions {
+  /**
+   * Temporal mode controls how temporal expressions are compiled:
+   * - 'production': Uses native SQL constants (CURRENT_TIMESTAMP, CURRENT_DATE)
+   * - 'testable': Uses klang_now()/klang_today() functions that can be overridden
+   */
+  temporalMode?: 'production' | 'testable';
+}
+
+/**
+ * Temporal provider abstraction - returns SQL expressions for current time/date
+ */
+interface TemporalProvider {
+  now(): string;
+  today(): string;
+}
+
+const productionProvider: TemporalProvider = {
+  now: () => 'CURRENT_TIMESTAMP',
+  today: () => 'CURRENT_DATE',
+};
+
+const testableProvider: TemporalProvider = {
+  now: () => 'klang_now()',
+  today: () => 'klang_today()',
+};
+
+function getTemporalProvider(options?: SQLCompileOptions): TemporalProvider {
+  const mode = options?.temporalMode ?? 'production';
+  return mode === 'testable' ? testableProvider : productionProvider;
+}
+
+/**
  * Compiles Klang expressions to PostgreSQL SQL
  */
-export function compileToSQL(expr: Expr): string {
+export function compileToSQL(expr: Expr, options?: SQLCompileOptions): string {
+  const temporal = getTemporalProvider(options);
   switch (expr.type) {
     case 'literal':
       if (typeof expr.value === 'boolean') {
@@ -27,33 +63,33 @@ export function compileToSQL(expr: Expr): string {
     case 'temporal_keyword':
       switch (expr.keyword) {
         case 'NOW':
-          return 'CURRENT_TIMESTAMP';
+          return temporal.now();
         case 'TODAY':
-          return 'CURRENT_DATE';
+          return temporal.today();
         case 'TOMORROW':
-          return 'CURRENT_DATE + INTERVAL \'1 day\'';
+          return `${temporal.today()} + INTERVAL '1 day'`;
         case 'YESTERDAY':
-          return 'CURRENT_DATE - INTERVAL \'1 day\'';
+          return `${temporal.today()} - INTERVAL '1 day'`;
         case 'SOD':
-          return 'date_trunc(\'day\', CURRENT_TIMESTAMP)';
+          return `date_trunc('day', ${temporal.now()})`;
         case 'EOD':
-          return 'date_trunc(\'day\', CURRENT_TIMESTAMP) + INTERVAL \'1 day\' - INTERVAL \'1 second\'';
+          return `date_trunc('day', ${temporal.now()}) + INTERVAL '1 day' - INTERVAL '1 second'`;
         case 'SOW':
-          return 'date_trunc(\'week\', CURRENT_DATE)';
+          return `date_trunc('week', ${temporal.today()})`;
         case 'EOW':
-          return 'date_trunc(\'week\', CURRENT_DATE) + INTERVAL \'6 days\'';
+          return `date_trunc('week', ${temporal.today()}) + INTERVAL '6 days'`;
         case 'SOM':
-          return 'date_trunc(\'month\', CURRENT_DATE)';
+          return `date_trunc('month', ${temporal.today()})`;
         case 'EOM':
-          return 'date_trunc(\'month\', CURRENT_DATE) + INTERVAL \'1 month\' - INTERVAL \'1 day\'';
+          return `date_trunc('month', ${temporal.today()}) + INTERVAL '1 month' - INTERVAL '1 day'`;
         case 'SOQ':
-          return 'date_trunc(\'quarter\', CURRENT_DATE)';
+          return `date_trunc('quarter', ${temporal.today()})`;
         case 'EOQ':
-          return 'date_trunc(\'quarter\', CURRENT_DATE) + INTERVAL \'3 months\' - INTERVAL \'1 day\'';
+          return `date_trunc('quarter', ${temporal.today()}) + INTERVAL '3 months' - INTERVAL '1 day'`;
         case 'SOY':
-          return 'date_trunc(\'year\', CURRENT_DATE)';
+          return `date_trunc('year', ${temporal.today()})`;
         case 'EOY':
-          return 'date_trunc(\'year\', CURRENT_DATE) + INTERVAL \'1 year\' - INTERVAL \'1 day\'';
+          return `date_trunc('year', ${temporal.today()}) + INTERVAL '1 year' - INTERVAL '1 day'`;
       }
 
     case 'variable':
@@ -61,7 +97,7 @@ export function compileToSQL(expr: Expr): string {
       return expr.name;
 
     case 'member_access': {
-      const object = compileToSQL(expr.object);
+      const object = compileToSQL(expr.object, options);
       // Add parentheses around complex expressions to ensure proper precedence
       const objectExpr = (expr.object.type === 'binary' || expr.object.type === 'unary')
         ? `(${object})`
@@ -70,7 +106,7 @@ export function compileToSQL(expr: Expr): string {
     }
 
     case 'function_call': {
-      const args = expr.args.map(arg => compileToSQL(arg));
+      const args = expr.args.map(arg => compileToSQL(arg, options));
 
       // Built-in assert function
       if (expr.name === 'assert') {
@@ -88,7 +124,7 @@ export function compileToSQL(expr: Expr): string {
     }
 
     case 'unary': {
-      const operand = compileToSQL(expr.operand);
+      const operand = compileToSQL(expr.operand, options);
       // Add parentheses around binary expressions to preserve precedence
       const operandExpr = expr.operand.type === 'binary' ? `(${operand})` : operand;
       if (expr.operator === '!') {
@@ -98,8 +134,8 @@ export function compileToSQL(expr: Expr): string {
     }
 
     case 'binary': {
-      const left = compileToSQL(expr.left);
-      const right = compileToSQL(expr.right);
+      const left = compileToSQL(expr.left, options);
+      const right = compileToSQL(expr.right, options);
 
       // Handle power operator - PostgreSQL uses POWER() function
       if (expr.operator === '^') {
@@ -131,9 +167,9 @@ export function compileToSQL(expr: Expr): string {
 
     case 'let': {
       const bindingCols = expr.bindings
-        .map(b => `${compileToSQL(b.value)} AS ${b.name}`)
+        .map(b => `${compileToSQL(b.value, options)} AS ${b.name}`)
         .join(', ');
-      const body = compileToSQL(expr.body);
+      const body = compileToSQL(expr.body, options);
       return `(SELECT ${body} FROM (SELECT ${bindingCols}) AS _let)`;
     }
   }

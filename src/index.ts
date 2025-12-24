@@ -6,4 +6,4 @@ export * from './ast';
 export * from './parser';
 export { compileToRuby } from './compilers/ruby';
 export { compileToJavaScript } from './compilers/javascript';
-export { compileToSQL } from './compilers/sql';
+export { compileToSQL, SQLCompileOptions } from './compilers/sql';

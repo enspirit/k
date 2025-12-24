@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readdirSync, readFileSync } from 'fs';
+import { readdirSync, readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import { parse } from '../../src/parser';
 import { compileToJavaScript } from '../../src/compilers/javascript';
@@ -25,6 +25,7 @@ interface TestSuite {
   expectedJS: string[];
   expectedRuby: string[];
   expectedSQL: string[];
+  expectedTestableSQL?: string[];  // Optional testable SQL variant
 }
 
 function loadTestSuites(): TestSuite[] {
@@ -48,12 +49,19 @@ function loadTestSuites(): TestSuite[] {
     const expectedRuby = readFileSync(rubyPath, 'utf-8').split('\n');
     const expectedSQL = readFileSync(sqlPath, 'utf-8').split('\n');
 
+    // Check for testable SQL variant
+    const testableSqlPath = join(TEST_DIR, `${name}.expected.testable.sql`);
+    const expectedTestableSQL = existsSync(testableSqlPath)
+      ? readFileSync(testableSqlPath, 'utf-8').split('\n')
+      : undefined;
+
     suites.push({
       name,
       klang,
       expectedJS,
       expectedRuby,
-      expectedSQL
+      expectedSQL,
+      expectedTestableSQL
     });
   }
 
@@ -93,7 +101,7 @@ for (const suite of testSuites) {
           `Ruby compilation mismatch on line ${lineNum}`
         );
 
-        // Test SQL compilation
+        // Test SQL compilation (production mode)
         const actualSQL = compileToSQL(ast);
         const expectedSQL = suite.expectedSQL[i].trim();
         assert.strictEqual(
@@ -101,6 +109,17 @@ for (const suite of testSuites) {
           expectedSQL,
           `SQL compilation mismatch on line ${lineNum}`
         );
+
+        // Test SQL compilation (testable mode) if variant exists
+        if (suite.expectedTestableSQL) {
+          const actualTestableSQL = compileToSQL(ast, { temporalMode: 'testable' });
+          const expectedTestableSQL = suite.expectedTestableSQL[i].trim();
+          assert.strictEqual(
+            actualTestableSQL,
+            expectedTestableSQL,
+            `Testable SQL compilation mismatch on line ${lineNum}`
+          );
+        }
       });
     }
   });
