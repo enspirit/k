@@ -26,7 +26,7 @@ should_skip() {
 for file in "$TEST_DIR"/*.expected.js; do
     if should_skip "$file"; then
         echo "  ⊘ $(basename "$file") (skipped - requires variables)"
-        ((SKIPPED++))
+        ((SKIPPED++)) || true
         continue
     fi
 
@@ -36,10 +36,10 @@ for file in "$TEST_DIR"/*.expected.js; do
         [ -n "$line" ] && { cat "$PRELUDE"; echo "$line"; } | node - || exit 1
     done < "$file" 2>/dev/null; then
         echo "  ✓ $(basename "$file")"
-        ((PASSED++))
+        ((PASSED++)) || true
     else
         echo "  ✗ $(basename "$file")"
-        ((FAILED++))
+        ((FAILED++)) || true
     fi
 done
 

@@ -41,7 +41,7 @@ fi
 for file in "$TEST_DIR"/*.expected.sql; do
     if should_skip "$file"; then
         echo "  ⊘ $(basename "$file") (skipped - requires variables)"
-        ((SKIPPED++))
+        ((SKIPPED++)) || true
         continue
     fi
 
@@ -58,10 +58,10 @@ for file in "$TEST_DIR"/*.expected.sql; do
 
     if [ "$file_passed" = true ]; then
         echo "  ✓ $(basename "$file")"
-        ((PASSED++))
+        ((PASSED++)) || true
     else
         echo "  ✗ $(basename "$file")"
-        ((FAILED++))
+        ((FAILED++)) || true
     fi
 done
 

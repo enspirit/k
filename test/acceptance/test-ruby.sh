@@ -26,17 +26,17 @@ should_skip() {
 for file in "$TEST_DIR"/*.expected.ruby; do
     if should_skip "$file"; then
         echo "  ⊘ $(basename "$file") (skipped - requires variables)"
-        ((SKIPPED++))
+        ((SKIPPED++)) || true
         continue
     fi
 
     # Load prelude to provide Date, DateTime, and Duration support
     if ruby -r "./$PRELUDE" "$file" 2>/dev/null; then
         echo "  ✓ $(basename "$file")"
-        ((PASSED++))
+        ((PASSED++)) || true
     else
         echo "  ✗ $(basename "$file")"
-        ((FAILED++))
+        ((FAILED++)) || true
     fi
 done
 
