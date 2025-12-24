@@ -541,9 +541,19 @@ export class Parser {
     let node = this.addition();
 
     // Handle range membership: expr in expr..expr or expr in expr...expr
+    // Also handles: expr not in expr..expr (negated range membership)
     // Use speculative parsing - if no range operator found after IN, restore state
     if (this.currentToken.type === 'IN') {
-      const result = this.tryParseRangeMembership(node);
+      const result = this.tryParseRangeMembership(node, false);
+      if (result !== null) {
+        return result;
+      }
+      // Not a range expression, continue with normal parsing
+    }
+
+    // Handle "not in" for negated range membership
+    if (this.currentToken.type === 'NOT') {
+      const result = this.tryParseRangeMembership(node, true);
       if (result !== null) {
         return result;
       }
@@ -613,10 +623,20 @@ export class Parser {
 
   /**
    * Try to parse range membership: expr in expr..expr or expr in expr...expr
+   * Also handles: expr not in expr..expr (when negated is true)
    * Returns null if this is not a range expression (e.g., it's 'in' from 'let...in')
    */
-  private tryParseRangeMembership(node: Expr): Expr | null {
+  private tryParseRangeMembership(node: Expr, negated: boolean): Expr | null {
     const savedState = this.saveState();
+
+    // For "not in", consume NOT first, then expect IN
+    if (negated) {
+      this.eat('NOT');
+      if (this.currentToken.type !== 'IN') {
+        this.restoreState(savedState);
+        return null;
+      }
+    }
 
     this.eat('IN');
     const rangeStart = this.addition();
@@ -637,7 +657,13 @@ export class Parser {
 
     const rangeEnd = this.addition();
 
-    return this.desugarRangeMembership(node, rangeStart, rangeEnd, inclusive);
+    const rangeExpr = this.desugarRangeMembership(node, rangeStart, rangeEnd, inclusive);
+
+    // Wrap in NOT if negated
+    if (negated) {
+      return unary('!', rangeExpr);
+    }
+    return rangeExpr;
   }
 
   /**

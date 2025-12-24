@@ -590,6 +590,25 @@ describe('Parser - Range Membership', () => {
     }
   });
 
+  it('should parse negated range with not in', () => {
+    const ast = parse('11 not in 1..10');
+    // Desugars to: !(11 >= 1 && 11 <= 10)
+    assert.strictEqual(ast.type, 'unary');
+    if (ast.type === 'unary') {
+      assert.strictEqual(ast.operator, '!');
+      assert.strictEqual(ast.operand.type, 'binary');
+    }
+  });
+
+  it('should parse exclusive negated range with not in', () => {
+    const ast = parse('5 not in 1...5');
+    // Desugars to: !(5 >= 1 && 5 < 5)
+    assert.strictEqual(ast.type, 'unary');
+    if (ast.type === 'unary') {
+      assert.strictEqual(ast.operator, '!');
+    }
+  });
+
   it('should throw on range without end', () => {
     assert.throws(() => parse('5 in 1..'), /Unexpected token/);
   });
