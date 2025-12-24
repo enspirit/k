@@ -46,6 +46,12 @@ header {
   font-weight: 700;
   color: var(--accent);
   letter-spacing: -0.5px;
+  text-decoration: none;
+  transition: opacity 0.15s ease;
+}
+
+.logo:hover {
+  opacity: 0.8;
 }
 
 nav {
@@ -523,6 +529,19 @@ select:focus {
   border: 1px solid var(--border);
   border-radius: 8px;
   overflow: hidden;
+}
+
+.comparison-example.clickable,
+.target-input.clickable {
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.comparison-example.clickable:hover,
+.target-input.clickable:hover {
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .comparison-header {

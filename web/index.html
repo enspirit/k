@@ -8,7 +8,7 @@
 </head>
 <body data-controller="tabs">
   <header>
-    <div class="logo">K</div>
+    <a href="#" class="logo" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="home">K</a>
     <nav>
       <a href="#" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="home" class="active">Home</a>
       <a href="#" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="try">Try</a>
@@ -17,7 +17,7 @@
   </header>
 
   <!-- Home Panel (Landing Page) -->
-  <main data-tabs-target="panel" data-panel="home" class="home-panel">
+  <main data-tabs-target="panel" data-panel="home" class="home-panel" data-controller="doc">
     <div class="home-content">
       <section class="hero">
         <h1>The K Language</h1>
@@ -49,12 +49,12 @@
         <p class="comparison-intro">See why K makes temporal logic painless</p>
 
         <div class="comparison-grid">
-          <div class="comparison-example">
+          <div class="comparison-example clickable" data-action="click->doc#tryExample">
             <div class="comparison-header">
               <span class="lang-badge k-badge">K</span>
               <span class="comparison-title">Is today within this quarter?</span>
             </div>
-            <pre class="comparison-code">TODAY in SOQ..EOQ</pre>
+            <pre class="comparison-code example-code">TODAY in SOQ..EOQ</pre>
           </div>
           <div class="comparison-example js-example">
             <div class="comparison-header">
@@ -79,12 +79,12 @@ now >= startOfQuarter && now <= endOfQuarter;</pre>
         </div>
 
         <div class="comparison-grid">
-          <div class="comparison-example">
+          <div class="comparison-example clickable" data-action="click->doc#tryExample">
             <div class="comparison-header">
               <span class="lang-badge k-badge">K</span>
               <span class="comparison-title">30-day trial expiration check</span>
             </div>
-            <pre class="comparison-code">let
+            <pre class="comparison-code example-code">let
   signup = D2024-01-15,
   trial = P30D
 in
@@ -106,12 +106,12 @@ today > trialEnd;</pre>
         </div>
 
         <div class="comparison-grid">
-          <div class="comparison-example">
+          <div class="comparison-example clickable" data-action="click->doc#tryExample">
             <div class="comparison-header">
               <span class="lang-badge k-badge">K</span>
               <span class="comparison-title">Add 1 month and 2 hours to now</span>
             </div>
-            <pre class="comparison-code">NOW + P1M + PT2H</pre>
+            <pre class="comparison-code example-code">NOW + P1M + PT2H</pre>
           </div>
           <div class="comparison-example js-example">
             <div class="comparison-header">
@@ -134,9 +134,9 @@ result;</pre>
         <p class="targets-intro">K compiles to idiomatic code in each target language</p>
 
         <div class="targets-demo">
-          <div class="target-input">
+          <div class="target-input clickable" data-action="click->doc#tryExample">
             <span class="lang-badge k-badge">K</span>
-            <pre>2 ^ 10 > 1000 and TODAY >= SOY</pre>
+            <pre class="example-code">2 ^ 10 > 1000 and TODAY >= SOY</pre>
           </div>
           <div class="targets-output">
             <div class="target-card">
@@ -174,9 +174,6 @@ result;</pre>
   <!-- Try Panel (Playground) -->
   <main data-tabs-target="panel" data-panel="try" data-controller="playground" class="hidden">
     <section class="editor-panel">
-      <div class="panel-header">
-        <span>K</span>
-      </div>
       <textarea
         data-playground-target="input"
         data-action="input->playground#compile"
