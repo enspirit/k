@@ -137,18 +137,19 @@ export function compileToJavaScript(expr: Expr, options?: JavaScriptCompileOptio
         return `Math.pow(${left}, ${right})`;
       }
 
-      // Handle date/temporal + duration and date/temporal - duration
+      // Handle temporal + duration and temporal - duration
+      // This includes chained operations like (TODAY + P1M) + PT12H
       if ((expr.operator === '+' || expr.operator === '-') &&
-          (expr.left.type === 'date' || expr.left.type === 'datetime' || expr.left.type === 'temporal_keyword') &&
+          isTemporalExpression(expr.left) &&
           expr.right.type === 'duration') {
         const method = expr.operator === '+' ? 'add' : 'subtract';
         return `${left}.${method}(${right})`;
       }
 
-      // Handle duration + date/temporal (commutative addition)
+      // Handle duration + temporal (commutative addition)
       if (expr.operator === '+' &&
           expr.left.type === 'duration' &&
-          (expr.right.type === 'date' || expr.right.type === 'datetime' || expr.right.type === 'temporal_keyword')) {
+          isTemporalExpression(expr.right)) {
         return `${right}.add(${left})`;
       }
 
@@ -180,6 +181,29 @@ export function compileToJavaScript(expr: Expr, options?: JavaScriptCompileOptio
       return `((${params}) => ${body})(${args})`;
     }
   }
+}
+
+/**
+ * Checks if an expression results in a temporal value (date/datetime/dayjs object)
+ * This includes direct temporal types and binary expressions that produce temporal results
+ */
+function isTemporalExpression(expr: Expr): boolean {
+  if (expr.type === 'date' || expr.type === 'datetime' || expr.type === 'temporal_keyword') {
+    return true;
+  }
+  // Binary expression with temporal + duration or duration + temporal results in temporal
+  if (expr.type === 'binary' && (expr.operator === '+' || expr.operator === '-')) {
+    const leftIsTemporal = isTemporalExpression(expr.left);
+    const rightIsTemporal = isTemporalExpression(expr.right);
+    const leftIsDuration = expr.left.type === 'duration';
+    const rightIsDuration = expr.right.type === 'duration';
+
+    // temporal +/- duration = temporal
+    if (leftIsTemporal && rightIsDuration) return true;
+    // duration + temporal = temporal
+    if (leftIsDuration && rightIsTemporal && expr.operator === '+') return true;
+  }
+  return false;
 }
 
 function needsParens(expr: Expr, parentOp: string, side: 'left' | 'right'): boolean {
