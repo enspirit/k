@@ -289,12 +289,13 @@ describe('JavaScript Compiler - Let Expressions', () => {
     assert.strictEqual(compileToJavaScript(ast), '((x) => x)(1)');
   });
 
-  it('should compile let with multiple bindings', () => {
+  it('should compile let with multiple bindings (desugared to nested)', () => {
+    // Multiple bindings are desugared to nested let expressions
     const ast = letExpr(
       [{ name: 'x', value: literal(1) }, { name: 'y', value: literal(2) }],
       binary('+', variable('x'), variable('y'))
     );
-    assert.strictEqual(compileToJavaScript(ast), '((x, y) => x + y)(1, 2)');
+    assert.strictEqual(compileToJavaScript(ast), '((x) => ((y) => x + y)(2))(1)');
   });
 
   it('should compile nested let expressions', () => {

@@ -301,12 +301,13 @@ describe('SQL Compiler - Let Expressions', () => {
     assert.strictEqual(compileToSQL(ast), '(SELECT x FROM (SELECT 1 AS x) AS _let)');
   });
 
-  it('should compile let with multiple bindings', () => {
+  it('should compile let with multiple bindings (desugared to nested)', () => {
+    // Multiple bindings are desugared to nested let expressions
     const ast = letExpr(
       [{ name: 'x', value: literal(1) }, { name: 'y', value: literal(2) }],
       binary('+', variable('x'), variable('y'))
     );
-    assert.strictEqual(compileToSQL(ast), '(SELECT x + y FROM (SELECT 1 AS x, 2 AS y) AS _let)');
+    assert.strictEqual(compileToSQL(ast), '(SELECT (SELECT x + y FROM (SELECT 2 AS y) AS _let) FROM (SELECT 1 AS x) AS _let)');
   });
 
   it('should compile nested let expressions', () => {

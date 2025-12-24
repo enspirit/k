@@ -160,6 +160,23 @@ export function memberAccess(object: Expr, property: string): MemberAccess {
   return { type: 'member_access', object, property };
 }
 
+/**
+ * Creates a let expression, desugaring multiple bindings into nested let expressions.
+ * `let a = 1, b = 2 in body` becomes `let a = 1 in let b = 2 in body`
+ * This ensures that later bindings can reference earlier ones.
+ */
 export function letExpr(bindings: LetBinding[], body: Expr): LetExpr {
-  return { type: 'let', bindings, body };
+  if (bindings.length === 0) {
+    throw new Error('Let expression must have at least one binding');
+  }
+
+  if (bindings.length === 1) {
+    return { type: 'let', bindings, body };
+  }
+
+  // Desugar: let a = 1, b = 2, c = 3 in body
+  // becomes: let a = 1 in let b = 2 in let c = 3 in body
+  const [first, ...rest] = bindings;
+  const nestedBody = letExpr(rest, body);
+  return { type: 'let', bindings: [first], body: nestedBody };
 }

@@ -3,3 +3,5 @@ let x = 12, y = 13 in x + y
 let x = 5, y = 3 in assert(x + y == 8)
 let x = 2, y = 3 in assert(x * y == 6)
 let a = 10 in let b = 20 in assert(a + b == 30)
+let a = 5, b = a * 2 in assert(b == 10)
+let x = 2, y = x + 1, z = y + 1 in assert(z == 4)
