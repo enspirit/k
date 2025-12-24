@@ -28,10 +28,26 @@ export function compileToJavaScript(expr: Expr): string {
           return 'dayjs().startOf(\'day\').add(1, \'day\')';
         case 'YESTERDAY':
           return 'dayjs().startOf(\'day\').subtract(1, \'day\')';
+        case 'SOD':
+          return 'dayjs().startOf(\'day\')';
+        case 'EOD':
+          return 'dayjs().endOf(\'day\')';
         case 'SOW':
           return 'dayjs().startOf(\'isoWeek\')';
         case 'EOW':
           return 'dayjs().endOf(\'isoWeek\')';
+        case 'SOM':
+          return 'dayjs().startOf(\'month\')';
+        case 'EOM':
+          return 'dayjs().endOf(\'month\')';
+        case 'SOQ':
+          return 'dayjs().startOf(\'quarter\')';
+        case 'EOQ':
+          return 'dayjs().endOf(\'quarter\')';
+        case 'SOY':
+          return 'dayjs().startOf(\'year\')';
+        case 'EOY':
+          return 'dayjs().endOf(\'year\')';
       }
 
     case 'variable':

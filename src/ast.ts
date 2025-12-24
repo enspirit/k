@@ -37,11 +37,16 @@ export interface DurationLiteral {
 }
 
 /**
- * Temporal keyword (NOW, TODAY, TOMORROW, YESTERDAY, SOW, EOW)
+ * Temporal keyword (NOW, TODAY, TOMORROW, YESTERDAY, and period boundaries)
  */
 export interface TemporalKeyword {
   type: 'temporal_keyword';
-  keyword: 'NOW' | 'TODAY' | 'TOMORROW' | 'YESTERDAY' | 'SOW' | 'EOW';
+  keyword: 'NOW' | 'TODAY' | 'TOMORROW' | 'YESTERDAY'
+    | 'SOD' | 'EOD'   // Start/End of Day
+    | 'SOW' | 'EOW'   // Start/End of Week
+    | 'SOM' | 'EOM'   // Start/End of Month
+    | 'SOQ' | 'EOQ'   // Start/End of Quarter
+    | 'SOY' | 'EOY';  // Start/End of Year
 }
 
 /**

@@ -27,10 +27,26 @@ export function compileToRuby(expr: Expr): string {
           return 'Date.today + 1';
         case 'YESTERDAY':
           return 'Date.today - 1';
+        case 'SOD':
+          return 'Date.today.beginning_of_day';
+        case 'EOD':
+          return 'Date.today.end_of_day';
         case 'SOW':
           return 'Date.today.beginning_of_week';
         case 'EOW':
           return 'Date.today.end_of_week';
+        case 'SOM':
+          return 'Date.today.beginning_of_month';
+        case 'EOM':
+          return 'Date.today.end_of_month';
+        case 'SOQ':
+          return 'Date.today.beginning_of_quarter';
+        case 'EOQ':
+          return 'Date.today.end_of_quarter';
+        case 'SOY':
+          return 'Date.today.beginning_of_year';
+        case 'EOY':
+          return 'Date.today.end_of_year';
       }
 
     case 'variable':

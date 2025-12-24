@@ -34,10 +34,26 @@ export function compileToSQL(expr: Expr): string {
           return 'CURRENT_DATE + INTERVAL \'1 day\'';
         case 'YESTERDAY':
           return 'CURRENT_DATE - INTERVAL \'1 day\'';
+        case 'SOD':
+          return 'date_trunc(\'day\', CURRENT_TIMESTAMP)';
+        case 'EOD':
+          return 'date_trunc(\'day\', CURRENT_TIMESTAMP) + INTERVAL \'1 day\' - INTERVAL \'1 second\'';
         case 'SOW':
           return 'date_trunc(\'week\', CURRENT_DATE)';
         case 'EOW':
           return 'date_trunc(\'week\', CURRENT_DATE) + INTERVAL \'6 days\'';
+        case 'SOM':
+          return 'date_trunc(\'month\', CURRENT_DATE)';
+        case 'EOM':
+          return 'date_trunc(\'month\', CURRENT_DATE) + INTERVAL \'1 month\' - INTERVAL \'1 day\'';
+        case 'SOQ':
+          return 'date_trunc(\'quarter\', CURRENT_DATE)';
+        case 'EOQ':
+          return 'date_trunc(\'quarter\', CURRENT_DATE) + INTERVAL \'3 months\' - INTERVAL \'1 day\'';
+        case 'SOY':
+          return 'date_trunc(\'year\', CURRENT_DATE)';
+        case 'EOY':
+          return 'date_trunc(\'year\', CURRENT_DATE) + INTERVAL \'1 year\' - INTERVAL \'1 day\'';
       }
 
     case 'variable':

@@ -300,8 +300,55 @@ describe('Temporal - Temporal Keywords', () => {
   });
 });
 
-describe('Temporal - Week Boundary Keywords (SOW/EOW)', () => {
-  // Parsing tests
+describe('Temporal - Period Boundary Keywords', () => {
+  // Day boundaries (SOD/EOD)
+  it('should parse SOD keyword', () => {
+    const ast = parse('SOD');
+    assert.strictEqual(ast.type, 'temporal_keyword');
+    if (ast.type === 'temporal_keyword') {
+      assert.strictEqual(ast.keyword, 'SOD');
+    }
+  });
+
+  it('should parse EOD keyword', () => {
+    const ast = parse('EOD');
+    assert.strictEqual(ast.type, 'temporal_keyword');
+    if (ast.type === 'temporal_keyword') {
+      assert.strictEqual(ast.keyword, 'EOD');
+    }
+  });
+
+  it('should compile SOD to JavaScript', () => {
+    const ast = parse('SOD');
+    assert.strictEqual(compileToJavaScript(ast), "dayjs().startOf('day')");
+  });
+
+  it('should compile EOD to JavaScript', () => {
+    const ast = parse('EOD');
+    assert.strictEqual(compileToJavaScript(ast), "dayjs().endOf('day')");
+  });
+
+  it('should compile SOD to Ruby', () => {
+    const ast = parse('SOD');
+    assert.strictEqual(compileToRuby(ast), 'Date.today.beginning_of_day');
+  });
+
+  it('should compile EOD to Ruby', () => {
+    const ast = parse('EOD');
+    assert.strictEqual(compileToRuby(ast), 'Date.today.end_of_day');
+  });
+
+  it('should compile SOD to SQL', () => {
+    const ast = parse('SOD');
+    assert.strictEqual(compileToSQL(ast), "date_trunc('day', CURRENT_TIMESTAMP)");
+  });
+
+  it('should compile EOD to SQL', () => {
+    const ast = parse('EOD');
+    assert.strictEqual(compileToSQL(ast), "date_trunc('day', CURRENT_TIMESTAMP) + INTERVAL '1 day' - INTERVAL '1 second'");
+  });
+
+  // Week boundaries (SOW/EOW)
   it('should parse SOW keyword', () => {
     const ast = parse('SOW');
     assert.strictEqual(ast.type, 'temporal_keyword');
@@ -318,7 +365,6 @@ describe('Temporal - Week Boundary Keywords (SOW/EOW)', () => {
     }
   });
 
-  // JavaScript compilation tests
   it('should compile SOW to JavaScript', () => {
     const ast = parse('SOW');
     assert.strictEqual(compileToJavaScript(ast), "dayjs().startOf('isoWeek')");
@@ -329,7 +375,6 @@ describe('Temporal - Week Boundary Keywords (SOW/EOW)', () => {
     assert.strictEqual(compileToJavaScript(ast), "dayjs().endOf('isoWeek')");
   });
 
-  // Ruby compilation tests
   it('should compile SOW to Ruby', () => {
     const ast = parse('SOW');
     assert.strictEqual(compileToRuby(ast), 'Date.today.beginning_of_week');
@@ -340,7 +385,6 @@ describe('Temporal - Week Boundary Keywords (SOW/EOW)', () => {
     assert.strictEqual(compileToRuby(ast), 'Date.today.end_of_week');
   });
 
-  // SQL compilation tests
   it('should compile SOW to SQL', () => {
     const ast = parse('SOW');
     assert.strictEqual(compileToSQL(ast), "date_trunc('week', CURRENT_DATE)");
@@ -351,31 +395,161 @@ describe('Temporal - Week Boundary Keywords (SOW/EOW)', () => {
     assert.strictEqual(compileToSQL(ast), "date_trunc('week', CURRENT_DATE) + INTERVAL '6 days'");
   });
 
+  // Month boundaries (SOM/EOM)
+  it('should parse SOM keyword', () => {
+    const ast = parse('SOM');
+    assert.strictEqual(ast.type, 'temporal_keyword');
+    if (ast.type === 'temporal_keyword') {
+      assert.strictEqual(ast.keyword, 'SOM');
+    }
+  });
+
+  it('should parse EOM keyword', () => {
+    const ast = parse('EOM');
+    assert.strictEqual(ast.type, 'temporal_keyword');
+    if (ast.type === 'temporal_keyword') {
+      assert.strictEqual(ast.keyword, 'EOM');
+    }
+  });
+
+  it('should compile SOM to JavaScript', () => {
+    const ast = parse('SOM');
+    assert.strictEqual(compileToJavaScript(ast), "dayjs().startOf('month')");
+  });
+
+  it('should compile EOM to JavaScript', () => {
+    const ast = parse('EOM');
+    assert.strictEqual(compileToJavaScript(ast), "dayjs().endOf('month')");
+  });
+
+  it('should compile SOM to Ruby', () => {
+    const ast = parse('SOM');
+    assert.strictEqual(compileToRuby(ast), 'Date.today.beginning_of_month');
+  });
+
+  it('should compile EOM to Ruby', () => {
+    const ast = parse('EOM');
+    assert.strictEqual(compileToRuby(ast), 'Date.today.end_of_month');
+  });
+
+  it('should compile SOM to SQL', () => {
+    const ast = parse('SOM');
+    assert.strictEqual(compileToSQL(ast), "date_trunc('month', CURRENT_DATE)");
+  });
+
+  it('should compile EOM to SQL', () => {
+    const ast = parse('EOM');
+    assert.strictEqual(compileToSQL(ast), "date_trunc('month', CURRENT_DATE) + INTERVAL '1 month' - INTERVAL '1 day'");
+  });
+
+  // Quarter boundaries (SOQ/EOQ)
+  it('should parse SOQ keyword', () => {
+    const ast = parse('SOQ');
+    assert.strictEqual(ast.type, 'temporal_keyword');
+    if (ast.type === 'temporal_keyword') {
+      assert.strictEqual(ast.keyword, 'SOQ');
+    }
+  });
+
+  it('should parse EOQ keyword', () => {
+    const ast = parse('EOQ');
+    assert.strictEqual(ast.type, 'temporal_keyword');
+    if (ast.type === 'temporal_keyword') {
+      assert.strictEqual(ast.keyword, 'EOQ');
+    }
+  });
+
+  it('should compile SOQ to JavaScript', () => {
+    const ast = parse('SOQ');
+    assert.strictEqual(compileToJavaScript(ast), "dayjs().startOf('quarter')");
+  });
+
+  it('should compile EOQ to JavaScript', () => {
+    const ast = parse('EOQ');
+    assert.strictEqual(compileToJavaScript(ast), "dayjs().endOf('quarter')");
+  });
+
+  it('should compile SOQ to Ruby', () => {
+    const ast = parse('SOQ');
+    assert.strictEqual(compileToRuby(ast), 'Date.today.beginning_of_quarter');
+  });
+
+  it('should compile EOQ to Ruby', () => {
+    const ast = parse('EOQ');
+    assert.strictEqual(compileToRuby(ast), 'Date.today.end_of_quarter');
+  });
+
+  it('should compile SOQ to SQL', () => {
+    const ast = parse('SOQ');
+    assert.strictEqual(compileToSQL(ast), "date_trunc('quarter', CURRENT_DATE)");
+  });
+
+  it('should compile EOQ to SQL', () => {
+    const ast = parse('EOQ');
+    assert.strictEqual(compileToSQL(ast), "date_trunc('quarter', CURRENT_DATE) + INTERVAL '3 months' - INTERVAL '1 day'");
+  });
+
+  // Year boundaries (SOY/EOY)
+  it('should parse SOY keyword', () => {
+    const ast = parse('SOY');
+    assert.strictEqual(ast.type, 'temporal_keyword');
+    if (ast.type === 'temporal_keyword') {
+      assert.strictEqual(ast.keyword, 'SOY');
+    }
+  });
+
+  it('should parse EOY keyword', () => {
+    const ast = parse('EOY');
+    assert.strictEqual(ast.type, 'temporal_keyword');
+    if (ast.type === 'temporal_keyword') {
+      assert.strictEqual(ast.keyword, 'EOY');
+    }
+  });
+
+  it('should compile SOY to JavaScript', () => {
+    const ast = parse('SOY');
+    assert.strictEqual(compileToJavaScript(ast), "dayjs().startOf('year')");
+  });
+
+  it('should compile EOY to JavaScript', () => {
+    const ast = parse('EOY');
+    assert.strictEqual(compileToJavaScript(ast), "dayjs().endOf('year')");
+  });
+
+  it('should compile SOY to Ruby', () => {
+    const ast = parse('SOY');
+    assert.strictEqual(compileToRuby(ast), 'Date.today.beginning_of_year');
+  });
+
+  it('should compile EOY to Ruby', () => {
+    const ast = parse('EOY');
+    assert.strictEqual(compileToRuby(ast), 'Date.today.end_of_year');
+  });
+
+  it('should compile SOY to SQL', () => {
+    const ast = parse('SOY');
+    assert.strictEqual(compileToSQL(ast), "date_trunc('year', CURRENT_DATE)");
+  });
+
+  it('should compile EOY to SQL', () => {
+    const ast = parse('EOY');
+    assert.strictEqual(compileToSQL(ast), "date_trunc('year', CURRENT_DATE) + INTERVAL '1 year' - INTERVAL '1 day'");
+  });
+
   // Expression tests
-  it('should use SOW in expressions', () => {
-    const ast = parse('SOW <= TODAY');
+  it('should use period boundaries in expressions', () => {
+    const ast = parse('SOM <= TODAY');
     assert.strictEqual(ast.type, 'binary');
     if (ast.type === 'binary') {
       assert.strictEqual(ast.left.type, 'temporal_keyword');
       if (ast.left.type === 'temporal_keyword') {
-        assert.strictEqual(ast.left.keyword, 'SOW');
+        assert.strictEqual(ast.left.keyword, 'SOM');
       }
     }
   });
 
-  it('should use EOW in expressions', () => {
-    const ast = parse('EOW >= TODAY');
-    assert.strictEqual(ast.type, 'binary');
-    if (ast.type === 'binary') {
-      assert.strictEqual(ast.left.type, 'temporal_keyword');
-      if (ast.left.type === 'temporal_keyword') {
-        assert.strictEqual(ast.left.keyword, 'EOW');
-      }
-    }
-  });
-
-  it('should compare SOW and EOW', () => {
-    const ast = parse('SOW < EOW');
+  it('should compare period boundaries', () => {
+    const ast = parse('SOY < EOY');
     assert.strictEqual(ast.type, 'binary');
     if (ast.type === 'binary') {
       assert.strictEqual(ast.operator, '<');

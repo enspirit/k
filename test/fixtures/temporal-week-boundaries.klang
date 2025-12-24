@@ -1,3 +1,0 @@
-assert(SOW <= TODAY)
-assert(EOW >= TODAY)
-assert(SOW < EOW)

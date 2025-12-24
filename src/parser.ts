@@ -204,8 +204,9 @@ class Lexer {
       if (id === 'in') {
         return { type: 'IN', value: id, position: pos };
       }
-      if (id === 'NOW' || id === 'TODAY' || id === 'TOMORROW' || id === 'YESTERDAY' ||
-          id === 'SOW' || id === 'EOW') {
+      const temporalKeywords = ['NOW', 'TODAY', 'TOMORROW', 'YESTERDAY',
+        'SOD', 'EOD', 'SOW', 'EOW', 'SOM', 'EOM', 'SOQ', 'EOQ', 'SOY', 'EOY'];
+      if (temporalKeywords.includes(id)) {
         return { type: 'IDENTIFIER', value: id, position: pos };
       }
       return { type: 'IDENTIFIER', value: id, position: pos };
@@ -346,9 +347,10 @@ export class Parser {
       this.eat('IDENTIFIER');
 
       // Check if this is a temporal keyword
-      if (name === 'NOW' || name === 'TODAY' || name === 'TOMORROW' || name === 'YESTERDAY' ||
-          name === 'SOW' || name === 'EOW') {
-        return temporalKeyword(name as 'NOW' | 'TODAY' | 'TOMORROW' | 'YESTERDAY' | 'SOW' | 'EOW');
+      const temporalKeywords = ['NOW', 'TODAY', 'TOMORROW', 'YESTERDAY',
+        'SOD', 'EOD', 'SOW', 'EOW', 'SOM', 'EOM', 'SOQ', 'EOQ', 'SOY', 'EOY'];
+      if (temporalKeywords.includes(name)) {
+        return temporalKeyword(name as any);
       }
 
       // Check if this is a function call
