@@ -330,7 +330,7 @@ select:focus {
 
 .doc-content {
   flex: 1;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
   min-width: 0;
@@ -528,7 +528,7 @@ select:focus {
 }
 
 .home-content {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 3rem 2rem;
 }
@@ -1304,7 +1304,7 @@ select:focus {
 }
 
 .blog-content {
-  max-width: 1000px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 3rem 2rem;
 }
