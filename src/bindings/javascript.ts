@@ -126,13 +126,30 @@ export function createJavaScriptBinding(): StdLib<string> {
         `+${ctx.emit(args[0])} !== +${ctx.emit(args[1])}`);
     }
   }
+
+  // Duration equality needs milliseconds comparison
+  jsLib.register('eq', [Types.duration, Types.duration], (args, ctx) =>
+    `${ctx.emit(args[0])}.asMilliseconds() === ${ctx.emit(args[1])}.asMilliseconds()`);
+  jsLib.register('neq', [Types.duration, Types.duration], (args, ctx) =>
+    `${ctx.emit(args[0])}.asMilliseconds() !== ${ctx.emit(args[1])}.asMilliseconds()`);
+
+  // Numeric/boolean/string equality uses native operators
+  const primitiveTypes = [Types.int, Types.float, Types.bool, Types.string];
+  for (const leftType of primitiveTypes) {
+    for (const rightType of primitiveTypes) {
+      jsLib.register('eq', [leftType, rightType], simpleBinaryOp('=='));
+      jsLib.register('neq', [leftType, rightType], simpleBinaryOp('!='));
+    }
+  }
+
   // All other comparisons use native JS operators
   jsLib.register('lt', [Types.any, Types.any], simpleBinaryOp('<'));
   jsLib.register('gt', [Types.any, Types.any], simpleBinaryOp('>'));
   jsLib.register('lte', [Types.any, Types.any], simpleBinaryOp('<='));
   jsLib.register('gte', [Types.any, Types.any], simpleBinaryOp('>='));
-  jsLib.register('eq', [Types.any, Types.any], simpleBinaryOp('=='));
-  jsLib.register('neq', [Types.any, Types.any], simpleBinaryOp('!='));
+  // Fallback for unknown types - needs helper for duration/date comparison
+  jsLib.register('eq', [Types.any, Types.any], helperCall('kEq'));
+  jsLib.register('neq', [Types.any, Types.any], helperCall('kNeq'));
 
   // Logical operators
   jsLib.register('and', [Types.any, Types.any], simpleBinaryOp('&&'));

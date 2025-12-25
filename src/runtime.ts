@@ -33,6 +33,16 @@ export const JS_HELPERS: Record<string, string> = {
 }`,
   kMod: `function kMod(l, r) { return l % r; }`,
   kPow: `function kPow(l, r) { return Math.pow(l, r); }`,
+  kEq: `function kEq(l, r) {
+  if (dayjs.isDuration(l) && dayjs.isDuration(r)) return l.asMilliseconds() === r.asMilliseconds();
+  if (dayjs.isDayjs(l) && dayjs.isDayjs(r)) return l.valueOf() === r.valueOf();
+  return l == r;
+}`,
+  kNeq: `function kNeq(l, r) {
+  if (dayjs.isDuration(l) && dayjs.isDuration(r)) return l.asMilliseconds() !== r.asMilliseconds();
+  if (dayjs.isDayjs(l) && dayjs.isDayjs(r)) return l.valueOf() !== r.valueOf();
+  return l != r;
+}`,
   kNeg: `function kNeg(v) {
   if (dayjs.isDuration(v)) return dayjs.duration(-v.asMilliseconds());
   return -v;
