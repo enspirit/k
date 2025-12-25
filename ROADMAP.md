@@ -12,7 +12,7 @@ The target audience is non-tech users.
 
 ### 1. Conditional Expression: `if(cond, then, else)`
 
-- [ ] Implement `if(cond, then, else)` function
+- [x] Implement `if(cond, then, else)` function
 
 Non-tech users constantly need conditional logic. Currently K has no way to express "if X then Y else Z".
 
