@@ -17,9 +17,18 @@ KLang currently has the following components :
 
 * A parser (`src/parser.ts`)
 * AST types and factory (`src/ast.ts`)
+* Type system (`src/types.ts`)
+* Intermediate Representation with type inference (`src/ir.ts`, `src/transform.ts`)
+* Standard library abstraction for type-based dispatch (`src/stdlib.ts`)
 * One compiler per target language (`src/compilers/*.ts`)
 * A binary command (`bin/kc` and `src/cli.ts`)
 * A try-k website to demonstrate K (`web/`)
+
+### Compilation Pipeline
+
+1. **Parse**: Source → AST (`parser.ts`)
+2. **Transform**: AST → Typed IR (`transform.ts`) - infers types and rewrites operators as function calls
+3. **Emit**: IR → Target code (`compilers/*.ts`) - uses `StdLib` for type-based dispatch
 
 ## Test-Driven Development
 

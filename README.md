@@ -103,6 +103,10 @@ klang/
 ├── src/              # Compiler source code
 │   ├── parser.ts     # Lexer and parser
 │   ├── ast.ts        # AST definitions
+│   ├── types.ts      # Type system
+│   ├── ir.ts         # Intermediate representation
+│   ├── transform.ts  # AST → IR transformation with type inference
+│   ├── stdlib.ts     # Standard library abstraction
 │   ├── compilers/    # Code generators (Ruby, JavaScript, SQL)
 │   └── preludes/     # Runtime support libraries
 ├── test/             # Test suite
