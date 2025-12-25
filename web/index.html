@@ -20,6 +20,7 @@
         <div class="nav-submenu">
           <a href="#doc/getting-started" data-action="click->tabs#switch" data-tab="doc">Getting Started</a>
           <a href="#doc/literals" data-action="click->tabs#switch" data-tab="doc">Literals</a>
+          <a href="#doc/objects" data-action="click->tabs#switch" data-tab="doc">Objects</a>
           <a href="#doc/operators" data-action="click->tabs#switch" data-tab="doc">Operators</a>
           <a href="#doc/variables" data-action="click->tabs#switch" data-tab="doc">Variables</a>
           <a href="#doc/conditionals" data-action="click->tabs#switch" data-tab="doc">Conditionals</a>
@@ -326,6 +327,43 @@ result;</pre>
           <pre class="example-code">PT2H30M</pre>
           <p class="example-desc">2 hours and 30 minutes. Use <code>PT</code> for time-only durations.</p>
         </div>
+      </section>
+
+      <section class="doc-section" id="objects">
+        <h2>Object Literals</h2>
+        <p>K supports object literals with key-value pairs. Objects compile to native structures in each target language.</p>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Simple Object</div>
+          <pre class="example-code">{name: 'Alice', age: 30}</pre>
+          <p class="example-desc">Create an object with named properties. Keys are identifiers, values are any expression.</p>
+        </div>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Property Access</div>
+          <pre class="example-code">{budget: 1500}.budget</pre>
+          <p class="example-desc">Access properties with dot notation.</p>
+        </div>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Empty Object</div>
+          <pre class="example-code">{}</pre>
+          <p class="example-desc">An empty object with no properties.</p>
+        </div>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Object with Let</div>
+          <pre class="example-code">let obj = {x: 10, y: 20} in obj.x + obj.y</pre>
+          <p class="example-desc">Bind an object to a variable and access its properties.</p>
+        </div>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Nested Expressions</div>
+          <pre class="example-code">{total: 100 + 50, discount: 10 * 2}</pre>
+          <p class="example-desc">Property values can be any K expression.</p>
+        </div>
+
+        <p class="note"><strong>Note:</strong> In SQL, objects compile to PostgreSQL JSONB using <code>jsonb_build_object()</code>.</p>
       </section>
 
       <section class="doc-section" id="operators">
