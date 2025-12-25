@@ -1154,6 +1154,7 @@ select:focus {
 
   header {
     position: relative;
+    padding: 0.75rem 1rem;
   }
 
   main:not(.doc-panel):not(.home-panel):not(.stdlib-panel) {
