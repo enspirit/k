@@ -8,7 +8,7 @@
 </head>
 <body data-controller="tabs">
   <header>
-    <a href="#home" class="logo" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="home">K, a portable expression language</a>
+    <a href="#home" class="logo" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="home">K — The expression language for No-Code</a>
     <button class="mobile-menu-toggle" data-action="click->tabs#toggleMobileMenu" aria-label="Toggle menu">
       <span class="hamburger-icon"></span>
     </button>
@@ -48,84 +48,52 @@
     <div class="home-content">
       <section class="hero">
         <h1>The K Language</h1>
-        <p class="tagline">The first programming language entirely designed and implemented by <strong>Claude Code</strong></p>
-        <p class="subtitle">A small expression language that compiles to JavaScript, Ruby, and SQL. Write temporal logic once, run it everywhere.</p>
+        <p class="tagline">A simple, well-designed, portable, and safe data expression language</p>
+        <p class="subtitle">K compiles to JavaScript, Ruby, and SQL. Built for No-Code tools where non-technical users need to manipulate data easily and safely.</p>
         <a href="#try" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="try" class="cta-button">Try it now</a>
       </section>
 
       <section class="features">
         <div class="feature-card">
-          <div class="feature-icon">AI</div>
-          <h3>AI-Native Design</h3>
-          <p>K was conceived, designed, and implemented entirely by Claude Code. From lexer to compilers, every line emerged from AI-human collaboration.</p>
+          <div class="feature-icon">=</div>
+          <h3>Simple by Design</h3>
+          <p>A pure data language: everything is a value, no reference semantics, no <code>new</code>. One equality operator that just works. Safe for non-technical users.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">3x</div>
-          <h3>Write Once, Run Anywhere</h3>
-          <p>A single K expression compiles to semantically equivalent JavaScript, Ruby, and SQL. Perfect for full-stack applications.</p>
+          <h3>Truly Portable</h3>
+          <p>One expression compiles to semantically equivalent JavaScript, Ruby, and SQL. Frontend, backend, and database speak the same language.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">T</div>
-          <h3>Temporal First</h3>
-          <p>First-class support for dates, times, and durations with intuitive syntax. Date arithmetic that actually makes sense.</p>
+          <h3>Temporal Arithmetic</h3>
+          <p>First-class dates, times, and durations with intuitive syntax. <code>TODAY + P30D</code>, <code>NOW in SOQ..EOQ</code> — date logic that just works.</p>
         </div>
       </section>
 
       <section class="comparison">
-        <h2>Temporal Expressions: K vs JavaScript</h2>
-        <p class="comparison-intro">See why K makes temporal logic painless</p>
+        <h2>K vs JavaScript</h2>
+        <p class="comparison-intro">See how K simplifies common data expressions</p>
 
         <div class="comparison-grid">
           <div class="comparison-example clickable" data-action="click->doc#tryExample">
             <div class="comparison-header">
               <span class="lang-badge k-badge">K</span>
-              <span class="comparison-title">Is today within this quarter?</span>
-            </div>
-            <pre class="comparison-code example-code">TODAY in SOQ..EOQ</pre>
-          </div>
-          <div class="comparison-example js-example">
-            <div class="comparison-header">
-              <span class="lang-badge js-badge">JavaScript</span>
-              <span class="comparison-title">The same thing...</span>
-            </div>
-            <pre class="comparison-code">const now = new Date();
-const quarter = Math.floor(now.getMonth() / 3);
-const startOfQuarter = new Date(
-  now.getFullYear(),
-  quarter * 3,
-  1
-);
-const endOfQuarter = new Date(
-  now.getFullYear(),
-  quarter * 3 + 3,
-  0,
-  23, 59, 59, 999
-);
-now >= startOfQuarter && now <= endOfQuarter;</pre>
-          </div>
-        </div>
-
-        <div class="comparison-grid">
-          <div class="comparison-example clickable" data-action="click->doc#tryExample">
-            <div class="comparison-header">
-              <span class="lang-badge k-badge">K</span>
-              <span class="comparison-title">30-day trial expiration check</span>
+              <span class="comparison-title">Has the 30-day trial expired?</span>
             </div>
             <pre class="comparison-code example-code">let
-  signup = D2024-01-15,
-  trial = P30D
+  signup = D2024-06-15
 in
-  TODAY > signup + trial</pre>
+  TODAY > signup + P30D</pre>
           </div>
           <div class="comparison-example js-example">
             <div class="comparison-header">
               <span class="lang-badge js-badge">JavaScript</span>
               <span class="comparison-title">The same thing...</span>
             </div>
-            <pre class="comparison-code">const signup = new Date('2024-01-15');
-const trialDays = 30;
+            <pre class="comparison-code">const signup = new Date('2024-06-15');
 const trialEnd = new Date(signup);
-trialEnd.setDate(trialEnd.getDate() + trialDays);
+trialEnd.setDate(trialEnd.getDate() + 30);
 const today = new Date();
 today.setHours(0, 0, 0, 0);
 today > trialEnd;</pre>
@@ -136,22 +104,41 @@ today > trialEnd;</pre>
           <div class="comparison-example clickable" data-action="click->doc#tryExample">
             <div class="comparison-header">
               <span class="lang-badge k-badge">K</span>
-              <span class="comparison-title">Add 1 month and 2 hours to now</span>
+              <span class="comparison-title">Range validation</span>
             </div>
-            <pre class="comparison-code example-code">NOW + P1M + PT2H</pre>
+            <pre class="comparison-code example-code">let
+  score = 85
+in
+  score in 0..100 and score not in 0...60</pre>
           </div>
           <div class="comparison-example js-example">
             <div class="comparison-header">
               <span class="lang-badge js-badge">JavaScript</span>
               <span class="comparison-title">The same thing...</span>
             </div>
-            <pre class="comparison-code">const now = new Date();
-const result = new Date(now);
-result.setMonth(result.getMonth() + 1);
-// But wait, what if the day overflows?
-// Jan 31 + 1 month = Feb 31 = March 3rd?
-result.setHours(result.getHours() + 2);
-result;</pre>
+            <pre class="comparison-code">const score = 85;
+const inRange = score >= 0 && score <= 100;
+const passing = !(score >= 0 && score < 60);
+inRange && passing;</pre>
+          </div>
+        </div>
+
+        <div class="comparison-grid">
+          <div class="comparison-example clickable" data-action="click->doc#tryExample">
+            <div class="comparison-header">
+              <span class="lang-badge k-badge">K</span>
+              <span class="comparison-title">Data transformation lambda</span>
+            </div>
+            <pre class="comparison-code example-code">fn( item | item.price * 1.21 )</pre>
+          </div>
+          <div class="comparison-example js-example">
+            <div class="comparison-header">
+              <span class="lang-badge js-badge">JavaScript</span>
+              <span class="comparison-title">The same thing...</span>
+            </div>
+            <pre class="comparison-code">// Works in JS, but what about Ruby? SQL?
+// K compiles to all three targets.
+(item) => item.price * 1.21</pre>
           </div>
         </div>
       </section>
@@ -186,6 +173,11 @@ result;</pre>
         <h2>Ready to try K?</h2>
         <p>Jump into the playground and start writing temporal expressions that just work.</p>
         <a href="#try" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="try" class="cta-button">Open Playground</a>
+      </section>
+
+      <section class="ai-native-section">
+        <h2>Built with AI</h2>
+        <p>K was conceived, designed, and implemented entirely with <strong>Claude Code</strong>. From lexer to compilers, every line emerged from AI-human collaboration — a demonstration of what's possible when humans and AI build together.</p>
       </section>
 
       <footer class="home-footer">

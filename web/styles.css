@@ -819,6 +819,28 @@ select:focus {
   margin-bottom: 1.5rem;
 }
 
+/* AI Native Section */
+.ai-native-section {
+  text-align: center;
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.ai-native-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.ai-native-section p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
 /* Home Footer */
 .home-footer {
   text-align: center;
