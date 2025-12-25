@@ -205,6 +205,25 @@ export function createSQLBinding(): StdLib<string> {
   sqlLib.register('hour', [Types.datetime], (args, ctx) => `EXTRACT(HOUR FROM ${ctx.emit(args[0])})`);
   sqlLib.register('minute', [Types.datetime], (args, ctx) => `EXTRACT(MINUTE FROM ${ctx.emit(args[0])})`);
 
+  // Type introspection - map PostgreSQL types to K type names
+  sqlLib.register('typeOf', [Types.any], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `CASE pg_typeof(${v})::text ` +
+      `WHEN 'integer' THEN 'int' ` +
+      `WHEN 'bigint' THEN 'int' ` +
+      `WHEN 'double precision' THEN 'float' ` +
+      `WHEN 'numeric' THEN 'float' ` +
+      `WHEN 'boolean' THEN 'bool' ` +
+      `WHEN 'text' THEN 'string' ` +
+      `WHEN 'character varying' THEN 'string' ` +
+      `WHEN 'unknown' THEN 'string' ` +
+      `WHEN 'interval' THEN 'duration' ` +
+      `WHEN 'date' THEN 'datetime' ` +
+      `WHEN 'timestamp without time zone' THEN 'datetime' ` +
+      `WHEN 'timestamp with time zone' THEN 'datetime' ` +
+      `ELSE 'object' END`;
+  });
+
   // Fallback for unknown functions - uppercase for SQL
   sqlLib.registerFallback((name, args, _argTypes, ctx) => {
     const emittedArgs = args.map(a => ctx.emit(a)).join(', ');

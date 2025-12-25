@@ -196,6 +196,12 @@ export function createRubyBinding(): StdLib<string> {
   rubyLib.register('hour', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.hour`);
   rubyLib.register('minute', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.minute`);
 
+  // Type introspection
+  rubyLib.register('typeOf', [Types.any], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(v) { case v when ActiveSupport::Duration; 'duration' when Date, DateTime, Time; 'datetime' when Integer; 'int' when Float; 'float' when TrueClass, FalseClass; 'bool' when String; 'string' when Proc; 'fn' else 'object' end }).call(${v})`;
+  });
+
   // Fallback for unknown functions
   rubyLib.registerFallback((name, args, _argTypes, ctx) => {
     const emittedArgs = args.map(a => ctx.emit(a)).join(', ');

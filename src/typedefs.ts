@@ -226,6 +226,11 @@ export function createTypeDefs(): TypeDefs {
   defs.register('in_range_inclusive', [Types.any, Types.any, Types.any], Types.bool);
   defs.register('in_range_exclusive', [Types.any, Types.any, Types.any], Types.bool);
 
+  // ============================================
+  // Type introspection -> string
+  // ============================================
+  defs.register('typeOf', [Types.any], Types.string);
+
   // Fallback: unknown functions return any
   defs.registerFallback(() => Types.any);
 

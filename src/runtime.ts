@@ -48,4 +48,13 @@ export const JS_HELPERS: Record<string, string> = {
   return -v;
 }`,
   kPos: `function kPos(v) { return +v; }`,
+  kTypeOf: `function kTypeOf(v) {
+  if (dayjs.isDuration(v)) return 'duration';
+  if (dayjs.isDayjs(v)) return 'datetime';
+  if (typeof v === 'number') return Number.isInteger(v) ? 'int' : 'float';
+  if (typeof v === 'boolean') return 'bool';
+  if (typeof v === 'string') return 'string';
+  if (typeof v === 'function') return 'fn';
+  return 'object';
+}`,
 };
