@@ -1,0 +1,7 @@
+((double) => (function() { if (!(double(5) == 10)) throw new Error("Assertion failed"); return true; })())((x) => klang.mul(x, 2))
+((add) => (function() { if (!(add(3, 4) == 7)) throw new Error("Assertion failed"); return true; })())((x, y) => klang.add(x, y))
+((mul) => (function() { if (!(mul(6, 7) == 42)) throw new Error("Assertion failed"); return true; })())((a, b) => klang.mul(a, b))
+((abs) => (function() { if (!(abs(-5) == -10)) throw new Error("Assertion failed"); return true; })())((x) => klang.mul(x, 2))
+((round) => (function() { if (!(round(10) == 11)) throw new Error("Assertion failed"); return true; })())((x) => klang.add(x, 1))
+((length) => (function() { if (!(length("ignored") == 42)) throw new Error("Assertion failed"); return true; })())((s) => 42)
+((nested) => (function() { if (!(nested(5) == 11)) throw new Error("Assertion failed"); return true; })())((x) => ((inner) => klang.add(inner(x), 1))((y) => klang.mul(y, 2)))

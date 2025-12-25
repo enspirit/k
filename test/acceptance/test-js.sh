@@ -13,8 +13,9 @@ SKIPPED=0
 # Get prelude using kc --prelude-only
 PRELUDE=$($KC --prelude-only -t js)
 
-# Files that require variables or produce non-executable code (e.g., lambdas)
-SKIP_FILES=("member-access" "variables" "lambda")
+# Files that require variables or produce non-executable code
+# Note: "lambda" contains raw lambda expressions, "lambda-invocation" is executable
+SKIP_FILES=("member-access" "variables" "lambda.expected")
 
 should_skip() {
     local file=$1

@@ -1,0 +1,7 @@
+->(double) { (raise "Assertion failed" unless double.call(5) == 10; true) }.call(->(x) { x * 2 })
+->(add) { (raise "Assertion failed" unless add.call(3, 4) == 7; true) }.call(->(x, y) { x + y })
+->(mul) { (raise "Assertion failed" unless mul.call(6, 7) == 42; true) }.call(->(a, b) { a * b })
+->(abs) { (raise "Assertion failed" unless abs.call(-5) == -10; true) }.call(->(x) { x * 2 })
+->(round) { (raise "Assertion failed" unless round.call(10) == 11; true) }.call(->(x) { x + 1 })
+->(length) { (raise "Assertion failed" unless length.call("ignored") == 42; true) }.call(->(s) { 42 })
+->(nested) { (raise "Assertion failed" unless nested.call(5) == 11; true) }.call(->(x) { ->(inner) { inner.call(x) + 1 }.call(->(y) { y * 2 }) })

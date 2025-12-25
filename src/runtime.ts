@@ -14,11 +14,11 @@ export interface DayjsLike {
 
 export interface KlangRuntime {
   add(left: any, right: any): any;
-  subtract(left: any, right: any): any;
-  multiply(left: any, right: any): any;
-  divide(left: any, right: any): any;
-  modulo(left: any, right: any): any;
-  power(left: any, right: any): any;
+  sub(left: any, right: any): any;
+  mul(left: any, right: any): any;
+  div(left: any, right: any): any;
+  mod(left: any, right: any): any;
+  pow(left: any, right: any): any;
 }
 
 /**
@@ -32,20 +32,20 @@ export function createKlangRuntime(dayjs: DayjsLike): KlangRuntime {
       if (dayjs.isDuration(left) && dayjs.isDayjs(right)) return right.add(left);
       return left + right;
     },
-    subtract(left: any, right: any): any {
+    sub(left: any, right: any): any {
       if (dayjs.isDayjs(left) && dayjs.isDuration(right)) return left.subtract(right);
       return left - right;
     },
-    multiply(left: any, right: any): any {
+    mul(left: any, right: any): any {
       return left * right;
     },
-    divide(left: any, right: any): any {
+    div(left: any, right: any): any {
       return left / right;
     },
-    modulo(left: any, right: any): any {
+    mod(left: any, right: any): any {
       return left % right;
     },
-    power(left: any, right: any): any {
+    pow(left: any, right: any): any {
       return Math.pow(left, right);
     }
   };
@@ -61,19 +61,19 @@ export const KLANG_ARITHMETIC_HELPERS = `
     if (dayjs.isDuration(left) && dayjs.isDayjs(right)) return right.add(left);
     return left + right;
   },
-  subtract(left, right) {
+  sub(left, right) {
     if (dayjs.isDayjs(left) && dayjs.isDuration(right)) return left.subtract(right);
     return left - right;
   },
-  multiply(left, right) {
+  mul(left, right) {
     return left * right;
   },
-  divide(left, right) {
+  div(left, right) {
     return left / right;
   },
-  modulo(left, right) {
+  mod(left, right) {
     return left % right;
   },
-  power(left, right) {
+  pow(left, right) {
     return Math.pow(left, right);
   }`;
