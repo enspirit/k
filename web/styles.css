@@ -768,14 +768,14 @@ select:focus {
 
 /* TOC Search */
 .toc-search {
-  margin-top: 1.5rem;
-  padding-top: 1rem;
-  border-top: 1px solid var(--border);
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  position: relative;
 }
 
 .toc-search input {
   width: 100%;
-  padding: 0.5rem 0.75rem;
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
   background: var(--bg-panel);
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -792,6 +792,25 @@ select:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2);
+}
+
+.toc-search-clear {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: none;
+}
+
+.toc-search-clear:hover {
+  color: var(--text-primary);
 }
 
 /* Standard Library Section */

@@ -8,11 +8,11 @@
 </head>
 <body data-controller="tabs">
   <header>
-    <a href="#" class="logo" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="home">K, a portable expression language</a>
+    <a href="#home" class="logo" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="home">K, a portable expression language</a>
     <nav>
-      <a href="#" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="home" class="active">Home</a>
-      <a href="#" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="try">Try</a>
-      <a href="#" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="doc">Doc</a>
+      <a href="#home" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="home" class="active">Home</a>
+      <a href="#try" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="try">Try</a>
+      <a href="#doc" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="doc">Doc</a>
     </nav>
   </header>
 
@@ -23,7 +23,7 @@
         <h1>The K Language</h1>
         <p class="tagline">The first programming language entirely designed and implemented by <strong>Claude Code</strong></p>
         <p class="subtitle">A small expression language that compiles to JavaScript, Ruby, and SQL. Write temporal logic once, run it everywhere.</p>
-        <a href="#" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="try" class="cta-button">Try it now</a>
+        <a href="#try" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="try" class="cta-button">Try it now</a>
       </section>
 
       <section class="features">
@@ -158,7 +158,7 @@ result;</pre>
       <section class="cta-section">
         <h2>Ready to try K?</h2>
         <p>Jump into the playground and start writing temporal expressions that just work.</p>
-        <a href="#" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="try" class="cta-button">Open Playground</a>
+        <a href="#try" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="try" class="cta-button">Open Playground</a>
       </section>
 
       <footer class="home-footer">
@@ -217,22 +217,17 @@ result;</pre>
     <nav class="doc-toc">
       <div class="toc-title">Language</div>
       <ul>
-        <li><a href="#getting-started">Getting Started</a></li>
-        <li><a href="#literals">Literals</a></li>
-        <li><a href="#operators">Operators</a></li>
-        <li><a href="#variables">Local Variables</a></li>
-        <li><a href="#conditionals">Conditionals</a></li>
-        <li><a href="#lambdas">Lambda Expressions</a></li>
-        <li><a href="#ranges">Range Membership</a></li>
-        <li><a href="#assertions">Assertions</a></li>
-        <li><a href="#examples">Real-World Examples</a></li>
+        <li><a href="#doc/getting-started">Getting Started</a></li>
+        <li><a href="#doc/literals">Literals</a></li>
+        <li><a href="#doc/operators">Operators</a></li>
+        <li><a href="#doc/variables">Local Variables</a></li>
+        <li><a href="#doc/conditionals">Conditionals</a></li>
+        <li><a href="#doc/lambdas">Lambda Expressions</a></li>
+        <li><a href="#doc/ranges">Range Membership</a></li>
+        <li><a href="#doc/assertions">Assertions</a></li>
+        <li><a href="#doc/examples">Real-World Examples</a></li>
       </ul>
       <div class="toc-title">Standard Library</div>
-      <ul>
-        <li><a href="#stdlib-numeric">Numeric Functions</a></li>
-        <li><a href="#stdlib-temporal">Temporal Functions</a></li>
-        <li><a href="#stdlib-string">String Functions</a></li>
-      </ul>
       <div class="toc-search">
         <input
           type="text"
@@ -240,7 +235,19 @@ result;</pre>
           data-stdlib-search-target="input"
           data-action="input->stdlib-search#filter"
         />
+        <button
+          type="button"
+          class="toc-search-clear"
+          data-stdlib-search-target="clearButton"
+          data-action="click->stdlib-search#clear"
+          aria-label="Clear search"
+        >&times;</button>
       </div>
+      <ul>
+        <li><a href="#doc/stdlib-numeric">Numeric Functions</a></li>
+        <li><a href="#doc/stdlib-temporal">Temporal Functions</a></li>
+        <li><a href="#doc/stdlib-string">String Functions</a></li>
+      </ul>
     </nav>
     <article class="doc-content">
       <h1>The K Language</h1>
