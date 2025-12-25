@@ -4,42 +4,13 @@ import { Expr } from '../ast';
  * SQL compilation options
  */
 export interface SQLCompileOptions {
-  /**
-   * Temporal mode controls how temporal expressions are compiled:
-   * - 'production': Uses native SQL constants (CURRENT_TIMESTAMP, CURRENT_DATE)
-   * - 'testable': Uses klang_now()/klang_today() functions that can be overridden
-   */
-  temporalMode?: 'production' | 'testable';
-}
-
-/**
- * Temporal provider abstraction - returns SQL expressions for current time/date
- */
-interface TemporalProvider {
-  now(): string;
-  today(): string;
-}
-
-const productionProvider: TemporalProvider = {
-  now: () => 'CURRENT_TIMESTAMP',
-  today: () => 'CURRENT_DATE',
-};
-
-const testableProvider: TemporalProvider = {
-  now: () => 'klang_now()',
-  today: () => 'klang_today()',
-};
-
-function getTemporalProvider(options?: SQLCompileOptions): TemporalProvider {
-  const mode = options?.temporalMode ?? 'production';
-  return mode === 'testable' ? testableProvider : productionProvider;
+  // Reserved for future options
 }
 
 /**
  * Compiles Klang expressions to PostgreSQL SQL
  */
 export function compileToSQL(expr: Expr, options?: SQLCompileOptions): string {
-  const temporal = getTemporalProvider(options);
   switch (expr.type) {
     case 'literal':
       if (typeof expr.value === 'boolean') {
@@ -68,33 +39,33 @@ export function compileToSQL(expr: Expr, options?: SQLCompileOptions): string {
     case 'temporal_keyword':
       switch (expr.keyword) {
         case 'NOW':
-          return temporal.now();
+          return 'CURRENT_TIMESTAMP';
         case 'TODAY':
-          return temporal.today();
+          return 'CURRENT_DATE';
         case 'TOMORROW':
-          return `${temporal.today()} + INTERVAL '1 day'`;
+          return "CURRENT_DATE + INTERVAL '1 day'";
         case 'YESTERDAY':
-          return `${temporal.today()} - INTERVAL '1 day'`;
+          return "CURRENT_DATE - INTERVAL '1 day'";
         case 'SOD':
-          return `date_trunc('day', ${temporal.now()})`;
+          return "date_trunc('day', CURRENT_TIMESTAMP)";
         case 'EOD':
-          return `date_trunc('day', ${temporal.now()}) + INTERVAL '1 day' - INTERVAL '1 second'`;
+          return "date_trunc('day', CURRENT_TIMESTAMP) + INTERVAL '1 day' - INTERVAL '1 second'";
         case 'SOW':
-          return `date_trunc('week', ${temporal.today()})`;
+          return "date_trunc('week', CURRENT_DATE)";
         case 'EOW':
-          return `date_trunc('week', ${temporal.today()}) + INTERVAL '6 days'`;
+          return "date_trunc('week', CURRENT_DATE) + INTERVAL '6 days'";
         case 'SOM':
-          return `date_trunc('month', ${temporal.today()})`;
+          return "date_trunc('month', CURRENT_DATE)";
         case 'EOM':
-          return `date_trunc('month', ${temporal.today()}) + INTERVAL '1 month' - INTERVAL '1 day'`;
+          return "date_trunc('month', CURRENT_DATE) + INTERVAL '1 month' - INTERVAL '1 day'";
         case 'SOQ':
-          return `date_trunc('quarter', ${temporal.today()})`;
+          return "date_trunc('quarter', CURRENT_DATE)";
         case 'EOQ':
-          return `date_trunc('quarter', ${temporal.today()}) + INTERVAL '3 months' - INTERVAL '1 day'`;
+          return "date_trunc('quarter', CURRENT_DATE) + INTERVAL '3 months' - INTERVAL '1 day'";
         case 'SOY':
-          return `date_trunc('year', ${temporal.today()})`;
+          return "date_trunc('year', CURRENT_DATE)";
         case 'EOY':
-          return `date_trunc('year', ${temporal.today()}) + INTERVAL '1 year' - INTERVAL '1 day'`;
+          return "date_trunc('year', CURRENT_DATE) + INTERVAL '1 year' - INTERVAL '1 day'";
       }
 
     case 'variable':

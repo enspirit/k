@@ -4,35 +4,7 @@ import { Expr } from '../ast';
  * JavaScript compilation options
  */
 export interface JavaScriptCompileOptions {
-  /**
-   * Temporal mode controls how temporal expressions are compiled:
-   * - 'production': Uses dayjs() directly
-   * - 'testable': Uses klang.now()/klang.today() that can be overridden
-   */
-  temporalMode?: 'production' | 'testable';
-}
-
-/**
- * Temporal provider abstraction - returns JavaScript expressions for current time/date
- */
-interface TemporalProvider {
-  now(): string;
-  today(): string;
-}
-
-const productionProvider: TemporalProvider = {
-  now: () => 'dayjs()',
-  today: () => "dayjs().startOf('day')",
-};
-
-const testableProvider: TemporalProvider = {
-  now: () => 'klang.now()',
-  today: () => 'klang.today()',
-};
-
-function getTemporalProvider(options?: JavaScriptCompileOptions): TemporalProvider {
-  const mode = options?.temporalMode ?? 'production';
-  return mode === 'testable' ? testableProvider : productionProvider;
+  // Reserved for future options
 }
 
 /**
@@ -40,7 +12,6 @@ function getTemporalProvider(options?: JavaScriptCompileOptions): TemporalProvid
  * Uses dayjs for temporal operations
  */
 export function compileToJavaScript(expr: Expr, options?: JavaScriptCompileOptions): string {
-  const temporal = getTemporalProvider(options);
   switch (expr.type) {
     case 'literal':
       return expr.value.toString();
@@ -59,36 +30,35 @@ export function compileToJavaScript(expr: Expr, options?: JavaScriptCompileOptio
       return `dayjs.duration('${expr.value}')`;
 
     case 'temporal_keyword': {
-      const mode = options?.temporalMode ?? 'production';
       switch (expr.keyword) {
         case 'NOW':
-          return temporal.now();
+          return 'dayjs()';
         case 'TODAY':
-          return temporal.today();
+          return "dayjs().startOf('day')";
         case 'TOMORROW':
-          return `${temporal.today()}.add(1, 'day')`;
+          return "dayjs().startOf('day').add(1, 'day')";
         case 'YESTERDAY':
-          return `${temporal.today()}.subtract(1, 'day')`;
+          return "dayjs().startOf('day').subtract(1, 'day')";
         case 'SOD':
-          return mode === 'testable' ? temporal.today() : "dayjs().startOf('day')";
+          return "dayjs().startOf('day')";
         case 'EOD':
-          return mode === 'testable' ? `${temporal.today()}.endOf('day')` : "dayjs().endOf('day')";
+          return "dayjs().endOf('day')";
         case 'SOW':
-          return mode === 'testable' ? `${temporal.today()}.startOf('isoWeek')` : "dayjs().startOf('isoWeek')";
+          return "dayjs().startOf('isoWeek')";
         case 'EOW':
-          return mode === 'testable' ? `${temporal.today()}.endOf('isoWeek')` : "dayjs().endOf('isoWeek')";
+          return "dayjs().endOf('isoWeek')";
         case 'SOM':
-          return mode === 'testable' ? `${temporal.today()}.startOf('month')` : "dayjs().startOf('month')";
+          return "dayjs().startOf('month')";
         case 'EOM':
-          return mode === 'testable' ? `${temporal.today()}.endOf('month')` : "dayjs().endOf('month')";
+          return "dayjs().endOf('month')";
         case 'SOQ':
-          return mode === 'testable' ? `${temporal.today()}.startOf('quarter')` : "dayjs().startOf('quarter')";
+          return "dayjs().startOf('quarter')";
         case 'EOQ':
-          return mode === 'testable' ? `${temporal.today()}.endOf('quarter')` : "dayjs().endOf('quarter')";
+          return "dayjs().endOf('quarter')";
         case 'SOY':
-          return mode === 'testable' ? `${temporal.today()}.startOf('year')` : "dayjs().startOf('year')";
+          return "dayjs().startOf('year')";
         case 'EOY':
-          return mode === 'testable' ? `${temporal.today()}.endOf('year')` : "dayjs().endOf('year')";
+          return "dayjs().endOf('year')";
       }
     }
 

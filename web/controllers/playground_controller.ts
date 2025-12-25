@@ -7,10 +7,7 @@ import {
   parse,
   compileToRuby,
   compileToJavaScript,
-  compileToSQL,
-  RubyCompileOptions,
-  JavaScriptCompileOptions,
-  SQLCompileOptions
+  compileToSQL
 } from '../../src/index';
 import { getPrelude, Target as PreludeTarget } from '../../src/preludes';
 import { createKlangRuntime } from '../../src/runtime';
@@ -25,15 +22,13 @@ dayjs.extend(quarterOfYear);
 (window as any).klang = createKlangRuntime(dayjs);
 
 type TargetLanguage = 'ruby' | 'javascript' | 'sql';
-type TemporalMode = 'production' | 'testable';
 
 export default class PlaygroundController extends Controller {
-  static targets = ['input', 'output', 'language', 'mode', 'prelude', 'error', 'result', 'runButton'];
+  static targets = ['input', 'output', 'language', 'prelude', 'error', 'result', 'runButton'];
 
   declare inputTarget: HTMLTextAreaElement;
   declare outputTarget: HTMLPreElement;
   declare languageTarget: HTMLSelectElement;
-  declare modeTarget: HTMLSelectElement;
   declare preludeTarget: HTMLInputElement;
   declare errorTarget: HTMLDivElement;
   declare resultTarget: HTMLDivElement;
@@ -47,7 +42,6 @@ export default class PlaygroundController extends Controller {
   compile() {
     const input = this.inputTarget.value;
     const language = this.languageTarget.value as TargetLanguage;
-    const mode = this.modeTarget.value as TemporalMode;
     const includePrelude = this.preludeTarget.checked;
 
     // Hide result when code changes
@@ -64,11 +58,11 @@ export default class PlaygroundController extends Controller {
 
     try {
       const ast = parse(input);
-      let output = this.compileToLanguage(ast, language, mode);
+      let output = this.compileToLanguage(ast, language);
 
       if (includePrelude) {
         const preludeTarget: PreludeTarget = language === 'javascript' ? 'javascript' : language as PreludeTarget;
-        const prelude = getPrelude(preludeTarget, mode);
+        const prelude = getPrelude(preludeTarget);
         if (prelude) {
           output = `${prelude}\n\n${output}`;
         }
@@ -125,15 +119,14 @@ export default class PlaygroundController extends Controller {
     return String(value);
   }
 
-  private compileToLanguage(ast: ReturnType<typeof parse>, language: TargetLanguage, mode: TemporalMode): string {
-    const temporalMode = mode;
+  private compileToLanguage(ast: ReturnType<typeof parse>, language: TargetLanguage): string {
     switch (language) {
       case 'ruby':
-        return compileToRuby(ast, { temporalMode });
+        return compileToRuby(ast);
       case 'javascript':
-        return compileToJavaScript(ast, { temporalMode });
+        return compileToJavaScript(ast);
       case 'sql':
-        return compileToSQL(ast, { temporalMode });
+        return compileToSQL(ast);
       default:
         return '';
     }

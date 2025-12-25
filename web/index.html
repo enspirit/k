@@ -192,13 +192,6 @@ result;</pre>
           <option value="ruby">Ruby</option>
           <option value="sql">SQL</option>
         </select>
-        <select
-          data-playground-target="mode"
-          data-action="change->playground#compile"
-        >
-          <option value="production">Production</option>
-          <option value="testable">Testable</option>
-        </select>
         <label class="checkbox-label">
           <input
             type="checkbox"
@@ -233,7 +226,6 @@ result;</pre>
         <li><a href="#durations">Durations</a></li>
         <li><a href="#assertions">Assertions</a></li>
         <li><a href="#ranges">Range Membership</a></li>
-        <li><a href="#modes">Compilation Modes</a></li>
         <li><a href="#examples">Real-World Examples</a></li>
       </ul>
     </nav>
@@ -467,30 +459,6 @@ result;</pre>
           <div class="example-header">Combined Ranges</div>
           <pre class="example-code">x in 0..100 and y in 0..100</pre>
           <p class="example-desc">Multiple range checks with <code>and</code>/<code>or</code> keywords.</p>
-        </div>
-      </section>
-
-      <section class="doc-section" id="modes">
-        <h2>Compilation Modes</h2>
-        <p>K supports two compilation modes for temporal expressions:</p>
-
-        <h3>Production Mode (default)</h3>
-        <p>
-          Uses native temporal functions: <code>dayjs()</code> in JavaScript,
-          <code>DateTime.now</code> in Ruby, <code>CURRENT_TIMESTAMP</code> in SQL.
-        </p>
-
-        <h3>Testable Mode</h3>
-        <p>
-          Uses injectable functions (<code>klang.now()</code>, <code>Klang.now</code>, <code>klang_now()</code>)
-          that can be mocked for deterministic testing. Set the <code>KLANG_NOW</code> environment variable
-          to freeze time.
-        </p>
-
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Try Both Modes</div>
-          <pre class="example-code">NOW &gt;= TODAY</pre>
-          <p class="example-desc">Toggle between Production and Testable mode to see the difference.</p>
         </div>
       </section>
 

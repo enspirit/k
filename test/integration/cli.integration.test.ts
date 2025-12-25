@@ -66,119 +66,57 @@ describe('CLI - Basic compilation', () => {
 });
 
 describe('CLI - Temporal expressions', () => {
-  describe('production mode (default)', () => {
-    it('should compile TODAY to JavaScript', () => {
-      const result = kc('-e "TODAY" -t js');
-      assert.strictEqual(result, "dayjs().startOf('day')");
-    });
-
-    it('should compile TODAY to Ruby', () => {
-      const result = kc('-e "TODAY" -t ruby');
-      assert.strictEqual(result, 'Date.today');
-    });
-
-    it('should compile TODAY to SQL', () => {
-      const result = kc('-e "TODAY" -t sql');
-      assert.strictEqual(result, 'CURRENT_DATE');
-    });
-
-    it('should compile NOW to JavaScript', () => {
-      const result = kc('-e "NOW" -t js');
-      assert.strictEqual(result, 'dayjs()');
-    });
-
-    it('should compile NOW to Ruby', () => {
-      const result = kc('-e "NOW" -t ruby');
-      assert.strictEqual(result, 'DateTime.now');
-    });
-
-    it('should compile NOW to SQL', () => {
-      const result = kc('-e "NOW" -t sql');
-      assert.strictEqual(result, 'CURRENT_TIMESTAMP');
-    });
+  it('should compile TODAY to JavaScript', () => {
+    const result = kc('-e "TODAY" -t js');
+    assert.strictEqual(result, "dayjs().startOf('day')");
   });
 
-  describe('testable mode', () => {
-    it('should compile TODAY to JavaScript in testable mode', () => {
-      const result = kc('-e "TODAY" -t js -m testable');
-      assert.strictEqual(result, 'klang.today()');
-    });
+  it('should compile TODAY to Ruby', () => {
+    const result = kc('-e "TODAY" -t ruby');
+    assert.strictEqual(result, 'Date.today');
+  });
 
-    it('should compile TODAY to Ruby in testable mode', () => {
-      const result = kc('-e "TODAY" -t ruby -m testable');
-      assert.strictEqual(result, 'Klang.today');
-    });
+  it('should compile TODAY to SQL', () => {
+    const result = kc('-e "TODAY" -t sql');
+    assert.strictEqual(result, 'CURRENT_DATE');
+  });
 
-    it('should compile TODAY to SQL in testable mode', () => {
-      const result = kc('-e "TODAY" -t sql -m testable');
-      assert.strictEqual(result, 'klang_today()');
-    });
+  it('should compile NOW to JavaScript', () => {
+    const result = kc('-e "NOW" -t js');
+    assert.strictEqual(result, 'dayjs()');
+  });
 
-    it('should compile NOW to JavaScript in testable mode', () => {
-      const result = kc('-e "NOW" -t js -m testable');
-      assert.strictEqual(result, 'klang.now()');
-    });
+  it('should compile NOW to Ruby', () => {
+    const result = kc('-e "NOW" -t ruby');
+    assert.strictEqual(result, 'DateTime.now');
+  });
 
-    it('should compile NOW to Ruby in testable mode', () => {
-      const result = kc('-e "NOW" -t ruby -m testable');
-      assert.strictEqual(result, 'Klang.now');
-    });
-
-    it('should compile NOW to SQL in testable mode', () => {
-      const result = kc('-e "NOW" -t sql -m testable');
-      assert.strictEqual(result, 'klang_now()');
-    });
+  it('should compile NOW to SQL', () => {
+    const result = kc('-e "NOW" -t sql');
+    assert.strictEqual(result, 'CURRENT_TIMESTAMP');
   });
 });
 
 describe('CLI - Prelude inclusion', () => {
-  describe('production mode', () => {
-    it('should include minimal Ruby prelude', () => {
-      const result = kc('-e "TODAY" -t ruby -p');
-      assert.ok(result.includes("require 'date'"));
-      assert.ok(result.includes("require 'active_support/all'"));
-      assert.ok(result.includes('Date.today'));
-      assert.ok(!result.includes('module Klang'));
-    });
-
-    it('should include minimal JavaScript prelude', () => {
-      const result = kc('-e "TODAY" -t js -p');
-      assert.ok(result.includes("const dayjs = require('dayjs')"));
-      assert.ok(result.includes('dayjs.extend(duration)'));
-      assert.ok(result.includes("dayjs().startOf('day')"));
-      // klang namespace is now included in production mode for runtime helpers (add/subtract)
-      assert.ok(result.includes('const klang'));
-      assert.ok(result.includes('add(left, right)'));
-    });
-
-    it('should include minimal SQL prelude', () => {
-      const result = kc('-e "TODAY" -t sql -p');
-      assert.ok(result.includes('No prelude needed'));
-      assert.ok(result.includes('CURRENT_DATE'));
-      assert.ok(!result.includes('klang_today'));
-    });
+  it('should include Ruby prelude', () => {
+    const result = kc('-e "TODAY" -t ruby -p');
+    assert.ok(result.includes("require 'date'"));
+    assert.ok(result.includes("require 'active_support/all'"));
+    assert.ok(result.includes('Date.today'));
   });
 
-  describe('testable mode', () => {
-    it('should include full Ruby prelude with Klang module', () => {
-      const result = kc('-e "TODAY" -t ruby -m testable -p');
-      assert.ok(result.includes("require 'date'"));
-      assert.ok(result.includes('module Klang'));
-      assert.ok(result.includes('Klang.today'));
-    });
+  it('should include JavaScript prelude', () => {
+    const result = kc('-e "TODAY" -t js -p');
+    assert.ok(result.includes("require('dayjs')"));
+    assert.ok(result.includes('dayjs.extend(duration)'));
+    assert.ok(result.includes("dayjs().startOf('day')"));
+    assert.ok(result.includes('const klang'));
+  });
 
-    it('should include full JavaScript prelude with klang namespace', () => {
-      const result = kc('-e "TODAY" -t js -m testable -p');
-      assert.ok(result.includes("require('dayjs')"));
-      assert.ok(result.includes('const klang'));
-      assert.ok(result.includes('klang.today()'));
-    });
-
-    it('should include full SQL prelude with klang functions', () => {
-      const result = kc('-e "TODAY" -t sql -m testable -p');
-      assert.ok(result.includes('CREATE OR REPLACE FUNCTION klang_today'));
-      assert.ok(result.includes('klang_today()'));
-    });
+  it('should include minimal SQL prelude', () => {
+    const result = kc('-e "TODAY" -t sql -p');
+    assert.ok(result.includes('No prelude needed'));
+    assert.ok(result.includes('CURRENT_DATE'));
   });
 });
 
@@ -240,7 +178,6 @@ describe('CLI - Error handling', () => {
     assert.ok(result.includes('Klang Compiler (kc)'));
     assert.ok(result.includes('--expression'));
     assert.ok(result.includes('--target'));
-    assert.ok(result.includes('--mode'));
     assert.ok(result.includes('--prelude'));
   });
 
@@ -248,12 +185,6 @@ describe('CLI - Error handling', () => {
     const result = kcWithError('-e "2 + 3" -t invalid');
     assert.strictEqual(result.exitCode, 1);
     assert.ok(result.stderr.includes('Invalid target'));
-  });
-
-  it('should error on invalid mode', () => {
-    const result = kcWithError('-e "2 + 3" -m invalid');
-    assert.strictEqual(result.exitCode, 1);
-    assert.ok(result.stderr.includes('Invalid mode'));
   });
 
   it('should error on missing expression and file', () => {
@@ -284,11 +215,6 @@ describe('CLI - Long options', () => {
   it('should accept --target', () => {
     const result = kc('-e "2 ^ 3" --target ruby');
     assert.strictEqual(result, '2 ** 3');
-  });
-
-  it('should accept --mode', () => {
-    const result = kc('-e "TODAY" -t ruby --mode testable');
-    assert.strictEqual(result, 'Klang.today');
   });
 
   it('should accept --prelude', () => {

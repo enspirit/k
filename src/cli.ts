@@ -2,10 +2,10 @@
 
 import { readFileSync, writeFileSync } from 'fs';
 import { parse } from './parser';
-import { compileToRuby, RubyCompileOptions } from './compilers/ruby';
-import { compileToJavaScript, JavaScriptCompileOptions } from './compilers/javascript';
-import { compileToSQL, SQLCompileOptions } from './compilers/sql';
-import { getPrelude, Target as PreludeTarget, Mode } from './preludes';
+import { compileToRuby } from './compilers/ruby';
+import { compileToJavaScript } from './compilers/javascript';
+import { compileToSQL } from './compilers/sql';
+import { getPrelude, Target as PreludeTarget } from './preludes';
 
 type Target = 'ruby' | 'js' | 'sql';
 
@@ -19,15 +19,13 @@ interface Options {
   inputFile?: string;
   outputFile?: string;
   target: Target;
-  mode: Mode;
   prelude?: boolean;
   preludeOnly?: boolean;
 }
 
 function parseArgs(args: string[]): Options {
   const options: Options = {
-    target: 'js',        // default target
-    mode: 'production'   // default mode
+    target: 'js'        // default target
   };
 
   for (let i = 0; i < args.length; i++) {
@@ -52,16 +50,6 @@ function parseArgs(args: string[]): Options {
           process.exit(1);
         }
         options.target = target;
-        break;
-
-      case '-m':
-      case '--mode':
-        const mode = args[++i];
-        if (mode !== 'production' && mode !== 'testable') {
-          console.error(`Invalid mode: ${mode}. Must be one of: production, testable`);
-          process.exit(1);
-        }
-        options.mode = mode;
         break;
 
       case '-p':
@@ -104,17 +92,10 @@ Usage:
 Options:
   -e, --expression <expr>   Expression to compile (like ruby -e)
   -t, --target <lang>       Target language: ruby, js (default), sql
-  -m, --mode <mode>         Compilation mode: production (default), testable
   -p, --prelude             Include necessary library imports/requires
   --prelude-only            Output only the prelude (no expression needed)
   -f, --file <path>         Output to file instead of stdout
   -h, --help                Show this help message
-
-Modes:
-  production   Uses native temporal functions (Date.today, dayjs(), CURRENT_DATE)
-               Minimal prelude with just library imports
-  testable     Uses injectable temporal functions (Klang.today, klang.today(), klang_today())
-               Full prelude with time injection support via KLANG_NOW env var
 
 Examples:
   # Compile expression to JavaScript (default)
@@ -129,9 +110,6 @@ Examples:
   # Compile with prelude (includes required libraries)
   kc -e "NOW + PT2H" -t ruby -p
 
-  # Compile in testable mode (for deterministic testing)
-  kc -e "TODAY == D2025-01-01" -t ruby -m testable -p
-
   # Compile from file
   kc input.klang -t ruby
 
@@ -143,31 +121,24 @@ Examples:
 `);
 }
 
-function compile(source: string, target: Target, mode: Mode, includePrelude: boolean = false): string {
+function compile(source: string, target: Target, includePrelude: boolean = false): string {
   const ast = parse(source);
-  const temporalMode = mode;
 
   let result: string;
   switch (target) {
-    case 'ruby': {
-      const options: RubyCompileOptions = { temporalMode };
-      result = compileToRuby(ast, options);
+    case 'ruby':
+      result = compileToRuby(ast);
       break;
-    }
-    case 'js': {
-      const options: JavaScriptCompileOptions = { temporalMode };
-      result = compileToJavaScript(ast, options);
+    case 'js':
+      result = compileToJavaScript(ast);
       break;
-    }
-    case 'sql': {
-      const options: SQLCompileOptions = { temporalMode };
-      result = compileToSQL(ast, options);
+    case 'sql':
+      result = compileToSQL(ast);
       break;
-    }
   }
 
   if (includePrelude) {
-    const preludeContent = getPrelude(toPreludeTarget(target), mode);
+    const preludeContent = getPrelude(toPreludeTarget(target));
     if (preludeContent) {
       result = `${preludeContent}\n\n${result}`;
     }
@@ -188,7 +159,7 @@ function main() {
 
   // Handle --prelude-only: just output the prelude and exit
   if (options.preludeOnly) {
-    const prelude = getPrelude(toPreludeTarget(options.target), options.mode);
+    const prelude = getPrelude(toPreludeTarget(options.target));
     console.log(prelude);
     return;
   }
@@ -217,7 +188,7 @@ function main() {
   try {
     outputs = sources.map((source, index) => {
       try {
-        return compile(source.trim(), options.target, options.mode, index === 0 && options.prelude);
+        return compile(source.trim(), options.target, index === 0 && options.prelude);
       } catch (error) {
         throw new Error(`Line ${index + 1}: ${error}`);
       }

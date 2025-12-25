@@ -4,42 +4,13 @@ import { Expr } from '../ast';
  * Ruby compilation options
  */
 export interface RubyCompileOptions {
-  /**
-   * Temporal mode controls how temporal expressions are compiled:
-   * - 'production': Uses native Ruby methods (DateTime.now, Date.today)
-   * - 'testable': Uses Klang.now/Klang.today methods that can be overridden
-   */
-  temporalMode?: 'production' | 'testable';
-}
-
-/**
- * Temporal provider abstraction - returns Ruby expressions for current time/date
- */
-interface TemporalProvider {
-  now(): string;
-  today(): string;
-}
-
-const productionProvider: TemporalProvider = {
-  now: () => 'DateTime.now',
-  today: () => 'Date.today',
-};
-
-const testableProvider: TemporalProvider = {
-  now: () => 'Klang.now',
-  today: () => 'Klang.today',
-};
-
-function getTemporalProvider(options?: RubyCompileOptions): TemporalProvider {
-  const mode = options?.temporalMode ?? 'production';
-  return mode === 'testable' ? testableProvider : productionProvider;
+  // Reserved for future options
 }
 
 /**
  * Compiles Klang expressions to Ruby code
  */
 export function compileToRuby(expr: Expr, options?: RubyCompileOptions): string {
-  const temporal = getTemporalProvider(options);
   switch (expr.type) {
     case 'literal':
       return expr.value.toString();
@@ -59,36 +30,35 @@ export function compileToRuby(expr: Expr, options?: RubyCompileOptions): string 
       return `ActiveSupport::Duration.parse('${expr.value}')`;
 
     case 'temporal_keyword': {
-      const mode = options?.temporalMode ?? 'production';
       switch (expr.keyword) {
         case 'NOW':
-          return temporal.now();
+          return 'DateTime.now';
         case 'TODAY':
-          return temporal.today();
+          return 'Date.today';
         case 'TOMORROW':
-          return `${temporal.today()} + 1`;
+          return 'Date.today + 1';
         case 'YESTERDAY':
-          return `${temporal.today()} - 1`;
+          return 'Date.today - 1';
         case 'SOD':
-          return mode === 'testable' ? `${temporal.today()}.beginning_of_day` : 'Date.today.beginning_of_day';
+          return 'Date.today.beginning_of_day';
         case 'EOD':
-          return mode === 'testable' ? `${temporal.today()}.end_of_day` : 'Date.today.end_of_day';
+          return 'Date.today.end_of_day';
         case 'SOW':
-          return mode === 'testable' ? `${temporal.today()}.beginning_of_week` : 'Date.today.beginning_of_week';
+          return 'Date.today.beginning_of_week';
         case 'EOW':
-          return mode === 'testable' ? `${temporal.today()}.end_of_week` : 'Date.today.end_of_week';
+          return 'Date.today.end_of_week';
         case 'SOM':
-          return mode === 'testable' ? `${temporal.today()}.beginning_of_month` : 'Date.today.beginning_of_month';
+          return 'Date.today.beginning_of_month';
         case 'EOM':
-          return mode === 'testable' ? `${temporal.today()}.end_of_month` : 'Date.today.end_of_month';
+          return 'Date.today.end_of_month';
         case 'SOQ':
-          return mode === 'testable' ? `${temporal.today()}.beginning_of_quarter` : 'Date.today.beginning_of_quarter';
+          return 'Date.today.beginning_of_quarter';
         case 'EOQ':
-          return mode === 'testable' ? `${temporal.today()}.end_of_quarter` : 'Date.today.end_of_quarter';
+          return 'Date.today.end_of_quarter';
         case 'SOY':
-          return mode === 'testable' ? `${temporal.today()}.beginning_of_year` : 'Date.today.beginning_of_year';
+          return 'Date.today.beginning_of_year';
         case 'EOY':
-          return mode === 'testable' ? `${temporal.today()}.end_of_year` : 'Date.today.end_of_year';
+          return 'Date.today.end_of_year';
       }
     }
 
