@@ -107,6 +107,11 @@ function emitRuby(ir: IRExpr): string {
     case 'duration_literal':
       return `ActiveSupport::Duration.parse('${ir.value}')`;
 
+    case 'object_literal': {
+      const props = ir.properties.map(p => `${p.key}: ${emitRuby(p.value)}`).join(', ');
+      return `{${props}}`;
+    }
+
     case 'variable':
       return ir.name;
 

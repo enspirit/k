@@ -102,6 +102,12 @@ function emitJS(ir: IRExpr): string {
     case 'duration_literal':
       return `dayjs.duration('${ir.value}')`;
 
+    case 'object_literal': {
+      const props = ir.properties.map(p => `${p.key}: ${emitJS(p.value)}`).join(', ');
+      // Wrap in parens to avoid parsing ambiguity with blocks
+      return `({${props}})`;
+    }
+
     case 'variable':
       return ir.name;
 

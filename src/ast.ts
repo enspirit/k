@@ -2,7 +2,7 @@
  * AST node types for Klang expressions
  */
 
-export type Expr = Literal | StringLiteral | Variable | BinaryOp | UnaryOp | DateLiteral | DateTimeLiteral | DurationLiteral | TemporalKeyword | FunctionCall | MemberAccess | LetExpr | IfExpr | Lambda;
+export type Expr = Literal | StringLiteral | Variable | BinaryOp | UnaryOp | DateLiteral | DateTimeLiteral | DurationLiteral | TemporalKeyword | FunctionCall | MemberAccess | LetExpr | IfExpr | Lambda | ObjectLiteral;
 
 /**
  * Literal value (number or boolean)
@@ -224,4 +224,27 @@ export function ifExpr(condition: Expr, thenBranch: Expr, elseBranch: Expr): IfE
  */
 export function lambda(params: string[], body: Expr): Lambda {
   return { type: 'lambda', params, body };
+}
+
+/**
+ * Object property (key-value pair)
+ */
+export interface ObjectProperty {
+  key: string;
+  value: Expr;
+}
+
+/**
+ * Object literal: {key: value, ...}
+ */
+export interface ObjectLiteral {
+  type: 'object';
+  properties: ObjectProperty[];
+}
+
+/**
+ * Creates an object literal: {key: value, ...}
+ */
+export function objectLiteral(properties: ObjectProperty[]): ObjectLiteral {
+  return { type: 'object', properties };
 }

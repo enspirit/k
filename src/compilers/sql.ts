@@ -1,6 +1,7 @@
 import { Expr } from '../ast';
-import { IRExpr, IRCall } from '../ir';
+import { IRExpr, IRCall, inferType } from '../ir';
 import { transform } from '../transform';
+import { Types } from '../types';
 import { EmitContext } from '../stdlib';
 import { createSQLBinding, isNativeBinaryOp, SQL_OP_MAP } from '../bindings/sql';
 
@@ -100,13 +101,30 @@ function emitSQL(ir: IRExpr): string {
     case 'duration_literal':
       return `INTERVAL '${ir.value}'`;
 
+    case 'object_literal': {
+      if (ir.properties.length === 0) {
+        return `'{}'::jsonb`;
+      }
+      const args = ir.properties
+        .map(p => `'${p.key}', ${emitSQL(p.value)}`)
+        .join(', ');
+      return `jsonb_build_object(${args})`;
+    }
+
     case 'variable':
       return ir.name;
 
     case 'member_access': {
       const object = emitSQL(ir.object);
+      const objectType = inferType(ir.object);
       const needsParensForMember = ir.object.type === 'call' && isNativeBinaryOp(ir.object);
       const objectExpr = needsParensForMember ? `(${object})` : object;
+
+      // Use JSON access for object types
+      if (objectType.kind === 'object') {
+        return `${objectExpr}->>'${ir.property}'`;
+      }
+
       return `${objectExpr}.${ir.property}`;
     }
 

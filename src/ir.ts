@@ -22,6 +22,7 @@ export type IRExpr =
   | IRDateLiteral
   | IRDateTimeLiteral
   | IRDurationLiteral
+  | IRObjectLiteral
   | IRVariable
   | IRCall
   | IRApply
@@ -84,6 +85,22 @@ export interface IRDateTimeLiteral {
 export interface IRDurationLiteral {
   type: 'duration_literal';
   value: string;
+}
+
+/**
+ * Object literal property
+ */
+export interface IRObjectProperty {
+  key: string;
+  value: IRExpr;
+}
+
+/**
+ * Object literal: {key: value, ...}
+ */
+export interface IRObjectLiteral {
+  type: 'object_literal';
+  properties: IRObjectProperty[];
 }
 
 /**
@@ -210,6 +227,10 @@ export function irDuration(value: string): IRDurationLiteral {
   return { type: 'duration_literal', value };
 }
 
+export function irObject(properties: IRObjectProperty[]): IRObjectLiteral {
+  return { type: 'object_literal', properties };
+}
+
 export function irVariable(name: string, inferredType: KlangType = Types.any): IRVariable {
   return { type: 'variable', name, inferredType };
 }
@@ -257,6 +278,8 @@ export function inferType(ir: IRExpr): KlangType {
       return Types.datetime;
     case 'duration_literal':
       return Types.duration;
+    case 'object_literal':
+      return Types.object;
     case 'variable':
       return ir.inferredType;
     case 'call':

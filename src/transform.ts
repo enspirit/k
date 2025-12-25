@@ -19,6 +19,7 @@ import {
   irDate,
   irDateTime,
   irDuration,
+  irObject,
   irVariable,
   irCall,
   irApply,
@@ -86,6 +87,14 @@ export function transform(expr: Expr, env: TypeEnv = new Map()): IRExpr {
 
     case 'lambda':
       return transformLambda(expr.params, expr.body, env);
+
+    case 'object':
+      return irObject(
+        expr.properties.map((prop) => ({
+          key: prop.key,
+          value: transform(prop.value, env),
+        }))
+      );
   }
 }
 

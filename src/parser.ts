@@ -1,4 +1,4 @@
-import { Expr, literal, stringLiteral, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral, temporalKeyword, functionCall, memberAccess, letExpr, ifExpr, lambda, LetBinding } from './ast';
+import { Expr, literal, stringLiteral, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral, temporalKeyword, functionCall, memberAccess, letExpr, ifExpr, lambda, LetBinding, objectLiteral, ObjectProperty } from './ast';
 
 /**
  * Token types
@@ -19,7 +19,10 @@ type TokenType =
   | 'CARET'
   | 'LPAREN'
   | 'RPAREN'
+  | 'LBRACE'
+  | 'RBRACE'
   | 'COMMA'
+  | 'COLON'
   | 'DOT'
   | 'PIPE'
   | 'RANGE_INCL'
@@ -394,7 +397,10 @@ class Lexer {
       case '^': return { type: 'CARET', value: char, position: pos };
       case '(': return { type: 'LPAREN', value: char, position: pos };
       case ')': return { type: 'RPAREN', value: char, position: pos };
+      case '{': return { type: 'LBRACE', value: char, position: pos };
+      case '}': return { type: 'RBRACE', value: char, position: pos };
       case ',': return { type: 'COMMA', value: char, position: pos };
+      case ':': return { type: 'COLON', value: char, position: pos };
       case '.':
         return { type: 'DOT', value: char, position: pos };
       case '<': return { type: 'LT', value: char, position: pos };
@@ -549,6 +555,11 @@ export class Parser {
     // Handle lambda expressions: fn( x | body ) or fn( x, y | body )
     if (token.type === 'FN') {
       return this.lambdaParse();
+    }
+
+    // Handle object literals: {key: value, ...}
+    if (token.type === 'LBRACE') {
+      return this.objectParse();
     }
 
     throw new Error(`Unexpected token ${token.type} at position ${token.position}`);
@@ -875,6 +886,41 @@ export class Parser {
     this.eat('RPAREN');
 
     return lambda(params, body);
+  }
+
+  /**
+   * Parse object literal: {key: value, key2: value2, ...}
+   */
+  private objectParse(): Expr {
+    this.eat('LBRACE');
+
+    const properties: ObjectProperty[] = [];
+
+    // Handle empty object
+    if (this.currentToken.type === 'RBRACE') {
+      this.eat('RBRACE');
+      return objectLiteral(properties);
+    }
+
+    // Parse first property
+    const firstName = this.currentToken.value;
+    this.eat('IDENTIFIER');
+    this.eat('COLON');
+    const firstValue = this.expr();
+    properties.push({ key: firstName, value: firstValue });
+
+    // Parse additional properties
+    while (this.currentToken.type === 'COMMA') {
+      this.eat('COMMA');
+      const name = this.currentToken.value;
+      this.eat('IDENTIFIER');
+      this.eat('COLON');
+      const value = this.expr();
+      properties.push({ key: name, value });
+    }
+
+    this.eat('RBRACE');
+    return objectLiteral(properties);
   }
 
   private expr(): Expr {
