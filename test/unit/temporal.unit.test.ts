@@ -139,6 +139,54 @@ describe('Temporal - Date Arithmetic', () => {
       assert.strictEqual(ast.right.type, 'date');
     }
   });
+
+  it('should compile duration scaling (n * duration)', () => {
+    const ast = parse('2 * P1D');
+    assert.strictEqual(
+      compileToJavaScript(ast),
+      "dayjs.duration(dayjs.duration('P1D').asMilliseconds() * 2)"
+    );
+    assert.strictEqual(
+      compileToRuby(ast),
+      "2 * ActiveSupport::Duration.parse('P1D')"
+    );
+    assert.strictEqual(
+      compileToSQL(ast),
+      "2 * INTERVAL 'P1D'"
+    );
+  });
+
+  it('should compile duration scaling (duration * n)', () => {
+    const ast = parse('P1D * 2');
+    assert.strictEqual(
+      compileToJavaScript(ast),
+      "dayjs.duration(dayjs.duration('P1D').asMilliseconds() * 2)"
+    );
+    assert.strictEqual(
+      compileToRuby(ast),
+      "ActiveSupport::Duration.parse('P1D') * 2"
+    );
+    assert.strictEqual(
+      compileToSQL(ast),
+      "INTERVAL 'P1D' * 2"
+    );
+  });
+
+  it('should compile duration division (duration / n)', () => {
+    const ast = parse('P2D / 2');
+    assert.strictEqual(
+      compileToJavaScript(ast),
+      "dayjs.duration(dayjs.duration('P2D').asMilliseconds() / 2)"
+    );
+    assert.strictEqual(
+      compileToRuby(ast),
+      "ActiveSupport::Duration.parse('P2D') / 2"
+    );
+    assert.strictEqual(
+      compileToSQL(ast),
+      "INTERVAL 'P2D' / 2"
+    );
+  });
 });
 
 describe('Temporal - Date Comparisons', () => {

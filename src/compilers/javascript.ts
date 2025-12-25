@@ -265,6 +265,17 @@ function emitCall(fn: string, args: IRExpr[], _ir: IRCall): string {
       const right = emitChildWithParens(args[1], '*', 'right');
       return `${left} * ${right}`;
     }
+    // Duration scaling: n * duration or duration * n
+    if (fn === 'mul_int_duration' || fn === 'mul_float_duration') {
+      const scalar = emitJS(args[0]);
+      const dur = emitJS(args[1]);
+      return `dayjs.duration(${dur}.asMilliseconds() * ${scalar})`;
+    }
+    if (fn === 'mul_duration_int' || fn === 'mul_duration_float') {
+      const dur = emitJS(args[0]);
+      const scalar = emitJS(args[1]);
+      return `dayjs.duration(${dur}.asMilliseconds() * ${scalar})`;
+    }
     return `klang.multiply(${emitJS(args[0])}, ${emitJS(args[1])})`;
   }
 
@@ -275,6 +286,12 @@ function emitCall(fn: string, args: IRExpr[], _ir: IRCall): string {
       const left = emitChildWithParens(args[0], '/', 'left');
       const right = emitChildWithParens(args[1], '/', 'right');
       return `${left} / ${right}`;
+    }
+    // Duration division: duration / n
+    if (fn === 'div_duration_int' || fn === 'div_duration_float') {
+      const dur = emitJS(args[0]);
+      const scalar = emitJS(args[1]);
+      return `dayjs.duration(${dur}.asMilliseconds() / ${scalar})`;
     }
     return `klang.divide(${emitJS(args[0])}, ${emitJS(args[1])})`;
   }
