@@ -815,7 +815,22 @@ select:focus {
 
 /* Standard Library Section */
 .stdlib-section {
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.stdlib-section h2 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.stdlib-section > p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
 }
 
 .stdlib-search {
@@ -918,19 +933,266 @@ select:focus {
   font-size: 0.75rem;
 }
 
+/* Stdlib Panel */
+.stdlib-panel {
+  display: block;
+  overflow-y: auto;
+  background: var(--bg-primary);
+}
+
+.stdlib-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.stdlib-header {
+  margin-bottom: 2rem;
+}
+
+.stdlib-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.stdlib-header .intro {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.stdlib-search-bar {
+  position: relative;
+  max-width: 400px;
+}
+
+.stdlib-search-bar input {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: var(--font-sans);
+}
+
+.stdlib-search-bar input::placeholder {
+  color: var(--text-secondary);
+}
+
+.stdlib-search-bar input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.stdlib-search-clear {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: none;
+}
+
+.stdlib-search-clear:hover {
+  color: var(--text-primary);
+}
+
+.stdlib-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.stdlib-footer p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+
+.stdlib-footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.stdlib-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Mobile menu toggle button */
+.mobile-menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.hamburger-icon {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+  position: relative;
+}
+
+.hamburger-icon::before,
+.hamburger-icon::after {
+  content: '';
+  position: absolute;
+  width: 24px;
+  height: 2px;
+  background: var(--text-primary);
+  left: 0;
+}
+
+.hamburger-icon::before {
+  top: -7px;
+}
+
+.hamburger-icon::after {
+  top: 7px;
+}
+
+/* Mobile TOC toggle button */
+.mobile-toc-toggle {
+  display: none;
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  background: var(--accent);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  padding: 0.75rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 100;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.mobile-toc-toggle:hover {
+  background: var(--accent-hover);
+}
+
+.toc-icon {
+  font-size: 1rem;
+}
+
+/* TOC header with close button */
+.toc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.toc-header .toc-title {
+  margin-bottom: 0;
+}
+
+.toc-close {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  line-height: 1;
+}
+
+.toc-close:hover {
+  color: var(--text-primary);
+}
+
 /* Responsive */
 @media (max-width: 768px) {
-  main:not(.doc-panel):not(.home-panel) {
+  /* Mobile menu toggle visible */
+  .mobile-menu-toggle {
+    display: block;
+  }
+
+  /* Nav hidden by default on mobile */
+  header nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border);
+    flex-direction: column;
+    padding: 0.5rem 0;
+    z-index: 1000;
+  }
+
+  header nav.mobile-open {
+    display: flex;
+  }
+
+  header nav a {
+    padding: 0.75rem 1.5rem;
+    border-radius: 0;
+  }
+
+  header {
+    position: relative;
+  }
+
+  main:not(.doc-panel):not(.home-panel):not(.stdlib-panel) {
     grid-template-columns: 1fr;
     grid-template-rows: 1fr 1fr;
   }
 
   .doc-panel {
     display: block;
+    position: relative;
   }
 
+  /* Mobile TOC button visible */
+  .mobile-toc-toggle {
+    display: flex;
+  }
+
+  /* TOC hidden by default, slides in when opened */
   .doc-toc {
     display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    background: var(--bg-secondary);
+    z-index: 200;
+    padding: 1.5rem;
+    overflow-y: auto;
+  }
+
+  .doc-toc.mobile-open {
+    display: flex;
+  }
+
+  .toc-close {
+    display: block;
   }
 
   .doc-content {
@@ -967,5 +1229,22 @@ select:focus {
   .target-card {
     flex-direction: column;
     gap: 0.5rem;
+  }
+
+  /* Stdlib responsive */
+  .stdlib-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .stdlib-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .stdlib-search-bar {
+    max-width: 100%;
+  }
+
+  .stdlib-grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -9,10 +9,14 @@
 <body data-controller="tabs">
   <header>
     <a href="#home" class="logo" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="home">K, a portable expression language</a>
-    <nav>
+    <button class="mobile-menu-toggle" data-action="click->tabs#toggleMobileMenu" aria-label="Toggle menu">
+      <span class="hamburger-icon"></span>
+    </button>
+    <nav data-tabs-target="nav">
       <a href="#home" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="home" class="active">Home</a>
       <a href="#try" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="try">Try</a>
-      <a href="#doc" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="doc">Doc</a>
+      <a href="#doc" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="doc">Reference</a>
+      <a href="#stdlib" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="stdlib">Stdlib</a>
     </nav>
   </header>
 
@@ -213,42 +217,28 @@ result;</pre>
   </main>
 
   <!-- Doc Panel -->
-  <main data-tabs-target="panel" data-panel="doc" class="doc-panel hidden" data-controller="doc stdlib-search">
-    <nav class="doc-toc">
-      <div class="toc-title">Language</div>
-      <ul>
-        <li><a href="#doc/getting-started">Getting Started</a></li>
-        <li><a href="#doc/literals">Literals</a></li>
-        <li><a href="#doc/operators">Operators</a></li>
-        <li><a href="#doc/variables">Local Variables</a></li>
-        <li><a href="#doc/conditionals">Conditionals</a></li>
-        <li><a href="#doc/lambdas">Lambda Expressions</a></li>
-        <li><a href="#doc/ranges">Range Membership</a></li>
-        <li><a href="#doc/assertions">Assertions</a></li>
-        <li><a href="#doc/examples">Real-World Examples</a></li>
-      </ul>
-      <div class="toc-title">Standard Library</div>
-      <div class="toc-search">
-        <input
-          type="text"
-          placeholder="Search stdlib..."
-          data-stdlib-search-target="input"
-          data-action="input->stdlib-search#filter"
-        />
-        <button
-          type="button"
-          class="toc-search-clear"
-          data-stdlib-search-target="clearButton"
-          data-action="click->stdlib-search#clear"
-          aria-label="Clear search"
-        >&times;</button>
+  <main data-tabs-target="panel" data-panel="doc" class="doc-panel hidden" data-controller="doc">
+    <nav class="doc-toc" data-tabs-target="docToc">
+      <div class="toc-header">
+        <div class="toc-title">Language Reference</div>
+        <button class="toc-close" data-action="click->tabs#closeMobileToc" aria-label="Close menu">&times;</button>
       </div>
       <ul>
-        <li><a href="#doc/stdlib-numeric">Numeric Functions</a></li>
-        <li><a href="#doc/stdlib-temporal">Temporal Functions</a></li>
-        <li><a href="#doc/stdlib-string">String Functions</a></li>
+        <li><a href="#doc/getting-started" data-action="click->tabs#closeMobileToc">Getting Started</a></li>
+        <li><a href="#doc/literals" data-action="click->tabs#closeMobileToc">Literals</a></li>
+        <li><a href="#doc/operators" data-action="click->tabs#closeMobileToc">Operators</a></li>
+        <li><a href="#doc/variables" data-action="click->tabs#closeMobileToc">Local Variables</a></li>
+        <li><a href="#doc/conditionals" data-action="click->tabs#closeMobileToc">Conditionals</a></li>
+        <li><a href="#doc/lambdas" data-action="click->tabs#closeMobileToc">Lambda Expressions</a></li>
+        <li><a href="#doc/ranges" data-action="click->tabs#closeMobileToc">Range Membership</a></li>
+        <li><a href="#doc/assertions" data-action="click->tabs#closeMobileToc">Assertions</a></li>
+        <li><a href="#doc/examples" data-action="click->tabs#closeMobileToc">Real-World Examples</a></li>
       </ul>
     </nav>
+    <button class="mobile-toc-toggle" data-action="click->tabs#openMobileToc" aria-label="Open table of contents">
+      <span class="toc-icon">&#9776;</span>
+      <span>Contents</span>
+    </button>
     <article class="doc-content">
       <h1>The K Language</h1>
       <p class="intro">
@@ -565,10 +555,42 @@ in
         </div>
       </section>
 
-      <!-- Standard Library -->
-      <section class="doc-section stdlib-section" id="stdlib-numeric">
+      <footer class="doc-footer">
+        <p>
+          K compiles to semantically equivalent code in JavaScript, Ruby, and SQL.
+          <br>
+          <a href="https://github.com/klang-lang/klang" target="_blank">View on GitHub</a>
+        </p>
+      </footer>
+    </article>
+  </main>
+
+  <!-- Stdlib Panel -->
+  <main data-tabs-target="panel" data-panel="stdlib" class="stdlib-panel hidden" data-controller="doc stdlib-search">
+    <div class="stdlib-content">
+      <header class="stdlib-header">
+        <h1>Standard Library</h1>
+        <p class="intro">Built-in functions available in K. Click any function to try it in the playground.</p>
+        <div class="stdlib-search-bar">
+          <input
+            type="text"
+            placeholder="Search functions..."
+            data-stdlib-search-target="input"
+            data-action="input->stdlib-search#filter"
+          />
+          <button
+            type="button"
+            class="stdlib-search-clear"
+            data-stdlib-search-target="clearButton"
+            data-action="click->stdlib-search#clear"
+            aria-label="Clear search"
+          >&times;</button>
+        </div>
+      </header>
+
+      <section class="stdlib-section" id="stdlib-numeric" data-stdlib-search-target="section">
         <h2>Numeric Functions</h2>
-        <p>K provides common mathematical functions for numeric operations.</p>
+        <p>Common mathematical functions for numeric operations.</p>
 
         <div class="stdlib-grid" data-stdlib-search-target="grid">
           <div class="stdlib-fn" data-action="click->doc#tryExample">
@@ -601,9 +623,9 @@ in
         </div>
       </section>
 
-      <section class="doc-section stdlib-section" id="stdlib-temporal">
+      <section class="stdlib-section" id="stdlib-temporal" data-stdlib-search-target="section">
         <h2>Temporal Functions</h2>
-        <p>K provides functions to extract components from dates and datetimes.</p>
+        <p>Functions to extract components from dates and datetimes.</p>
 
         <div class="stdlib-grid" data-stdlib-search-target="grid">
           <div class="stdlib-fn" data-action="click->doc#tryExample">
@@ -631,21 +653,21 @@ in
             <div class="fn-name">hour</div>
             <div class="fn-sig">(dt: DateTime) → Int</div>
             <p class="fn-desc">Extracts the hour (0-23) from a datetime.</p>
-            <div class="fn-example"><code class="example-code">hour(D2024-06-15T14:30:00Z)</code><span class="fn-result">→ 14</span></div>
+            <div class="fn-example"><code class="example-code">hour(T2024-06-15T14:30:00)</code><span class="fn-result">→ 14</span></div>
           </div>
 
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">minute</div>
             <div class="fn-sig">(dt: DateTime) → Int</div>
             <p class="fn-desc">Extracts the minute (0-59) from a datetime.</p>
-            <div class="fn-example"><code class="example-code">minute(D2024-06-15T14:30:00Z)</code><span class="fn-result">→ 30</span></div>
+            <div class="fn-example"><code class="example-code">minute(T2024-06-15T14:30:00)</code><span class="fn-result">→ 30</span></div>
           </div>
         </div>
       </section>
 
-      <section class="doc-section stdlib-section" id="stdlib-string">
+      <section class="stdlib-section" id="stdlib-string" data-stdlib-search-target="section">
         <h2>String Functions</h2>
-        <p>K provides a comprehensive set of string manipulation functions.</p>
+        <p>A comprehensive set of string manipulation functions.</p>
 
         <div class="stdlib-grid" data-stdlib-search-target="grid">
           <div class="stdlib-fn" data-action="click->doc#tryExample">
@@ -755,14 +777,14 @@ in
         </div>
       </section>
 
-      <footer class="doc-footer">
+      <footer class="stdlib-footer">
         <p>
           K compiles to semantically equivalent code in JavaScript, Ruby, and SQL.
           <br>
           <a href="https://github.com/klang-lang/klang" target="_blank">View on GitHub</a>
         </p>
       </footer>
-    </article>
+    </div>
   </main>
 
   <script type="module" src="dist/bundle.js"></script>

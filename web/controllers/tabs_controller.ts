@@ -1,10 +1,14 @@
 import { Controller } from '@hotwired/stimulus';
 
 export default class TabsController extends Controller {
-  static targets = ['tab', 'panel'];
+  static targets = ['tab', 'panel', 'nav', 'docToc'];
 
   declare tabTargets: HTMLAnchorElement[];
   declare panelTargets: HTMLElement[];
+  declare navTarget: HTMLElement;
+  declare hasNavTarget: boolean;
+  declare docTocTarget: HTMLElement;
+  declare hasDocTocTarget: boolean;
 
   connect() {
     // Handle initial hash on page load
@@ -25,10 +29,10 @@ export default class TabsController extends Controller {
       return;
     }
 
-    // Parse hash: could be "home", "try", "doc", or "doc/section-name"
+    // Parse hash: could be "home", "try", "doc", "stdlib", or "doc/section-name"
     const [tabName, section] = hash.split('/');
 
-    if (['home', 'try', 'doc'].includes(tabName)) {
+    if (['home', 'try', 'doc', 'stdlib'].includes(tabName)) {
       this.activateTab(tabName, section);
     } else {
       // Unknown hash, default to home
@@ -42,6 +46,8 @@ export default class TabsController extends Controller {
     const tabName = target.dataset.tab;
 
     if (tabName) {
+      // Close mobile menu when switching tabs
+      this.closeMobileMenu();
       // Update URL hash (this will trigger hashchange and activateTab)
       window.location.hash = tabName;
     }
@@ -59,13 +65,39 @@ export default class TabsController extends Controller {
     });
 
     // If there's a section, scroll to it after a brief delay (for DOM to update)
-    if (section && tabName === 'doc') {
+    if (section && (tabName === 'doc' || tabName === 'stdlib')) {
       setTimeout(() => {
         const sectionElement = document.getElementById(section);
         if (sectionElement) {
           sectionElement.scrollIntoView({ behavior: 'smooth' });
         }
       }, 50);
+    }
+  }
+
+  // Mobile menu toggle
+  toggleMobileMenu() {
+    if (this.hasNavTarget) {
+      this.navTarget.classList.toggle('mobile-open');
+    }
+  }
+
+  closeMobileMenu() {
+    if (this.hasNavTarget) {
+      this.navTarget.classList.remove('mobile-open');
+    }
+  }
+
+  // Mobile TOC for doc panel
+  openMobileToc() {
+    if (this.hasDocTocTarget) {
+      this.docTocTarget.classList.add('mobile-open');
+    }
+  }
+
+  closeMobileToc() {
+    if (this.hasDocTocTarget) {
+      this.docTocTarget.classList.remove('mobile-open');
     }
   }
 }
