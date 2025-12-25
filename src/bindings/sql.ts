@@ -185,6 +185,26 @@ export function createSQLBinding(): StdLib<string> {
   sqlLib.register('padEnd', [Types.string, Types.int, Types.string], (args, ctx) =>
     `RPAD(${ctx.emit(args[0])}, ${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
 
+  // Numeric functions
+  sqlLib.register('abs', [Types.int], (args, ctx) => `ABS(${ctx.emit(args[0])})`);
+  sqlLib.register('abs', [Types.float], (args, ctx) => `ABS(${ctx.emit(args[0])})`);
+  sqlLib.register('round', [Types.int], (args, ctx) => ctx.emit(args[0]));
+  sqlLib.register('round', [Types.float], (args, ctx) => `ROUND(${ctx.emit(args[0])})`);
+  sqlLib.register('floor', [Types.int], (args, ctx) => ctx.emit(args[0]));
+  sqlLib.register('floor', [Types.float], (args, ctx) => `FLOOR(${ctx.emit(args[0])})`);
+  sqlLib.register('ceil', [Types.int], (args, ctx) => ctx.emit(args[0]));
+  sqlLib.register('ceil', [Types.float], (args, ctx) => `CEIL(${ctx.emit(args[0])})`);
+
+  // Temporal extraction functions
+  sqlLib.register('year', [Types.date], (args, ctx) => `EXTRACT(YEAR FROM ${ctx.emit(args[0])})`);
+  sqlLib.register('year', [Types.datetime], (args, ctx) => `EXTRACT(YEAR FROM ${ctx.emit(args[0])})`);
+  sqlLib.register('month', [Types.date], (args, ctx) => `EXTRACT(MONTH FROM ${ctx.emit(args[0])})`);
+  sqlLib.register('month', [Types.datetime], (args, ctx) => `EXTRACT(MONTH FROM ${ctx.emit(args[0])})`);
+  sqlLib.register('day', [Types.date], (args, ctx) => `EXTRACT(DAY FROM ${ctx.emit(args[0])})`);
+  sqlLib.register('day', [Types.datetime], (args, ctx) => `EXTRACT(DAY FROM ${ctx.emit(args[0])})`);
+  sqlLib.register('hour', [Types.datetime], (args, ctx) => `EXTRACT(HOUR FROM ${ctx.emit(args[0])})`);
+  sqlLib.register('minute', [Types.datetime], (args, ctx) => `EXTRACT(MINUTE FROM ${ctx.emit(args[0])})`);
+
   // Fallback for unknown functions - uppercase for SQL
   sqlLib.registerFallback((name, args, _argTypes, ctx) => {
     const emittedArgs = args.map(a => ctx.emit(a)).join(', ');

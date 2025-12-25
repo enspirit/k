@@ -227,6 +227,8 @@ result;</pre>
       </ul>
       <div class="toc-title">Standard Library</div>
       <ul>
+        <li><a href="#stdlib-numeric">Numeric Functions</a></li>
+        <li><a href="#stdlib-temporal">Temporal Functions</a></li>
         <li><a href="#stdlib-string">String Functions</a></li>
       </ul>
     </nav>
@@ -466,6 +468,83 @@ in
       </section>
 
       <!-- Standard Library -->
+      <section class="doc-section stdlib-section" id="stdlib-numeric" data-controller="stdlib-search">
+        <h2>Numeric Functions</h2>
+        <p>K provides common mathematical functions for numeric operations.</p>
+
+        <div class="stdlib-grid" data-stdlib-search-target="grid">
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">abs</div>
+            <div class="fn-sig">(n: Int | Float) → Int | Float</div>
+            <p class="fn-desc">Returns the absolute value of a number.</p>
+            <div class="fn-example"><code class="example-code">abs(-5)</code><span class="fn-result">→ 5</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">round</div>
+            <div class="fn-sig">(n: Float) → Int</div>
+            <p class="fn-desc">Rounds a number to the nearest integer.</p>
+            <div class="fn-example"><code class="example-code">round(3.7)</code><span class="fn-result">→ 4</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">floor</div>
+            <div class="fn-sig">(n: Float) → Int</div>
+            <p class="fn-desc">Rounds a number down to the nearest integer.</p>
+            <div class="fn-example"><code class="example-code">floor(3.9)</code><span class="fn-result">→ 3</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">ceil</div>
+            <div class="fn-sig">(n: Float) → Int</div>
+            <p class="fn-desc">Rounds a number up to the nearest integer.</p>
+            <div class="fn-example"><code class="example-code">ceil(3.2)</code><span class="fn-result">→ 4</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-section stdlib-section" id="stdlib-temporal" data-controller="stdlib-search">
+        <h2>Temporal Functions</h2>
+        <p>K provides functions to extract components from dates and datetimes.</p>
+
+        <div class="stdlib-grid" data-stdlib-search-target="grid">
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">year</div>
+            <div class="fn-sig">(d: Date | DateTime) → Int</div>
+            <p class="fn-desc">Extracts the year from a date or datetime.</p>
+            <div class="fn-example"><code class="example-code">year(D2024-06-15)</code><span class="fn-result">→ 2024</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">month</div>
+            <div class="fn-sig">(d: Date | DateTime) → Int</div>
+            <p class="fn-desc">Extracts the month (1-12) from a date or datetime.</p>
+            <div class="fn-example"><code class="example-code">month(D2024-06-15)</code><span class="fn-result">→ 6</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">day</div>
+            <div class="fn-sig">(d: Date | DateTime) → Int</div>
+            <p class="fn-desc">Extracts the day of month (1-31) from a date or datetime.</p>
+            <div class="fn-example"><code class="example-code">day(D2024-06-15)</code><span class="fn-result">→ 15</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">hour</div>
+            <div class="fn-sig">(dt: DateTime) → Int</div>
+            <p class="fn-desc">Extracts the hour (0-23) from a datetime.</p>
+            <div class="fn-example"><code class="example-code">hour(D2024-06-15T14:30:00Z)</code><span class="fn-result">→ 14</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">minute</div>
+            <div class="fn-sig">(dt: DateTime) → Int</div>
+            <p class="fn-desc">Extracts the minute (0-59) from a datetime.</p>
+            <div class="fn-example"><code class="example-code">minute(D2024-06-15T14:30:00Z)</code><span class="fn-result">→ 30</span></div>
+          </div>
+        </div>
+      </section>
+
       <section class="doc-section stdlib-section" id="stdlib-string" data-controller="stdlib-search">
         <h2>String Functions</h2>
         <p>K provides a comprehensive set of string manipulation functions.</p>

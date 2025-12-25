@@ -203,6 +203,26 @@ export function createJavaScriptBinding(): StdLib<string> {
   jsLib.register('padEnd', [Types.string, Types.int, Types.string], (args, ctx) =>
     `${ctx.emit(args[0])}.padEnd(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
 
+  // Numeric functions
+  jsLib.register('abs', [Types.int], fnCall('Math.abs'));
+  jsLib.register('abs', [Types.float], fnCall('Math.abs'));
+  jsLib.register('round', [Types.int], (args, ctx) => ctx.emit(args[0]));
+  jsLib.register('round', [Types.float], fnCall('Math.round'));
+  jsLib.register('floor', [Types.int], (args, ctx) => ctx.emit(args[0]));
+  jsLib.register('floor', [Types.float], fnCall('Math.floor'));
+  jsLib.register('ceil', [Types.int], (args, ctx) => ctx.emit(args[0]));
+  jsLib.register('ceil', [Types.float], fnCall('Math.ceil'));
+
+  // Temporal extraction functions
+  jsLib.register('year', [Types.date], (args, ctx) => `${ctx.emit(args[0])}.year()`);
+  jsLib.register('year', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.year()`);
+  jsLib.register('month', [Types.date], (args, ctx) => `(${ctx.emit(args[0])}.month() + 1)`);
+  jsLib.register('month', [Types.datetime], (args, ctx) => `(${ctx.emit(args[0])}.month() + 1)`);
+  jsLib.register('day', [Types.date], (args, ctx) => `${ctx.emit(args[0])}.date()`);
+  jsLib.register('day', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.date()`);
+  jsLib.register('hour', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.utc().hour()`);
+  jsLib.register('minute', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.utc().minute()`);
+
   // Fallback for unknown functions - use klang. namespace for runtime helpers
   jsLib.registerFallback((name, args, _argTypes, ctx) => {
     const emittedArgs = args.map(a => ctx.emit(a)).join(', ');

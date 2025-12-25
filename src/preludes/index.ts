@@ -11,9 +11,11 @@ const javascriptPrelude = `const dayjs = require('dayjs');
 const duration = require('dayjs/plugin/duration');
 const isoWeek = require('dayjs/plugin/isoWeek');
 const quarterOfYear = require('dayjs/plugin/quarterOfYear');
+const utc = require('dayjs/plugin/utc');
 dayjs.extend(duration);
 dayjs.extend(isoWeek);
 dayjs.extend(quarterOfYear);
+dayjs.extend(utc);
 
 const klang = {
 ${KLANG_ARITHMETIC_HELPERS}

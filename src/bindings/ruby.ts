@@ -176,6 +176,26 @@ export function createRubyBinding(): StdLib<string> {
   rubyLib.register('padEnd', [Types.string, Types.int, Types.string], (args, ctx) =>
     `${ctx.emit(args[0])}.ljust(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
 
+  // Numeric functions
+  rubyLib.register('abs', [Types.int], (args, ctx) => `${ctx.emit(args[0])}.abs`);
+  rubyLib.register('abs', [Types.float], (args, ctx) => `${ctx.emit(args[0])}.abs`);
+  rubyLib.register('round', [Types.int], (args, ctx) => ctx.emit(args[0]));
+  rubyLib.register('round', [Types.float], (args, ctx) => `${ctx.emit(args[0])}.round`);
+  rubyLib.register('floor', [Types.int], (args, ctx) => ctx.emit(args[0]));
+  rubyLib.register('floor', [Types.float], (args, ctx) => `${ctx.emit(args[0])}.floor`);
+  rubyLib.register('ceil', [Types.int], (args, ctx) => ctx.emit(args[0]));
+  rubyLib.register('ceil', [Types.float], (args, ctx) => `${ctx.emit(args[0])}.ceil`);
+
+  // Temporal extraction functions
+  rubyLib.register('year', [Types.date], (args, ctx) => `${ctx.emit(args[0])}.year`);
+  rubyLib.register('year', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.year`);
+  rubyLib.register('month', [Types.date], (args, ctx) => `${ctx.emit(args[0])}.month`);
+  rubyLib.register('month', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.month`);
+  rubyLib.register('day', [Types.date], (args, ctx) => `${ctx.emit(args[0])}.day`);
+  rubyLib.register('day', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.day`);
+  rubyLib.register('hour', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.hour`);
+  rubyLib.register('minute', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.minute`);
+
   // Fallback for unknown functions
   rubyLib.registerFallback((name, args, _argTypes, ctx) => {
     const emittedArgs = args.map(a => ctx.emit(a)).join(', ');
