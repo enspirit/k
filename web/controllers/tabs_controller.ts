@@ -46,8 +46,11 @@ export default class TabsController extends Controller {
     if (tabName) {
       // Close mobile menu when switching tabs
       this.closeMobileMenu();
+      // Use the href if it contains a section, otherwise just the tab name
+      const href = target.getAttribute('href');
+      const hash = href?.startsWith('#') ? href.slice(1) : tabName;
       // Update URL hash (this will trigger hashchange and activateTab)
-      window.location.hash = tabName;
+      window.location.hash = hash;
     }
   }
 
