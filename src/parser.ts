@@ -1,4 +1,4 @@
-import { Expr, literal, stringLiteral, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral, temporalKeyword, functionCall, memberAccess, letExpr, ifExpr, lambda, predicate, LetBinding, objectLiteral, ObjectProperty, alternative } from './ast';
+import { Expr, literal, stringLiteral, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral, temporalKeyword, functionCall, memberAccess, letExpr, ifExpr, lambda, predicate, LetBinding, objectLiteral, ObjectProperty, alternative, apply } from './ast';
 
 /**
  * Token types
@@ -605,12 +605,28 @@ export class Parser {
   private postfix(): Expr {
     let expr = this.primary();
 
-    // Handle member access (dot notation)
-    while (this.currentToken.type === 'DOT') {
-      this.eat('DOT');
-      const property = this.currentToken.value;
-      this.eat('IDENTIFIER');
-      expr = memberAccess(expr, property);
+    // Handle member access (dot notation) and function application
+    while (this.currentToken.type === 'DOT' || this.currentToken.type === 'LPAREN') {
+      if (this.currentToken.type === 'DOT') {
+        this.eat('DOT');
+        const property = this.currentToken.value;
+        this.eat('IDENTIFIER');
+        expr = memberAccess(expr, property);
+      } else {
+        // Function application: expr(args)
+        this.eat('LPAREN');
+        const args: Expr[] = [];
+        // After eat(), currentToken changes - use type assertion to tell TypeScript
+        if ((this.currentToken as Token).type !== 'RPAREN') {
+          args.push(this.expr());
+          while ((this.currentToken as Token).type === 'COMMA') {
+            this.eat('COMMA');
+            args.push(this.expr());
+          }
+        }
+        this.eat('RPAREN');
+        expr = apply(expr, args);
+      }
     }
 
     return expr;

@@ -195,7 +195,10 @@ function emitJS(ir: IRExpr, requiredHelpers?: Set<string>): string {
     case 'apply': {
       const fn = ctx.emit(ir.fn);
       const args = ir.args.map(a => ctx.emit(a)).join(', ');
-      return `${fn}(${args})`;
+      // Wrap function in parens if it's a lambda or other complex expression
+      const needsParens = ir.fn.type === 'lambda' || ir.fn.type === 'predicate';
+      const fnExpr = needsParens ? `(${fn})` : fn;
+      return `${fnExpr}(${args})`;
     }
 
     case 'alternative': {

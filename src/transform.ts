@@ -143,6 +143,13 @@ function transformWithDepth(
 
     case 'alternative':
       return transformAlternative(expr.alternatives, env, defining, nextDepth, maxDepth);
+
+    case 'apply': {
+      const fnIR = recurse(expr.fn);
+      const argsIR = expr.args.map((arg) => recurse(arg));
+      const argTypes = argsIR.map(inferType);
+      return irApply(fnIR, argsIR, argTypes, Types.any);
+    }
   }
 }
 

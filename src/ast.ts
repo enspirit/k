@@ -2,7 +2,7 @@
  * AST node types for Elo expressions
  */
 
-export type Expr = Literal | StringLiteral | Variable | BinaryOp | UnaryOp | DateLiteral | DateTimeLiteral | DurationLiteral | TemporalKeyword | FunctionCall | MemberAccess | LetExpr | IfExpr | Lambda | Predicate | ObjectLiteral | Alternative;
+export type Expr = Literal | StringLiteral | Variable | BinaryOp | UnaryOp | DateLiteral | DateTimeLiteral | DurationLiteral | TemporalKeyword | FunctionCall | MemberAccess | LetExpr | IfExpr | Lambda | Predicate | ObjectLiteral | Alternative | Apply;
 
 /**
  * Literal value (number or boolean)
@@ -96,6 +96,15 @@ export interface UnaryOp {
 export interface FunctionCall {
   type: 'function_call';
   name: string;
+  args: Expr[];
+}
+
+/**
+ * Function application (calling an expression that evaluates to a function)
+ */
+export interface Apply {
+  type: 'apply';
+  fn: Expr;
   args: Expr[];
 }
 
@@ -195,6 +204,10 @@ export function temporalKeyword(keyword: TemporalKeyword['keyword']): TemporalKe
 
 export function functionCall(name: string, args: Expr[]): FunctionCall {
   return { type: 'function_call', name, args };
+}
+
+export function apply(fn: Expr, args: Expr[]): Apply {
+  return { type: 'apply', fn, args };
 }
 
 export function memberAccess(object: Expr, property: string): MemberAccess {
