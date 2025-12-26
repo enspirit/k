@@ -188,39 +188,46 @@ export function createJavaScriptBinding(): StdLib<string> {
     });
   }
 
-  // String functions
-  jsLib.register('length', [Types.string], (args, ctx) => `${ctx.emit(args[0])}.length`);
-  jsLib.register('upper', [Types.string], (args, ctx) => `${ctx.emit(args[0])}.toUpperCase()`);
-  jsLib.register('lower', [Types.string], (args, ctx) => `${ctx.emit(args[0])}.toLowerCase()`);
-  jsLib.register('trim', [Types.string], (args, ctx) => `${ctx.emit(args[0])}.trim()`);
-  jsLib.register('startsWith', [Types.string, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.startsWith(${ctx.emit(args[1])})`);
-  jsLib.register('endsWith', [Types.string, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.endsWith(${ctx.emit(args[1])})`);
-  jsLib.register('contains', [Types.string, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.includes(${ctx.emit(args[1])})`);
-  jsLib.register('substring', [Types.string, Types.int, Types.int], (args, ctx) => {
-    const s = ctx.emit(args[0]);
-    const start = ctx.emit(args[1]);
-    const len = ctx.emit(args[2]);
-    return `${s}.substring(${start}, ${start} + ${len})`;
-  });
-  jsLib.register('concat', [Types.string, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.concat(${ctx.emit(args[1])})`);
-  // indexOf returns null when not found (not -1)
-  jsLib.register('indexOf', [Types.string, Types.string], (args, ctx) =>
-    `(i => i === -1 ? null : i)(${ctx.emit(args[0])}.indexOf(${ctx.emit(args[1])}))`);
+  // String functions (register for both string and any to support lambdas with unknown types)
+  for (const t of [Types.string, Types.any]) {
+    jsLib.register('length', [t], (args, ctx) => `${ctx.emit(args[0])}.length`);
+    jsLib.register('upper', [t], (args, ctx) => `${ctx.emit(args[0])}.toUpperCase()`);
+    jsLib.register('lower', [t], (args, ctx) => `${ctx.emit(args[0])}.toLowerCase()`);
+    jsLib.register('trim', [t], (args, ctx) => `${ctx.emit(args[0])}.trim()`);
+  }
+  // String functions with two args (register for string and any)
+  for (const t of [Types.string, Types.any]) {
+    jsLib.register('startsWith', [t, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.startsWith(${ctx.emit(args[1])})`);
+    jsLib.register('endsWith', [t, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.endsWith(${ctx.emit(args[1])})`);
+    jsLib.register('contains', [t, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.includes(${ctx.emit(args[1])})`);
+    jsLib.register('concat', [t, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.concat(${ctx.emit(args[1])})`);
+    jsLib.register('indexOf', [t, Types.string], (args, ctx) =>
+      `(i => i === -1 ? null : i)(${ctx.emit(args[0])}.indexOf(${ctx.emit(args[1])}))`);
+    jsLib.register('isEmpty', [t], (args, ctx) =>
+      `(${ctx.emit(args[0])}.length === 0)`);
+  }
 
-  jsLib.register('replace', [Types.string, Types.string, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.replace(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
-  jsLib.register('replaceAll', [Types.string, Types.string, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.replaceAll(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
-  jsLib.register('isEmpty', [Types.string], (args, ctx) =>
-    `(${ctx.emit(args[0])}.length === 0)`);
-  jsLib.register('padStart', [Types.string, Types.int, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.padStart(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
-  jsLib.register('padEnd', [Types.string, Types.int, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.padEnd(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
+  // String functions with three args
+  for (const t of [Types.string, Types.any]) {
+    jsLib.register('substring', [t, Types.int, Types.int], (args, ctx) => {
+      const s = ctx.emit(args[0]);
+      const start = ctx.emit(args[1]);
+      const len = ctx.emit(args[2]);
+      return `${s}.substring(${start}, ${start} + ${len})`;
+    });
+    jsLib.register('replace', [t, Types.string, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.replace(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
+    jsLib.register('replaceAll', [t, Types.string, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.replaceAll(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
+    jsLib.register('padStart', [t, Types.int, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.padStart(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
+    jsLib.register('padEnd', [t, Types.int, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.padEnd(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
+  }
 
   // Numeric functions
   jsLib.register('abs', [Types.int], fnCall('Math.abs'));

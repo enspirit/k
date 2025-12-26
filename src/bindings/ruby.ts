@@ -160,34 +160,41 @@ export function createRubyBinding(): StdLib<string> {
     return `(raise ${message} unless ${condition}; true)`;
   });
 
-  // String functions
-  rubyLib.register('length', [Types.string], (args, ctx) => `${ctx.emit(args[0])}.length`);
-  rubyLib.register('upper', [Types.string], (args, ctx) => `${ctx.emit(args[0])}.upcase`);
-  rubyLib.register('lower', [Types.string], (args, ctx) => `${ctx.emit(args[0])}.downcase`);
-  rubyLib.register('trim', [Types.string], (args, ctx) => `${ctx.emit(args[0])}.strip`);
-  rubyLib.register('startsWith', [Types.string, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.start_with?(${ctx.emit(args[1])})`);
-  rubyLib.register('endsWith', [Types.string, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.end_with?(${ctx.emit(args[1])})`);
-  rubyLib.register('contains', [Types.string, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.include?(${ctx.emit(args[1])})`);
-  rubyLib.register('substring', [Types.string, Types.int, Types.int], (args, ctx) =>
-    `${ctx.emit(args[0])}[${ctx.emit(args[1])}, ${ctx.emit(args[2])}]`);
-  rubyLib.register('concat', [Types.string, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.concat(${ctx.emit(args[1])})`);
-  // indexOf returns nil when not found (Ruby's index already does this)
-  rubyLib.register('indexOf', [Types.string, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.index(${ctx.emit(args[1])})`);
-  rubyLib.register('replace', [Types.string, Types.string, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.sub(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
-  rubyLib.register('replaceAll', [Types.string, Types.string, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.gsub(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
-  rubyLib.register('isEmpty', [Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.empty?`);
-  rubyLib.register('padStart', [Types.string, Types.int, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.rjust(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
-  rubyLib.register('padEnd', [Types.string, Types.int, Types.string], (args, ctx) =>
-    `${ctx.emit(args[0])}.ljust(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
+  // String functions (register for string and any to support lambdas with unknown types)
+  for (const t of [Types.string, Types.any]) {
+    rubyLib.register('length', [t], (args, ctx) => `${ctx.emit(args[0])}.length`);
+    rubyLib.register('upper', [t], (args, ctx) => `${ctx.emit(args[0])}.upcase`);
+    rubyLib.register('lower', [t], (args, ctx) => `${ctx.emit(args[0])}.downcase`);
+    rubyLib.register('trim', [t], (args, ctx) => `${ctx.emit(args[0])}.strip`);
+    rubyLib.register('isEmpty', [t], (args, ctx) => `${ctx.emit(args[0])}.empty?`);
+  }
+  // String functions with two args
+  for (const t of [Types.string, Types.any]) {
+    rubyLib.register('startsWith', [t, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.start_with?(${ctx.emit(args[1])})`);
+    rubyLib.register('endsWith', [t, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.end_with?(${ctx.emit(args[1])})`);
+    rubyLib.register('contains', [t, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.include?(${ctx.emit(args[1])})`);
+    rubyLib.register('concat', [t, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.concat(${ctx.emit(args[1])})`);
+    // indexOf returns nil when not found (Ruby's index already does this)
+    rubyLib.register('indexOf', [t, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.index(${ctx.emit(args[1])})`);
+  }
+  // String functions with three args
+  for (const t of [Types.string, Types.any]) {
+    rubyLib.register('substring', [t, Types.int, Types.int], (args, ctx) =>
+      `${ctx.emit(args[0])}[${ctx.emit(args[1])}, ${ctx.emit(args[2])}]`);
+    rubyLib.register('replace', [t, Types.string, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.sub(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
+    rubyLib.register('replaceAll', [t, Types.string, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.gsub(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
+    rubyLib.register('padStart', [t, Types.int, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.rjust(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
+    rubyLib.register('padEnd', [t, Types.int, Types.string], (args, ctx) =>
+      `${ctx.emit(args[0])}.ljust(${ctx.emit(args[1])}, ${ctx.emit(args[2])})`);
+  }
 
   // Numeric functions (use rubyMethod to handle binary op precedence)
   rubyLib.register('abs', [Types.int], rubyMethod('abs'));

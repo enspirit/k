@@ -5,3 +5,6 @@
 ->(round) { (raise "Assertion failed" unless round.call(10) == 11; true) }.call(->(x) { x + 1 })
 ->(length) { (raise "Assertion failed" unless length.call("ignored") == 42; true) }.call(->(s) { 42 })
 ->(nested) { (raise "Assertion failed" unless nested.call(5) == 11; true) }.call(->(x) { ->(inner) { inner.call(x) + 1 }.call(->(y) { y * 2 }) })
+->(toUpper) { (raise "Assertion failed" unless toUpper.call("hello") == "HELLO"; true) }.call(->(s) { s.upcase })
+->(toLower) { (raise "Assertion failed" unless toLower.call("HELLO") == "hello"; true) }.call(->(s) { s.downcase })
+->(strLen) { (raise "Assertion failed" unless strLen.call("hello") == 5; true) }.call(->(s) { s.length })
