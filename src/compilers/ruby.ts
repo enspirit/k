@@ -2,7 +2,7 @@ import { Expr } from '../ast';
 import { IRExpr, IRCall } from '../ir';
 import { transform } from '../transform';
 import { EmitContext } from '../stdlib';
-import { createRubyBinding, isNativeBinaryOp } from '../bindings/ruby';
+import { createRubyBinding, isNativeBinaryOp, RUBY_OP_MAP } from '../bindings/ruby';
 
 /**
  * Ruby compilation options
@@ -25,22 +25,13 @@ const RUBY_PRECEDENCE: Record<string, number> = {
 };
 
 /**
- * Map IR function names to Ruby operators
- */
-const OP_MAP: Record<string, string> = {
-  'add': '+', 'sub': '-', 'mul': '*', 'div': '/', 'mod': '%', 'pow': '**',
-  'lt': '<', 'gt': '>', 'lte': '<=', 'gte': '>=',
-  'eq': '==', 'neq': '!=', 'and': '&&', 'or': '||',
-};
-
-/**
  * Check if an IR expression needs parentheses when used as child of a binary op
  */
 function needsParens(child: IRExpr, parentOp: string, side: 'left' | 'right'): boolean {
-  if (!isNativeBinaryOp(child, OP_MAP)) return false;
+  if (!isNativeBinaryOp(child)) return false;
 
   const call = child as IRCall;
-  const childOp = OP_MAP[call.fn];
+  const childOp = RUBY_OP_MAP[call.fn];
   if (!childOp) return false;
 
   const parentPrec = RUBY_PRECEDENCE[parentOp] || 0;
@@ -122,7 +113,7 @@ function emitRuby(ir: IRExpr): string {
 
     case 'member_access': {
       const object = emitRuby(ir.object);
-      const needsParensForMember = ir.object.type === 'call' && isNativeBinaryOp(ir.object, OP_MAP);
+      const needsParensForMember = ir.object.type === 'call' && isNativeBinaryOp(ir.object);
       const objectExpr = needsParensForMember ? `(${object})` : object;
       return `${objectExpr}[:${ir.property}]`;
     }

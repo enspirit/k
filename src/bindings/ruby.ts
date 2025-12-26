@@ -9,11 +9,20 @@ import { Types } from '../types';
 import { StdLib, EmitContext, simpleBinaryOp, nullary, rubyMethod } from '../stdlib';
 
 /**
+ * Map IR function names to Ruby operators
+ */
+export const RUBY_OP_MAP: Record<string, string> = {
+  'add': '+', 'sub': '-', 'mul': '*', 'div': '/', 'mod': '%', 'pow': '**',
+  'lt': '<', 'gt': '>', 'lte': '<=', 'gte': '>=',
+  'eq': '==', 'neq': '!=', 'and': '&&', 'or': '||',
+};
+
+/**
  * Check if a call will be emitted as a native Ruby binary operator
  */
-export function isNativeBinaryOp(ir: IRExpr, opMap: Record<string, string>): boolean {
+export function isNativeBinaryOp(ir: IRExpr): boolean {
   if (ir.type !== 'call') return false;
-  return opMap[ir.fn] !== undefined && ir.argTypes.length === 2;
+  return RUBY_OP_MAP[ir.fn] !== undefined && ir.argTypes.length === 2;
 }
 
 /**
@@ -120,32 +129,17 @@ export function createRubyBinding(): StdLib<string> {
   // Unary operators - type generalization handles int, float, and any
   rubyLib.register('neg', [Types.any], (args, ctx) => {
     const operand = ctx.emit(args[0]);
-    const OP_MAP: Record<string, string> = {
-      'add': '+', 'sub': '-', 'mul': '*', 'div': '/', 'mod': '%', 'pow': '**',
-      'lt': '<', 'gt': '>', 'lte': '<=', 'gte': '>=',
-      'eq': '==', 'neq': '!=', 'and': '&&', 'or': '||',
-    };
-    if (isNativeBinaryOp(args[0], OP_MAP)) return `-(${operand})`;
+    if (isNativeBinaryOp(args[0])) return `-(${operand})`;
     return `-${operand}`;
   });
   rubyLib.register('pos', [Types.any], (args, ctx) => {
     const operand = ctx.emit(args[0]);
-    const OP_MAP: Record<string, string> = {
-      'add': '+', 'sub': '-', 'mul': '*', 'div': '/', 'mod': '%', 'pow': '**',
-      'lt': '<', 'gt': '>', 'lte': '<=', 'gte': '>=',
-      'eq': '==', 'neq': '!=', 'and': '&&', 'or': '||',
-    };
-    if (isNativeBinaryOp(args[0], OP_MAP)) return `+(${operand})`;
+    if (isNativeBinaryOp(args[0])) return `+(${operand})`;
     return `+${operand}`;
   });
   rubyLib.register('not', [Types.any], (args, ctx) => {
     const operand = ctx.emit(args[0]);
-    const OP_MAP: Record<string, string> = {
-      'add': '+', 'sub': '-', 'mul': '*', 'div': '/', 'mod': '%', 'pow': '**',
-      'lt': '<', 'gt': '>', 'lte': '<=', 'gte': '>=',
-      'eq': '==', 'neq': '!=', 'and': '&&', 'or': '||',
-    };
-    if (isNativeBinaryOp(args[0], OP_MAP)) return `!(${operand})`;
+    if (isNativeBinaryOp(args[0])) return `!(${operand})`;
     return `!${operand}`;
   });
 
