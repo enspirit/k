@@ -6,13 +6,9 @@ export default class BlogController extends Controller {
   declare postTargets: HTMLElement[];
 
   connect() {
-    // First post is open by default, others are closed
-    this.postTargets.forEach((post, index) => {
-      if (index === 0) {
-        post.classList.add('open');
-      } else {
-        post.classList.remove('open');
-      }
+    // All posts closed by default
+    this.postTargets.forEach((post) => {
+      post.classList.remove('open');
     });
   }
 
