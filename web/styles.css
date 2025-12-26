@@ -2076,26 +2076,30 @@ body.light-theme .js-badge {
   margin-bottom: 0;
 }
 
-/* About Footer */
-.about-footer {
+/* About Footer & Blog Footer */
+.about-footer,
+.blog-footer {
   margin-top: 3rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--border);
   text-align: center;
 }
 
-.about-footer p {
+.about-footer p,
+.blog-footer p {
   color: var(--text-secondary);
   font-size: 0.875rem;
   line-height: 1.8;
 }
 
-.about-footer a {
+.about-footer a,
+.blog-footer a {
   color: var(--accent);
   text-decoration: none;
 }
 
-.about-footer a:hover {
+.about-footer a:hover,
+.blog-footer a:hover {
   text-decoration: underline;
 }
 
