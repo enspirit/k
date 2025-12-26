@@ -323,8 +323,15 @@ inRange && passing;</pre>
               <td>Lambda functions and predicates</td>
               <td><code>fn( x ~> x * 2 )</code>, <code>fn( x | x > 0 )</code></td>
             </tr>
+            <tr>
+              <td><code>NoVal</code></td>
+              <td>Null/undefined/nil values (from external sources)</td>
+              <td><code>typeOf(nullVar)</code> → <code>'NoVal'</code></td>
+            </tr>
           </tbody>
         </table>
+
+        <p class="note"><strong>Note:</strong> K has no null literal. <code>NoVal</code> represents null values that come from external sources (databases, JSON, APIs). Use <code>isVal()</code> and <code>orVal()</code> to handle them safely.</p>
 
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Type Introspection</div>
@@ -930,15 +937,29 @@ in
       </section>
 
       <section class="stdlib-section" id="stdlib-introspection" data-stdlib-search-target="section">
-        <h2>Type Introspection</h2>
-        <p>Functions to inspect the runtime type of values. See <a href="#doc/types" data-action="click->tabs#switch" data-tab="doc">Types</a> in the language reference for the complete list of type names.</p>
+        <h2>Type Introspection & Null Handling</h2>
+        <p>Functions to inspect types and handle null values safely. K has no null literal, but can receive null values from external sources. See <a href="#doc/types" data-action="click->tabs#switch" data-tab="doc">Types</a> in the language reference.</p>
 
         <div class="stdlib-grid" data-stdlib-search-target="grid">
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">typeOf</div>
             <div class="fn-sig">(value: Any) → String</div>
-            <p class="fn-desc">Returns the type name of the value as a capitalized string.</p>
+            <p class="fn-desc">Returns the type name of the value. Returns <code>'NoVal'</code> for null/undefined/nil.</p>
             <div class="fn-example"><code class="example-code">typeOf(42)</code><span class="fn-result">→ 'Int'</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">isVal</div>
+            <div class="fn-sig">(value: Any) → Bool</div>
+            <p class="fn-desc">Returns <code>true</code> if the value is not null/undefined/nil. Use to check if external values exist.</p>
+            <div class="fn-example"><code class="example-code">isVal(42)</code><span class="fn-result">→ true</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">orVal</div>
+            <div class="fn-sig">(value: Any, default: Any) → Any</div>
+            <p class="fn-desc">Returns the value if it's not null, otherwise returns the default. Like <code>??</code> in JavaScript or <code>COALESCE</code> in SQL.</p>
+            <div class="fn-example"><code class="example-code">orVal(42, 0)</code><span class="fn-result">→ 42</span></div>
           </div>
         </div>
       </section>
