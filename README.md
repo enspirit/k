@@ -64,6 +64,41 @@ npm run test:integration
 npm run test:acceptance
 ```
 
+## Command Line Interface
+
+Elo provides a CLI tool `eloc` for compiling expressions from the command line:
+
+```bash
+# Compile expression to JavaScript (default)
+./bin/eloc -e "2 + 3 * 4"
+
+# Compile expression to Ruby
+./bin/eloc -e "2 + 3 * 4" -t ruby
+
+# Compile expression to SQL
+./bin/eloc -e "2 + 3 * 4" -t sql
+
+# Compile with prelude (includes required runtime libraries)
+./bin/eloc -e "NOW + PT2H" -t ruby -p
+
+# Output only the prelude (useful for bundling)
+./bin/eloc --prelude-only -t js
+
+# Compile from file (each line is compiled separately)
+./bin/eloc input.elo -t ruby
+
+# Compile to file
+./bin/eloc -e "2 + 3" -t ruby -f output.rb
+```
+
+Options:
+- `-e, --expression <expr>` - Expression to compile
+- `-t, --target <lang>` - Target language: `ruby`, `js` (default), `sql`
+- `-p, --prelude` - Include necessary library imports/requires
+- `--prelude-only` - Output only the prelude (no expression needed)
+- `-f, --file <path>` - Output to file instead of stdout
+- `-h, --help` - Show help message
+
 ## Using Elo in JavaScript/TypeScript
 
 The simplest way to use Elo is with the `compile()` function, which creates a callable JavaScript function from an Elo lambda expression:
