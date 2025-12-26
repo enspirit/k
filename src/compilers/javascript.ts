@@ -189,14 +189,13 @@ function emitJS(ir: IRExpr, requiredHelpers?: Set<string>): string {
     }
 
     case 'alternative': {
-      // Compile to IIFE with try/catch for each alternative
-      // Returns first non-null value, catches exceptions along the way
-      const alts = ir.alternatives.map((alt, i) => {
+      // Compile to nullish coalescing chain: a ?? b ?? c
+      const alts = ir.alternatives.map(alt => {
         const code = ctx.emit(alt);
-        // Wrap each alternative in try/catch block
-        return `{ try { let v = ${code}; if (v != null) return v; } catch(e) { _err = e.message; } }`;
-      }).join(' ');
-      return `(function() { let _err = null; ${alts} return null; })()`;
+        // Wrap in parens if it's a complex expression
+        return alt.type === 'call' || alt.type === 'alternative' ? `(${code})` : code;
+      });
+      return alts.join(' ?? ');
     }
   }
 }

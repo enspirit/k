@@ -155,13 +155,16 @@ function emitRuby(ir: IRExpr): string {
     }
 
     case 'alternative': {
-      // Compile to lambda with begin/rescue for each alternative
-      // Returns first non-nil value, catches exceptions along the way
-      const alts = ir.alternatives.map((alt) => {
+      // Compile to lambda with early returns for non-nil values
+      const alts = ir.alternatives;
+      const parts = alts.slice(0, -1).map((alt) => {
         const code = emitRuby(alt);
-        return `begin; v = ${code}; return v unless v.nil?; rescue => e; _err = e.message; end`;
-      }).join('; ');
-      return `->() { _err = nil; ${alts}; nil }.call`;
+        return `v = ${code}; return v unless v.nil?`;
+      });
+      // Last alternative is just returned directly
+      const last = emitRuby(alts[alts.length - 1]);
+      parts.push(last);
+      return `->() { ${parts.join('; ')} }.call`;
     }
   }
 }
