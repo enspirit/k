@@ -990,12 +990,48 @@ describe('Parser - Pipe Operator', () => {
     }
   });
 
-  it('should error when right side is not a function call', () => {
-    assert.throws(() => parse("'hello' |> 5"), /Expected function call after \|>/);
+  it('should error when right side is not an identifier', () => {
+    assert.throws(() => parse("'hello' |> 5"), /Expected function name after \|>/);
   });
 
-  it('should error when function call has no parens', () => {
-    assert.throws(() => parse("'hello' |> upper"), /Expected '\(' after function name/);
+  it('should parse pipe without parentheses: x |> f', () => {
+    const ast = parse("'hello' |> upper");
+    assert.deepStrictEqual(ast, {
+      type: 'function_call',
+      name: 'upper',
+      args: [{ type: 'string', value: 'hello' }]
+    });
+  });
+
+  it('should parse pipe without parentheses with chaining: a |> f |> g', () => {
+    const ast = parse("'  hello  ' |> trim |> upper");
+    // Desugars to: upper(trim('  hello  '))
+    assert.strictEqual(ast.type, 'function_call');
+    if (ast.type === 'function_call') {
+      assert.strictEqual(ast.name, 'upper');
+      assert.strictEqual(ast.args.length, 1);
+      const inner = ast.args[0];
+      assert.strictEqual(inner.type, 'function_call');
+      if (inner.type === 'function_call') {
+        assert.strictEqual(inner.name, 'trim');
+        assert.deepStrictEqual(inner.args[0], { type: 'string', value: '  hello  ' });
+      }
+    }
+  });
+
+  it('should parse mixed pipe with and without parens: a |> f |> g(x)', () => {
+    const ast = parse("'hello' |> upper |> padStart(10)");
+    // Desugars to: padStart(upper('hello'), 10)
+    assert.strictEqual(ast.type, 'function_call');
+    if (ast.type === 'function_call') {
+      assert.strictEqual(ast.name, 'padStart');
+      assert.strictEqual(ast.args.length, 2);
+      const inner = ast.args[0];
+      assert.strictEqual(inner.type, 'function_call');
+      if (inner.type === 'function_call') {
+        assert.strictEqual(inner.name, 'upper');
+      }
+    }
   });
 
   it('should not confuse |> with | (predicate) or || (or)', () => {

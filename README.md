@@ -29,7 +29,7 @@ See also the Related work section below.
 - **Comparison operators**: `<`, `>`, `<=`, `>=`, `==`, `!=`
 - **Logical operators**: `&&`, `||`, `!`
 - **Unary operators**: `-`, `+`, `!`
-- **Pipe operator**: `|>` for function chaining (Elixir-style)
+- **Pipe operator**: `|>` for function chaining (Elixir-style), parentheses optional
 - **Alternative operator**: `|` for fallback chains (returns first defined value)
 - **Type selectors**: `Int()`, `Float()`, `Bool()`, `Date()`, `Datetime()`, `Duration()` for parsing strings to typed values
 - **Literals**:

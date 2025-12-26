@@ -431,7 +431,7 @@ class Lexer {
  *
  * Grammar:
  *   expr        -> pipe
- *   pipe        -> logical_or ('|>' call)*      // lowest precedence, left-assoc
+ *   pipe        -> logical_or ('|>' IDENTIFIER call?)*  // lowest precedence, left-assoc, parens optional
  *   logical_or  -> logical_and ('||' logical_and)*
  *   logical_and -> alternative ('&&' alternative)*
  *   alternative -> equality ('|' equality)*     // alternative/fallback operator
@@ -811,9 +811,10 @@ export class Parser {
   }
 
   /**
-   * Parse pipe expressions: a |> f(b) |> g(c)
-   * Desugars to: g(f(a, b), c)
+   * Parse pipe expressions: a |> f(b) |> g(c) or a |> f |> g
+   * Desugars to: g(f(a, b), c) or g(f(a))
    * Left-associative, lowest precedence (below logical_or)
+   * Parentheses are optional: a |> f is equivalent to a |> f()
    */
   private pipe(): Expr {
     let node = this.logical_or();
@@ -821,37 +822,36 @@ export class Parser {
     while (this.currentToken.type === 'PIPE_OP') {
       this.eat('PIPE_OP');
 
-      // Right side must be a function call: identifier followed by (
+      // Right side must be an identifier (function name)
       const tok = this.currentToken as Token;
       if (tok.type !== 'IDENTIFIER') {
         throw new Error(
-          `Expected function call after |> at position ${tok.position}`
+          `Expected function name after |> at position ${tok.position}`
         );
       }
 
       const funcName = tok.value;
       this.eat('IDENTIFIER');
 
-      const tok2 = this.currentToken as Token;
-      if (tok2.type !== 'LPAREN') {
-        throw new Error(
-          `Expected '(' after function name in pipe at position ${tok2.position}`
-        );
-      }
-
-      this.eat('LPAREN');
       const args: Expr[] = [node]; // Left side becomes first argument
 
-      // Parse additional arguments
-      if ((this.currentToken as Token).type !== 'RPAREN') {
-        args.push(this.expr());
-        while ((this.currentToken as Token).type === 'COMMA') {
-          this.eat('COMMA');
+      // Parentheses are optional - if present, parse additional arguments
+      const tok2 = this.currentToken as Token;
+      if (tok2.type === 'LPAREN') {
+        this.eat('LPAREN');
+
+        // Parse additional arguments
+        if ((this.currentToken as Token).type !== 'RPAREN') {
           args.push(this.expr());
+          while ((this.currentToken as Token).type === 'COMMA') {
+            this.eat('COMMA');
+            args.push(this.expr());
+          }
         }
+
+        this.eat('RPAREN');
       }
 
-      this.eat('RPAREN');
       node = functionCall(funcName, args);
     }
 
