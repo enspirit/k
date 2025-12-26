@@ -1,17 +1,22 @@
 /**
- * CodeMirror 6 dark theme matching Elo website
+ * CodeMirror 6 themes matching Elo website
  */
 import { EditorView } from '@codemirror/view';
 import { HighlightStyle, syntaxHighlighting } from '@codemirror/language';
 import { tags } from '@lezer/highlight';
 
-// Base editor theme
-export const eloEditorTheme = EditorView.theme({
+// Common editor styles
+const commonStyles = {
+  fontSize: '0.875rem',
+  fontFamily: "'SF Mono', 'Fira Code', 'Monaco', 'Consolas', monospace"
+};
+
+// Dark theme
+export const eloDarkEditorTheme = EditorView.theme({
   '&': {
     backgroundColor: '#0f0f23',
     color: '#e4e4e7',
-    fontSize: '0.875rem',
-    fontFamily: "'SF Mono', 'Fira Code', 'Monaco', 'Consolas', monospace"
+    ...commonStyles
   },
   '.cm-content': {
     caretColor: '#6366f1',
@@ -40,8 +45,42 @@ export const eloEditorTheme = EditorView.theme({
   }
 }, { dark: true });
 
-// Syntax highlighting matching our CSS colors
-export const eloHighlightStyle = HighlightStyle.define([
+// Light theme
+export const eloLightEditorTheme = EditorView.theme({
+  '&': {
+    backgroundColor: '#e2e8f0',
+    color: '#1e293b',
+    ...commonStyles
+  },
+  '.cm-content': {
+    caretColor: '#4f46e5',
+    padding: '1rem'
+  },
+  '.cm-cursor': {
+    borderLeftColor: '#4f46e5'
+  },
+  '&.cm-focused .cm-selectionBackground, .cm-selectionBackground': {
+    backgroundColor: 'rgba(79, 70, 229, 0.2)'
+  },
+  '.cm-activeLine': {
+    backgroundColor: 'rgba(0, 0, 0, 0.03)'
+  },
+  '.cm-gutters': {
+    backgroundColor: '#e2e8f0',
+    color: '#64748b',
+    border: 'none',
+    paddingRight: '0.5rem'
+  },
+  '.cm-activeLineGutter': {
+    backgroundColor: 'rgba(0, 0, 0, 0.03)'
+  },
+  '.cm-scroller': {
+    overflow: 'auto'
+  }
+}, { dark: false });
+
+// Dark syntax highlighting
+export const eloDarkHighlightStyle = HighlightStyle.define([
   { tag: tags.keyword, color: '#c792ea', fontWeight: '500' },
   { tag: tags.atom, color: '#ff9cac' },  // booleans, dates
   { tag: tags.number, color: '#f78c6c' },
@@ -54,4 +93,25 @@ export const eloHighlightStyle = HighlightStyle.define([
   { tag: tags.propertyName, color: '#f07178' }
 ]);
 
-export const eloTheme = [eloEditorTheme, syntaxHighlighting(eloHighlightStyle)];
+// Light syntax highlighting
+export const eloLightHighlightStyle = HighlightStyle.define([
+  { tag: tags.keyword, color: '#7c3aed', fontWeight: '500' },
+  { tag: tags.atom, color: '#db2777' },  // booleans, dates
+  { tag: tags.number, color: '#ea580c' },
+  { tag: tags.string, color: '#16a34a' },
+  { tag: tags.comment, color: '#64748b', fontStyle: 'italic' },
+  { tag: tags.operator, color: '#0369a1' },
+  { tag: tags.punctuation, color: '#64748b' },
+  { tag: tags.variableName, color: '#1e293b' },
+  { tag: tags.function(tags.variableName), color: '#2563eb' },
+  { tag: tags.propertyName, color: '#dc2626' }
+]);
+
+// Combined themes
+export const eloDarkTheme = [eloDarkEditorTheme, syntaxHighlighting(eloDarkHighlightStyle)];
+export const eloLightTheme = [eloLightEditorTheme, syntaxHighlighting(eloLightHighlightStyle)];
+
+// Legacy export for compatibility
+export const eloEditorTheme = eloDarkEditorTheme;
+export const eloHighlightStyle = eloDarkHighlightStyle;
+export const eloTheme = eloDarkTheme;

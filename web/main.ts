@@ -22,13 +22,12 @@ function initTheme() {
   const themeToggle = document.getElementById('theme-toggle');
   const themeIcon = themeToggle?.querySelector('.theme-icon');
 
-  // Check stored preference or system preference
+  // Check stored preference (default to light mode)
   const stored = localStorage.getItem('elo-theme');
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const isDark = stored ? stored === 'dark' : prefersDark;
+  const isLight = stored ? stored === 'light' : true;  // Default to light
 
   // Apply initial theme
-  if (!isDark) {
+  if (isLight) {
     document.body.classList.add('light-theme');
   }
   updateIcon();

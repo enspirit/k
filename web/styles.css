@@ -101,40 +101,6 @@ body.light-theme .stdlib-toc nav a:hover {
   background: rgba(0, 0, 0, 0.05);
 }
 
-/* Light theme CodeMirror overrides */
-body.light-theme .cm-editor {
-  background-color: var(--bg-panel) !important;
-}
-
-body.light-theme .cm-editor .cm-content {
-  color: var(--text-primary);
-}
-
-body.light-theme .cm-editor .cm-gutters {
-  background-color: var(--bg-panel) !important;
-  color: var(--text-secondary);
-}
-
-body.light-theme .cm-editor .cm-activeLine,
-body.light-theme .cm-editor .cm-activeLineGutter {
-  background-color: rgba(0, 0, 0, 0.05) !important;
-}
-
-body.light-theme .cm-editor .cm-selectionBackground {
-  background-color: rgba(79, 70, 229, 0.2) !important;
-}
-
-/* Light theme CodeMirror syntax highlighting */
-body.light-theme .cm-editor .tok-keyword { color: #7c3aed !important; }
-body.light-theme .cm-editor .tok-atom { color: #db2777 !important; }
-body.light-theme .cm-editor .tok-number { color: #ea580c !important; }
-body.light-theme .cm-editor .tok-string { color: #16a34a !important; }
-body.light-theme .cm-editor .tok-comment { color: #64748b !important; }
-body.light-theme .cm-editor .tok-operator { color: #0891b2 !important; }
-body.light-theme .cm-editor .tok-variableName { color: #1e293b !important; }
-body.light-theme .cm-editor .tok-function { color: #2563eb !important; }
-body.light-theme .cm-editor .tok-propertyName { color: #dc2626 !important; }
-
 /* Theme toggle */
 .theme-toggle {
   background: none;
@@ -1125,6 +1091,11 @@ body.light-theme .hl-sql-operator {
 .js-badge {
   background: rgba(250, 204, 21, 0.2);
   color: #facc15;
+}
+
+body.light-theme .js-badge {
+  background: rgba(202, 138, 4, 0.15);
+  color: #a16207;
 }
 
 .ruby-badge {

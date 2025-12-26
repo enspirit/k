@@ -16,7 +16,7 @@ import {
 } from '../../src/index';
 import { getPrelude, Target as PreludeTarget } from '../../src/preludes';
 import { elo } from '../codemirror/elo-language';
-import { eloTheme } from '../codemirror/elo-theme';
+import { eloDarkTheme, eloLightTheme } from '../codemirror/elo-theme';
 import { highlightJS, highlightRuby, highlightSQL } from '../highlighter';
 
 // Enable dayjs plugins
@@ -42,20 +42,40 @@ export default class PlaygroundController extends Controller {
   declare runButtonTarget: HTMLButtonElement;
 
   private editorView: EditorView | null = null;
+  private themeObserver: MutationObserver | null = null;
 
   connect() {
-    // Initialize CodeMirror
+    this.initializeEditor();
+
+    // Watch for theme changes on body
+    this.themeObserver = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.attributeName === 'class') {
+          this.reinitializeEditor();
+        }
+      }
+    });
+    this.themeObserver.observe(document.body, { attributes: true });
+
+    // Compile on initial load
+    this.compile();
+  }
+
+  private initializeEditor() {
     const initialCode = this.editorTarget.dataset.initialCode || '';
+    const currentCode = this.editorView?.state.doc.toString() || initialCode;
+    const isLight = document.body.classList.contains('light-theme');
+    const theme = isLight ? eloLightTheme : eloDarkTheme;
 
     this.editorView = new EditorView({
       state: EditorState.create({
-        doc: initialCode,
+        doc: currentCode,
         extensions: [
           history(),
           bracketMatching(),
           keymap.of([...defaultKeymap, ...historyKeymap]),
           elo(),
-          ...eloTheme,
+          ...theme,
           EditorView.updateListener.of((update) => {
             if (update.docChanged) {
               this.compile();
@@ -66,12 +86,20 @@ export default class PlaygroundController extends Controller {
       }),
       parent: this.editorTarget
     });
+  }
 
-    // Compile on initial load
-    this.compile();
+  private reinitializeEditor() {
+    if (this.editorView) {
+      this.editorView.destroy();
+    }
+    this.initializeEditor();
   }
 
   disconnect() {
+    if (this.themeObserver) {
+      this.themeObserver.disconnect();
+      this.themeObserver = null;
+    }
     if (this.editorView) {
       this.editorView.destroy();
       this.editorView = null;
