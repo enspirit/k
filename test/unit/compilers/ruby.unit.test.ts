@@ -263,7 +263,7 @@ describe('Ruby Compiler - Edge Cases', () => {
 describe('Ruby Compiler - Let Expressions', () => {
   it('should compile simple let expression', () => {
     const ast = letExpr([{ name: 'x', value: literal(1) }], variable('x'));
-    assert.strictEqual(compileToRuby(ast), '->(x) { x }.call(1)');
+    assert.strictEqual(compileToRuby(ast), '(x = 1; x)');
   });
 
   it('should compile let with multiple bindings (desugared to nested)', () => {
@@ -272,7 +272,7 @@ describe('Ruby Compiler - Let Expressions', () => {
       [{ name: 'x', value: literal(1) }, { name: 'y', value: literal(2) }],
       binary('+', variable('x'), variable('y'))
     );
-    assert.strictEqual(compileToRuby(ast), '->(x) { ->(y) { x + y }.call(2) }.call(1)');
+    assert.strictEqual(compileToRuby(ast), '(x = 1; y = 2; x + y)');
   });
 
   it('should compile nested let expressions', () => {
@@ -282,7 +282,7 @@ describe('Ruby Compiler - Let Expressions', () => {
     );
     assert.strictEqual(
       compileToRuby(ast),
-      '->(x) { ->(y) { x + y }.call(2) }.call(1)'
+      '(x = 1; y = 2; x + y)'
     );
   });
 
@@ -291,6 +291,6 @@ describe('Ruby Compiler - Let Expressions', () => {
       [{ name: 'x', value: binary('+', literal(1), literal(2)) }],
       binary('*', variable('x'), literal(3))
     );
-    assert.strictEqual(compileToRuby(ast), '->(x) { x * 3 }.call(1 + 2)');
+    assert.strictEqual(compileToRuby(ast), '(x = 1 + 2; x * 3)');
   });
 });

@@ -119,10 +119,20 @@ function emitRuby(ir: IRExpr): string {
     }
 
     case 'let': {
-      const params = ir.bindings.map(b => b.name).join(', ');
-      const args = ir.bindings.map(b => emitRuby(b.value)).join(', ');
-      const body = emitRuby(ir.body);
-      return `->(${params}) { ${body} }.call(${args})`;
+      // Collect all consecutive let bindings for flattened output
+      const allBindings: Array<{ name: string; value: string }> = [];
+      let current: IRExpr = ir;
+
+      while (current.type === 'let') {
+        for (const b of current.bindings) {
+          allBindings.push({ name: b.name, value: emitRuby(b.value) });
+        }
+        current = current.body;
+      }
+
+      const assignments = allBindings.map(b => `${b.name} = ${b.value}`).join('; ');
+      const body = emitRuby(current);
+      return `(${assignments}; ${body})`;
     }
 
     case 'call':

@@ -4,4 +4,4 @@
 (raise "Assertion failed" unless ->() { v = "hello".index("x"); return v unless v.nil?; -1 }.call == -1; true)
 (raise "Assertion failed" unless ->() { v = "hello".index("x"); return v unless v.nil?; v = "hello".index("z"); return v unless v.nil?; -1 }.call == -1; true)
 (raise "Assertion failed" unless ->() { v = "hello".index("x"); return v unless v.nil?; v = "hello".index("l"); return v unless v.nil?; -1 }.call == 2; true)
-(raise "Assertion failed" unless ->(x) { ->() { v = x; return v unless v.nil?; 0 }.call }.call(42) == 42; true)
+(raise "Assertion failed" unless (x = 42; ->() { v = x; return v unless v.nil?; 0 }.call) == 42; true)

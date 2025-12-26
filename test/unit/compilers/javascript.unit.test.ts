@@ -338,7 +338,7 @@ describe('JavaScript Compiler - Function Calls', () => {
 describe('JavaScript Compiler - Let Expressions', () => {
   it('should compile simple let expression', () => {
     const ast = letExpr([{ name: 'x', value: literal(1) }], variable('x'));
-    assert.strictEqual(compileToJavaScript(ast), '((x) => x)(1)');
+    assert.strictEqual(compileToJavaScript(ast), '(() => { const x = 1; return x; })()');
   });
 
   it('should compile let with multiple bindings and typed inference', () => {
@@ -348,7 +348,7 @@ describe('JavaScript Compiler - Let Expressions', () => {
       [{ name: 'x', value: literal(1) }, { name: 'y', value: literal(2) }],
       binary('+', variable('x'), variable('y'))
     );
-    assert.strictEqual(compileToJavaScript(ast), '((x) => ((y) => x + y)(2))(1)');
+    assert.strictEqual(compileToJavaScript(ast), '(() => { const x = 1; const y = 2; return x + y; })()');
   });
 
   it('should compile nested let expressions with type inference', () => {
@@ -358,7 +358,7 @@ describe('JavaScript Compiler - Let Expressions', () => {
     );
     assert.strictEqual(
       compileToJavaScript(ast),
-      '((x) => ((y) => x + y)(2))(1)'
+      '(() => { const x = 1; const y = 2; return x + y; })()'
     );
   });
 
@@ -368,6 +368,6 @@ describe('JavaScript Compiler - Let Expressions', () => {
       binary('*', variable('x'), literal(3))
     );
     // x has int type from the addition, so multiply uses native JS
-    assert.strictEqual(compileToJavaScript(ast), '((x) => x * 3)(1 + 2)');
+    assert.strictEqual(compileToJavaScript(ast), '(() => { const x = 1 + 2; return x * 3; })()');
   });
 });

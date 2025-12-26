@@ -153,10 +153,20 @@ function emitJS(ir: IRExpr, requiredHelpers?: Set<string>): string {
     }
 
     case 'let': {
-      const params = ir.bindings.map(b => b.name).join(', ');
-      const args = ir.bindings.map(b => ctx.emit(b.value)).join(', ');
-      const body = ctx.emit(ir.body);
-      return `((${params}) => ${body})(${args})`;
+      // Collect all consecutive let bindings for flattened output
+      const allBindings: Array<{ name: string; value: string }> = [];
+      let current: IRExpr = ir;
+
+      while (current.type === 'let') {
+        for (const b of current.bindings) {
+          allBindings.push({ name: b.name, value: ctx.emit(b.value) });
+        }
+        current = current.body;
+      }
+
+      const declarations = allBindings.map(b => `const ${b.name} = ${b.value};`).join(' ');
+      const body = ctx.emit(current);
+      return `(() => { ${declarations} return ${body}; })()`;
     }
 
     case 'call':

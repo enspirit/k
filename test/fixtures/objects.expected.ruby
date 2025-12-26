@@ -2,4 +2,4 @@
 (raise "Assertion failed" unless {budget: 1500}[:budget] == 1500; true)
 (raise "Assertion failed" unless {name: "Alice", age: 30}[:name] == "Alice"; true)
 (raise "Assertion failed" unless {name: "Alice", age: 30}[:age] == 30; true)
-(raise "Assertion failed" unless ->(obj) { obj[:x] }.call({x: 10}) == 10; true)
+(raise "Assertion failed" unless (obj = {x: 10}; obj[:x]) == 10; true)
