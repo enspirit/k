@@ -224,6 +224,12 @@ export function createRubyBinding(): StdLib<string> {
     return `(->(v) { v.nil? ? ${d} : v }).call(${v})`;
   });
 
+  // Error handling
+  rubyLib.register('fail', [Types.string], (args, ctx) => {
+    const message = ctx.emit(args[0]);
+    return `raise ${message}`;
+  });
+
   // No fallback - unknown functions should fail at compile time
   // (StdLib.emit() will throw if no implementation is found)
 

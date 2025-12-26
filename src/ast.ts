@@ -2,7 +2,7 @@
  * AST node types for Elo expressions
  */
 
-export type Expr = Literal | StringLiteral | Variable | BinaryOp | UnaryOp | DateLiteral | DateTimeLiteral | DurationLiteral | TemporalKeyword | FunctionCall | MemberAccess | LetExpr | IfExpr | Lambda | Predicate | ObjectLiteral;
+export type Expr = Literal | StringLiteral | Variable | BinaryOp | UnaryOp | DateLiteral | DateTimeLiteral | DurationLiteral | TemporalKeyword | FunctionCall | MemberAccess | LetExpr | IfExpr | Lambda | Predicate | ObjectLiteral | Alternative;
 
 /**
  * Literal value (number or boolean)
@@ -264,4 +264,23 @@ export interface ObjectLiteral {
  */
 export function objectLiteral(properties: ObjectProperty[]): ObjectLiteral {
   return { type: 'object', properties };
+}
+
+/**
+ * Alternative expression: a | b | c
+ * Evaluates alternatives left-to-right, returns first non-NoVal value.
+ */
+export interface Alternative {
+  type: 'alternative';
+  alternatives: Expr[];
+}
+
+/**
+ * Creates an alternative expression: a | b | c
+ */
+export function alternative(alternatives: Expr[]): Alternative {
+  if (alternatives.length < 2) {
+    throw new Error('Alternative expression must have at least two alternatives');
+  }
+  return { type: 'alternative', alternatives };
 }

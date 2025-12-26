@@ -13,8 +13,8 @@ SKIPPED=0
 # Get prelude using eloc --prelude-only
 PRELUDE=$($ELOC --prelude-only -t ruby)
 
-# Files that require variables - cannot be executed standalone
-SKIP_FILES=("member-access" "variables")
+# Files that require variables or always throw - cannot be executed standalone
+SKIP_FILES=("member-access" "variables" "fail")
 
 should_skip() {
     local file=$1

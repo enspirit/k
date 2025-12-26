@@ -53,6 +53,9 @@ The tests are organized as follows :
 * `test/integration/**/*.ts` check the compiler and cli, using fixtures
 * `test/acceptance/**/*.ts` check the actual execution of generated code, using fixtures
 
+**CRITICAL** when adding acceptance tests, every line of .elo files MUST have be an assert for
+testing to be effective.
+
 ## Tasks & agents
 
 The list of tasks can be found in `.claude/tasks/todo` and `.claude/tasks/done`.

@@ -230,6 +230,9 @@ export function createSQLBinding(): StdLib<string> {
   sqlLib.register('orVal', [Types.any, Types.any], (args, ctx) =>
     `COALESCE(${ctx.emit(args[0])}, ${ctx.emit(args[1])})`);
 
+  // Error handling - uses elo_fail() PL/pgSQL function that raises an exception
+  sqlLib.register('fail', [Types.string], (args, ctx) => `elo_fail(${ctx.emit(args[0])})`);
+
   // No fallback - unknown functions should fail at compile time
   // (StdLib.emit() will throw if no implementation is found)
 

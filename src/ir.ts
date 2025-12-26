@@ -30,7 +30,8 @@ export type IRExpr =
   | IRMemberAccess
   | IRIf
   | IRLambda
-  | IRPredicate;
+  | IRPredicate
+  | IRAlternative;
 
 /**
  * Integer literal
@@ -208,6 +209,16 @@ export interface IRPredicate {
 }
 
 /**
+ * Alternative expression: a | b | c
+ * Evaluates alternatives left-to-right, returns first non-NoVal value.
+ */
+export interface IRAlternative {
+  type: 'alternative';
+  alternatives: IRExpr[];
+  resultType: EloType;
+}
+
+/**
  * Factory functions for creating IR nodes
  */
 
@@ -275,6 +286,10 @@ export function irPredicate(params: IRLambdaParam[], body: IRExpr): IRPredicate 
   return { type: 'predicate', params, body };
 }
 
+export function irAlternative(alternatives: IRExpr[], resultType: EloType): IRAlternative {
+  return { type: 'alternative', alternatives, resultType };
+}
+
 /**
  * Infer the type of an IR expression
  */
@@ -312,5 +327,7 @@ export function inferType(ir: IRExpr): EloType {
       return Types.fn;  // Lambda is a function type
     case 'predicate':
       return Types.fn;  // Predicate is also a function type (that returns bool)
+    case 'alternative':
+      return ir.resultType;
   }
 }

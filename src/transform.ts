@@ -28,6 +28,7 @@ import {
   irIf,
   irLambda,
   irPredicate,
+  irAlternative,
   inferType,
 } from './ir';
 import { EloType, Types } from './types';
@@ -139,6 +140,9 @@ function transformWithDepth(
           value: recurse(prop.value),
         }))
       );
+
+    case 'alternative':
+      return transformAlternative(expr.alternatives, env, defining, nextDepth, maxDepth);
   }
 }
 
@@ -367,6 +371,37 @@ function transformPredicate(
 
   const bodyIR = transformWithDepth(body, newEnv, defining, depth, maxDepth);
   return irPredicate(irParams, bodyIR);
+}
+
+/**
+ * Transform an alternative expression: a | b | c
+ *
+ * The result type is inferred as:
+ * - If all alternatives have the same type, that type
+ * - Otherwise, 'any'
+ */
+function transformAlternative(
+  alternatives: Expr[],
+  env: TypeEnv,
+  defining: DefiningSet,
+  depth: number,
+  maxDepth: number
+): IRExpr {
+  const irAlts = alternatives.map((alt) =>
+    transformWithDepth(alt, env, defining, depth, maxDepth)
+  );
+
+  // Infer result type: use first non-any type, or any if all are any
+  let resultType: EloType = Types.any;
+  for (const alt of irAlts) {
+    const altType = inferType(alt);
+    if (altType.kind !== 'any') {
+      resultType = altType;
+      break;
+    }
+  }
+
+  return irAlternative(irAlts, resultType);
 }
 
 /**

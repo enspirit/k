@@ -153,5 +153,15 @@ function emitRuby(ir: IRExpr): string {
       const args = ir.args.map(emitRuby).join(', ');
       return `${fn}.call(${args})`;
     }
+
+    case 'alternative': {
+      // Compile to lambda with begin/rescue for each alternative
+      // Returns first non-nil value, catches exceptions along the way
+      const alts = ir.alternatives.map((alt) => {
+        const code = emitRuby(alt);
+        return `begin; v = ${code}; return v unless v.nil?; rescue => e; _err = e.message; end`;
+      }).join('; ');
+      return `->() { _err = nil; ${alts}; nil }.call`;
+    }
   }
 }

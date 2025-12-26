@@ -18,8 +18,8 @@ PGPASSWORD="${PGPASSWORD:-elo}"
 PGDATABASE="${PGDATABASE:-elo}"
 export PGPASSWORD
 
-# Files that require variables - cannot be executed standalone
-SKIP_REQUIRE_VARS=("member-access" "variables")
+# Files that require variables or always throw - cannot be executed standalone
+SKIP_REQUIRE_VARS=("member-access" "variables" "fail")
 
 should_skip() {
     local file=$1

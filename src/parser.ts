@@ -1,4 +1,4 @@
-import { Expr, literal, stringLiteral, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral, temporalKeyword, functionCall, memberAccess, letExpr, ifExpr, lambda, predicate, LetBinding, objectLiteral, ObjectProperty } from './ast';
+import { Expr, literal, stringLiteral, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral, temporalKeyword, functionCall, memberAccess, letExpr, ifExpr, lambda, predicate, LetBinding, objectLiteral, ObjectProperty, alternative } from './ast';
 
 /**
  * Token types
@@ -430,23 +430,25 @@ class Lexer {
  * Recursive descent parser for expressions
  *
  * Grammar:
- *   expr       -> pipe
- *   pipe       -> logical_or ('|>' call)*      // lowest precedence, left-assoc
- *   logical_or -> logical_and ('||' logical_and)*
- *   logical_and -> equality ('&&' equality)*
- *   equality   -> comparison (('==' | '!=') comparison)*
- *   comparison -> addition (('<' | '>' | '<=' | '>=') addition)*
- *   addition   -> term (('+' | '-') term)*
- *   term       -> factor (('*' | '/' | '%') factor)*
- *   factor     -> power
- *   power      -> unary ('^' unary)*
- *   unary      -> ('!' | '-' | '+') unary | primary
- *   primary    -> NUMBER | BOOLEAN | DATE | DATETIME | DURATION
- *               | IDENTIFIER '(' (expr (',' expr)*)? ')'  // function call
- *               | IDENTIFIER                               // variable
- *               | '(' expr ')'
+ *   expr        -> pipe
+ *   pipe        -> logical_or ('|>' call)*      // lowest precedence, left-assoc
+ *   logical_or  -> logical_and ('||' logical_and)*
+ *   logical_and -> alternative ('&&' alternative)*
+ *   alternative -> equality ('|' equality)*     // alternative/fallback operator
+ *   equality    -> comparison (('==' | '!=') comparison)*
+ *   comparison  -> addition (('<' | '>' | '<=' | '>=') addition)*
+ *   addition    -> term (('+' | '-') term)*
+ *   term        -> factor (('*' | '/' | '%') factor)*
+ *   factor      -> power
+ *   power       -> unary ('^' unary)*
+ *   unary       -> ('!' | '-' | '+') unary | primary
+ *   primary     -> NUMBER | BOOLEAN | DATE | DATETIME | DURATION
+ *                | IDENTIFIER '(' (expr (',' expr)*)? ')'  // function call
+ *                | IDENTIFIER                               // variable
+ *                | '(' expr ')'
  *
  * Pipe desugaring: `a |> f(b, c)` becomes `f(a, b, c)`
+ * Alternative: `a | b | c` evaluates left-to-right, returns first non-NoVal
  */
 interface ParserState {
   lexerState: LexerState;
@@ -751,14 +753,34 @@ export class Parser {
   }
 
   private logical_and(): Expr {
-    let node = this.equality();
+    let node = this.alternative();
 
     while (this.currentToken.type === 'AND') {
       this.eat('AND');
-      node = binary('&&', node, this.equality());
+      node = binary('&&', node, this.alternative());
     }
 
     return node;
+  }
+
+  /**
+   * Parse alternative expressions: a | b | c
+   * Returns first non-NoVal value, left-to-right evaluation.
+   */
+  private alternative(): Expr {
+    let node = this.equality();
+    const alternatives: Expr[] = [node];
+
+    while (this.currentToken.type === 'PIPE') {
+      this.eat('PIPE');
+      alternatives.push(this.equality());
+    }
+
+    if (alternatives.length === 1) {
+      return node;
+    }
+
+    return alternative(alternatives);
   }
 
   private logical_or(): Expr {

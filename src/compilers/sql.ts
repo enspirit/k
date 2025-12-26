@@ -154,5 +154,11 @@ function emitSQL(ir: IRExpr): string {
 
     case 'apply':
       throw new Error('Lambda invocation is not supported in SQL target');
+
+    case 'alternative': {
+      // Compile to COALESCE - returns first non-NULL value
+      const alts = ir.alternatives.map(emitSQL).join(', ');
+      return `COALESCE(${alts})`;
+    }
   }
 }

@@ -187,5 +187,16 @@ function emitJS(ir: IRExpr, requiredHelpers?: Set<string>): string {
       const args = ir.args.map(a => ctx.emit(a)).join(', ');
       return `${fn}(${args})`;
     }
+
+    case 'alternative': {
+      // Compile to IIFE with try/catch for each alternative
+      // Returns first non-null value, catches exceptions along the way
+      const alts = ir.alternatives.map((alt, i) => {
+        const code = ctx.emit(alt);
+        // Wrap each alternative in try/catch block
+        return `{ try { let v = ${code}; if (v != null) return v; } catch(e) { _err = e.message; } }`;
+      }).join(' ');
+      return `(function() { let _err = null; ${alts} return null; })()`;
+    }
   }
 }

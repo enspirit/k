@@ -263,6 +263,12 @@ export function createTypeDefs(): TypeDefs {
   // orVal(x, default) - returns x if it's a value, otherwise returns default
   defs.register('orVal', [Types.any, Types.any], Types.any);
 
+  // ============================================
+  // Error handling
+  // ============================================
+  // fail(message) - throws an error with the given message (never returns)
+  defs.register('fail', [Types.string], Types.any);
+
   // Fallback: unknown functions return any
   defs.registerFallback(() => Types.any);
 
