@@ -17,8 +17,42 @@ application.register('tabs', TabsController);
 application.register('doc', DocController);
 application.register('stdlib-search', StdlibSearchController);
 
+// Theme toggle functionality
+function initTheme() {
+  const themeToggle = document.getElementById('theme-toggle');
+  const themeIcon = themeToggle?.querySelector('.theme-icon');
+
+  // Check stored preference or system preference
+  const stored = localStorage.getItem('elo-theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = stored ? stored === 'dark' : prefersDark;
+
+  // Apply initial theme
+  if (!isDark) {
+    document.body.classList.add('light-theme');
+  }
+  updateIcon();
+
+  // Toggle handler
+  themeToggle?.addEventListener('click', () => {
+    document.body.classList.toggle('light-theme');
+    const isLight = document.body.classList.contains('light-theme');
+    localStorage.setItem('elo-theme', isLight ? 'light' : 'dark');
+    updateIcon();
+  });
+
+  function updateIcon() {
+    if (themeIcon) {
+      const isLight = document.body.classList.contains('light-theme');
+      // Moon for dark mode, sun for light mode
+      themeIcon.innerHTML = isLight ? '&#9728;' : '&#9790;';
+    }
+  }
+}
+
 // Apply syntax highlighting to all code examples
 document.addEventListener('DOMContentLoaded', () => {
   highlightAll('.example-code');
   highlightAllJS('.code-js');
+  initTheme();
 });

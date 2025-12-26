@@ -19,6 +19,20 @@
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
+/* Light theme */
+body.light-theme {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #f1f5f9;
+  --bg-panel: #e2e8f0;
+  --text-primary: #1e293b;
+  --text-secondary: #64748b;
+  --accent: #4f46e5;
+  --accent-hover: #4338ca;
+  --border: #cbd5e1;
+  --error: #dc2626;
+  --success: #16a34a;
+}
+
 html, body {
   height: 100%;
 }
@@ -76,6 +90,70 @@ nav a:hover {
 
 nav a.active {
   color: var(--accent);
+  background: rgba(99, 102, 241, 0.1);
+}
+
+/* Light theme nav hover adjustments */
+body.light-theme nav a:hover,
+body.light-theme .nav-group > a:hover,
+body.light-theme .doc-toc nav a:hover,
+body.light-theme .stdlib-toc nav a:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Light theme CodeMirror overrides */
+body.light-theme .cm-editor {
+  background-color: var(--bg-panel) !important;
+}
+
+body.light-theme .cm-editor .cm-content {
+  color: var(--text-primary);
+}
+
+body.light-theme .cm-editor .cm-gutters {
+  background-color: var(--bg-panel) !important;
+  color: var(--text-secondary);
+}
+
+body.light-theme .cm-editor .cm-activeLine,
+body.light-theme .cm-editor .cm-activeLineGutter {
+  background-color: rgba(0, 0, 0, 0.05) !important;
+}
+
+body.light-theme .cm-editor .cm-selectionBackground {
+  background-color: rgba(79, 70, 229, 0.2) !important;
+}
+
+/* Light theme CodeMirror syntax highlighting */
+body.light-theme .cm-editor .tok-keyword { color: #7c3aed !important; }
+body.light-theme .cm-editor .tok-atom { color: #db2777 !important; }
+body.light-theme .cm-editor .tok-number { color: #ea580c !important; }
+body.light-theme .cm-editor .tok-string { color: #16a34a !important; }
+body.light-theme .cm-editor .tok-comment { color: #64748b !important; }
+body.light-theme .cm-editor .tok-operator { color: #0891b2 !important; }
+body.light-theme .cm-editor .tok-variableName { color: #1e293b !important; }
+body.light-theme .cm-editor .tok-function { color: #2563eb !important; }
+body.light-theme .cm-editor .tok-propertyName { color: #dc2626 !important; }
+
+/* Theme toggle */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.375rem 0.5rem;
+  cursor: pointer;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  line-height: 1;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--accent);
   background: rgba(99, 102, 241, 0.1);
 }
 
@@ -456,7 +534,7 @@ select:focus {
   margin-bottom: 1rem;
 }
 
-/* Syntax highlighting colors */
+/* Syntax highlighting colors - Dark theme (default) */
 .hl-keyword {
   color: #c792ea;
   font-weight: 500;
@@ -508,6 +586,48 @@ select:focus {
   color: var(--text-secondary);
 }
 
+/* Syntax highlighting - Light theme */
+body.light-theme .hl-keyword {
+  color: #7c3aed;
+}
+
+body.light-theme .hl-boolean {
+  color: #db2777;
+}
+
+body.light-theme .hl-temporal {
+  color: #2563eb;
+}
+
+body.light-theme .hl-number {
+  color: #ea580c;
+}
+
+body.light-theme .hl-string {
+  color: #16a34a;
+}
+
+body.light-theme .hl-date,
+body.light-theme .hl-datetime {
+  color: #0891b2;
+}
+
+body.light-theme .hl-duration {
+  color: #d97706;
+}
+
+body.light-theme .hl-operator {
+  color: #0891b2;
+}
+
+body.light-theme .hl-function {
+  color: #2563eb;
+}
+
+body.light-theme .hl-property {
+  color: #dc2626;
+}
+
 /* JavaScript/TypeScript syntax highlighting */
 .hl-js-keyword {
   color: #c792ea;
@@ -555,6 +675,43 @@ select:focus {
   color: var(--text-secondary);
 }
 
+/* JavaScript/TypeScript - Light theme */
+body.light-theme .hl-js-keyword {
+  color: #7c3aed;
+}
+
+body.light-theme .hl-js-boolean {
+  color: #db2777;
+}
+
+body.light-theme .hl-js-number {
+  color: #ea580c;
+}
+
+body.light-theme .hl-js-string {
+  color: #16a34a;
+}
+
+body.light-theme .hl-js-comment {
+  color: #64748b;
+}
+
+body.light-theme .hl-js-operator {
+  color: #0891b2;
+}
+
+body.light-theme .hl-js-function {
+  color: #2563eb;
+}
+
+body.light-theme .hl-js-type {
+  color: #d97706;
+}
+
+body.light-theme .hl-js-property {
+  color: #dc2626;
+}
+
 /* Ruby syntax highlighting */
 .hl-ruby-keyword {
   color: #c792ea;
@@ -598,6 +755,39 @@ select:focus {
   color: var(--text-secondary);
 }
 
+/* Ruby - Light theme */
+body.light-theme .hl-ruby-keyword {
+  color: #7c3aed;
+}
+
+body.light-theme .hl-ruby-constant {
+  color: #d97706;
+}
+
+body.light-theme .hl-ruby-number {
+  color: #ea580c;
+}
+
+body.light-theme .hl-ruby-string {
+  color: #16a34a;
+}
+
+body.light-theme .hl-ruby-symbol {
+  color: #2563eb;
+}
+
+body.light-theme .hl-ruby-comment {
+  color: #64748b;
+}
+
+body.light-theme .hl-ruby-operator {
+  color: #0891b2;
+}
+
+body.light-theme .hl-ruby-function {
+  color: #2563eb;
+}
+
 /* SQL syntax highlighting */
 .hl-sql-keyword {
   color: #c792ea;
@@ -631,6 +821,31 @@ select:focus {
 
 .hl-sql-punctuation {
   color: var(--text-secondary);
+}
+
+/* SQL - Light theme */
+body.light-theme .hl-sql-keyword {
+  color: #7c3aed;
+}
+
+body.light-theme .hl-sql-function {
+  color: #2563eb;
+}
+
+body.light-theme .hl-sql-number {
+  color: #ea580c;
+}
+
+body.light-theme .hl-sql-string {
+  color: #16a34a;
+}
+
+body.light-theme .hl-sql-comment {
+  color: #64748b;
+}
+
+body.light-theme .hl-sql-operator {
+  color: #0891b2;
 }
 
 .example-desc {
