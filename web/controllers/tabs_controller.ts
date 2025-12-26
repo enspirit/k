@@ -30,7 +30,7 @@ export default class TabsController extends Controller {
     // Parse hash: could be "home", "try", "doc", "stdlib", or "doc/section-name"
     const [tabName, section] = hash.split('/');
 
-    if (['home', 'try', 'doc', 'stdlib', 'blog', 'about'].includes(tabName)) {
+    if (['home', 'try', 'learn', 'doc', 'stdlib', 'blog', 'about'].includes(tabName)) {
       this.activateTab(tabName, section);
     } else {
       // Unknown hash, default to home

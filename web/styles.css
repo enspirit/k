@@ -2163,3 +2163,263 @@ body.light-theme .js-badge {
     padding: 1.5rem;
   }
 }
+
+/* ==================== */
+/* Learn Teaser (Home)  */
+/* ==================== */
+
+.learn-teaser {
+  background: linear-gradient(135deg, var(--accent) 0%, #6366f1 100%);
+  border-radius: 16px;
+  padding: 3rem;
+  margin-top: 3rem;
+  text-align: center;
+  color: white;
+}
+
+.learn-teaser-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.learn-teaser h2 {
+  color: white;
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+.learn-teaser p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.1rem;
+  max-width: 500px;
+  margin: 0 auto 1rem;
+}
+
+.learn-teaser-highlights {
+  font-weight: 500;
+  color: white;
+}
+
+.learn-button {
+  display: inline-block;
+  background: white;
+  color: var(--accent);
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.learn-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* ==================== */
+/* Learn Panel          */
+/* ==================== */
+
+.learn-panel {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.learn-content {
+  background: var(--bg);
+}
+
+.learn-header {
+  text-align: center;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.learn-header h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.learn-intro {
+  font-size: 1.25rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Lessons */
+.lesson {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.lesson:last-of-type {
+  border-bottom: none;
+}
+
+.lesson h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 1rem;
+}
+
+.lesson p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.lesson em {
+  color: var(--accent);
+  font-style: italic;
+}
+
+.lesson code {
+  background: var(--bg-secondary);
+  padding: 0.15rem 0.4rem;
+  border-radius: 4px;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  font-size: 0.9em;
+  color: var(--accent);
+}
+
+.lesson-example {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+
+.lesson-example pre {
+  padding: 1rem 1.25rem;
+  margin: 0;
+  font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  overflow-x: auto;
+}
+
+.try-it {
+  background: var(--bg);
+  padding: 0.75rem 1.25rem;
+  margin: 0;
+  border-top: 1px solid var(--border);
+}
+
+.try-it a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.try-it a:hover {
+  text-decoration: underline;
+}
+
+.lesson-tip {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  border-left: 4px solid var(--accent);
+  padding: 1rem 1.25rem;
+  border-radius: 0 8px 8px 0;
+  margin: 1.5rem 0;
+}
+
+.lesson-tip strong {
+  color: var(--accent);
+}
+
+/* What's Next section */
+#lesson-next h2 {
+  color: var(--text-primary);
+}
+
+.next-steps {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+
+.next-steps li {
+  padding: 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.next-steps a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.next-steps a:hover {
+  text-decoration: underline;
+}
+
+.lesson-closing {
+  font-size: 1.1rem;
+  text-align: center;
+  color: var(--text-secondary);
+  margin-top: 2rem;
+}
+
+/* Learn Footer */
+.learn-footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+  text-align: center;
+}
+
+.learn-footer p {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+
+.learn-footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.learn-footer a:hover {
+  text-decoration: underline;
+}
+
+/* Learn responsive */
+@media (max-width: 768px) {
+  .learn-panel {
+    padding: 1rem;
+  }
+
+  .learn-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .learn-intro {
+    font-size: 1.1rem;
+  }
+
+  .lesson h2 {
+    font-size: 1.25rem;
+  }
+
+  .learn-teaser {
+    padding: 2rem 1.5rem;
+  }
+
+  .learn-teaser h2 {
+    font-size: 1.5rem;
+  }
+}
