@@ -44,8 +44,8 @@ function initTheme() {
   function updateIcon() {
     if (themeIcon) {
       const isLight = document.body.classList.contains('light-theme');
-      // Moon for dark mode, sun for light mode
-      themeIcon.innerHTML = isLight ? '&#9728;' : '&#9790;';
+      // Show sun in dark mode (switch to light), moon in light mode (switch to dark)
+      themeIcon.innerHTML = isLight ? '&#9790;' : '&#9728;';
     }
   }
 }
