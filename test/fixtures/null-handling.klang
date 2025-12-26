@@ -1,0 +1,6 @@
+assert(isVal(42) == true)
+assert(isVal('hello') == true)
+assert(isVal(true) == true)
+assert(orVal(42, 0) == 42)
+assert(orVal('hello', 'default') == 'hello')
+assert(orVal(1 + 1, 0) == 2)

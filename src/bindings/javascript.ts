@@ -267,6 +267,10 @@ export function createJavaScriptBinding(): StdLib<string> {
   // Type introspection
   jsLib.register('typeOf', [Types.any], helperCall('kTypeOf'));
 
+  // Null handling
+  jsLib.register('isVal', [Types.any], helperCall('kIsVal'));
+  jsLib.register('orVal', [Types.any, Types.any], helperCall('kOrVal'));
+
   // Fallback for truly unknown functions
   jsLib.registerFallback((name, args, _argTypes, ctx) => {
     const emittedArgs = args.map(a => ctx.emit(a)).join(', ');

@@ -1,0 +1,6 @@
+(raise "Assertion failed" unless !(42).nil? == true; true)
+(raise "Assertion failed" unless !("hello").nil? == true; true)
+(raise "Assertion failed" unless !(true).nil? == true; true)
+(raise "Assertion failed" unless (->(v) { v.nil? ? 0 : v }).call(42) == 42; true)
+(raise "Assertion failed" unless (->(v) { v.nil? ? "default" : v }).call("hello") == "hello"; true)
+(raise "Assertion failed" unless (->(v) { v.nil? ? 0 : v }).call(1 + 1) == 2; true)

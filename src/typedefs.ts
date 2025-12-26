@@ -231,6 +231,14 @@ export function createTypeDefs(): TypeDefs {
   // ============================================
   defs.register('typeOf', [Types.any], Types.string);
 
+  // ============================================
+  // Null handling
+  // ============================================
+  // isVal(x) - returns true if x is a real value (not null/undefined/nil)
+  defs.register('isVal', [Types.any], Types.bool);
+  // orVal(x, default) - returns x if it's a value, otherwise returns default
+  defs.register('orVal', [Types.any, Types.any], Types.any);
+
   // Fallback: unknown functions return any
   defs.registerFallback(() => Types.any);
 
