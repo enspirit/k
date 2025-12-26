@@ -5,6 +5,13 @@ import DocController from './controllers/doc_controller';
 import StdlibSearchController from './controllers/stdlib_search_controller';
 import { highlightAll, highlightAllJS } from './highlighter';
 
+// Apply theme immediately (before Stimulus starts) to avoid flash
+const storedTheme = localStorage.getItem('elo-theme');
+const isLightMode = storedTheme ? storedTheme === 'light' : true;
+if (isLightMode) {
+  document.body.classList.add('light-theme');
+}
+
 // Start Stimulus application
 const application = Application.start();
 
@@ -17,19 +24,11 @@ application.register('tabs', TabsController);
 application.register('doc', DocController);
 application.register('stdlib-search', StdlibSearchController);
 
-// Theme toggle functionality
+// Theme toggle functionality (theme already applied at top of file)
 function initTheme() {
   const themeToggle = document.getElementById('theme-toggle');
   const themeIcon = themeToggle?.querySelector('.theme-icon');
 
-  // Check stored preference (default to light mode)
-  const stored = localStorage.getItem('elo-theme');
-  const isLight = stored ? stored === 'light' : true;  // Default to light
-
-  // Apply initial theme
-  if (isLight) {
-    document.body.classList.add('light-theme');
-  }
   updateIcon();
 
   // Toggle handler
