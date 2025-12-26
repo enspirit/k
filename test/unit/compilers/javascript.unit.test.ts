@@ -324,14 +324,14 @@ describe('JavaScript Compiler - Function Calls', () => {
     assert.strictEqual(compileToJavaScript(ast), '(function() { if (!(5 > 3)) throw new Error("Assertion failed"); return true; })()');
   });
 
-  it('should compile generic function call', () => {
+  it('should throw for unknown function call', () => {
     const ast = {
       type: 'function_call' as const,
       name: 'foo',
       args: [{ type: 'literal' as const, value: 42 }]
     };
-    // Unknown functions are emitted directly
-    assert.strictEqual(compileToJavaScript(ast), 'foo(42)');
+    // Unknown functions should fail at compile time
+    assert.throws(() => compileToJavaScript(ast), /Unknown function foo\(Int\)/);
   });
 });
 

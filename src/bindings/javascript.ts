@@ -280,11 +280,8 @@ export function createJavaScriptBinding(): StdLib<string> {
   jsLib.register('isVal', [Types.any], helperCall('kIsVal'));
   jsLib.register('orVal', [Types.any, Types.any], helperCall('kOrVal'));
 
-  // Fallback for truly unknown functions
-  jsLib.registerFallback((name, args, _argTypes, ctx) => {
-    const emittedArgs = args.map(a => ctx.emit(a)).join(', ');
-    return `${name}(${emittedArgs})`;
-  });
+  // No fallback - unknown functions should fail at compile time
+  // (StdLib.emit() will throw if no implementation is found)
 
   return jsLib;
 }

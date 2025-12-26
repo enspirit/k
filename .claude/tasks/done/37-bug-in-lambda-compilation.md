@@ -43,3 +43,9 @@ JavaScript already had this pattern. Ruby did not, causing the bug.
    - `let strLen = fn( s ~> length(s) ) in assert(strLen('hello') == 5)`
 
 All tests pass.
+
+## Follow-up
+
+It seems to me that your general fallback mechanism is actually dangerous. It makes the assumption that we can generate code that
+calls ruby/js methods with names in Elo, which most of the time will fail. I would replace the fallback implementation by an error
+saying 'no function ... with signature ...'.

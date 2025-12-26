@@ -230,11 +230,8 @@ export function createRubyBinding(): StdLib<string> {
     return `(->(v) { v.nil? ? ${d} : v }).call(${v})`;
   });
 
-  // Fallback for unknown functions
-  rubyLib.registerFallback((name, args, _argTypes, ctx) => {
-    const emittedArgs = args.map(a => ctx.emit(a)).join(', ');
-    return `${name}(${emittedArgs})`;
-  });
+  // No fallback - unknown functions should fail at compile time
+  // (StdLib.emit() will throw if no implementation is found)
 
   return rubyLib;
 }

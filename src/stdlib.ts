@@ -27,6 +27,15 @@ export function signatureKey(name: string, argTypes: EloType[]): string {
 }
 
 /**
+ * Format a function signature for user-friendly error messages
+ * e.g., "foo(Int, String)" or "upper(Any)"
+ */
+export function formatSignature(name: string, argTypes: EloType[]): string {
+  const typeNames = argTypes.map(t => typeName(t).charAt(0).toUpperCase() + typeName(t).slice(1)).join(', ');
+  return `${name}(${typeNames})`;
+}
+
+/**
  * Generate all generalizations of argument types by progressively replacing
  * concrete types with 'any'. Returns type arrays in order from most specific
  * to most general.
@@ -128,7 +137,7 @@ export class StdLib<T> {
     if (this.fallback) {
       return this.fallback(name, args, argTypes, ctx);
     }
-    throw new Error(`No implementation for ${signatureKey(name, argTypes)}`);
+    throw new Error(`Unknown function ${formatSignature(name, argTypes)}`);
   }
 }
 

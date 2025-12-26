@@ -230,11 +230,8 @@ export function createSQLBinding(): StdLib<string> {
   sqlLib.register('orVal', [Types.any, Types.any], (args, ctx) =>
     `COALESCE(${ctx.emit(args[0])}, ${ctx.emit(args[1])})`);
 
-  // Fallback for unknown functions - uppercase for SQL
-  sqlLib.registerFallback((name, args, _argTypes, ctx) => {
-    const emittedArgs = args.map(a => ctx.emit(a)).join(', ');
-    return `${name.toUpperCase()}(${emittedArgs})`;
-  });
+  // No fallback - unknown functions should fail at compile time
+  // (StdLib.emit() will throw if no implementation is found)
 
   return sqlLib;
 }

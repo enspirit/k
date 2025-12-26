@@ -239,7 +239,7 @@ describe('StdLib', () => {
 
       assert.throws(
         () => lib.emit('unknown', args, [Types.int], createTestContext()),
-        /No implementation for unknown:int/
+        /Unknown function unknown\(Int\)/
       );
     });
 
