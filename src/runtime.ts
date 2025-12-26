@@ -60,4 +60,41 @@ export const JS_HELPERS: Record<string, string> = {
 }`,
   kIsVal: `function kIsVal(v) { return v !== null && v !== undefined; }`,
   kOrVal: `function kOrVal(v, d) { return (v !== null && v !== undefined) ? v : d; }`,
+  // Type selectors
+  kInt: `function kInt(v) {
+  if (v === null || v === undefined) return null;
+  if (typeof v === 'number') return Math.trunc(v);
+  if (typeof v === 'string') { const n = parseInt(v, 10); return isNaN(n) ? null : n; }
+  return null;
+}`,
+  kFloat: `function kFloat(v) {
+  if (v === null || v === undefined) return null;
+  if (typeof v === 'number') return v;
+  if (typeof v === 'string') { const n = parseFloat(v); return isNaN(n) ? null : n; }
+  return null;
+}`,
+  kBool: `function kBool(v) {
+  if (v === null || v === undefined) return null;
+  if (typeof v === 'boolean') return v;
+  if (typeof v === 'string') { if (v === 'true') return true; if (v === 'false') return false; }
+  return null;
+}`,
+  kDate: `function kDate(v) {
+  if (v === null || v === undefined) return null;
+  if (dayjs.isDayjs(v)) return v.startOf('day');
+  if (typeof v === 'string') { const d = dayjs(v); return d.isValid() && /^\\d{4}-\\d{2}-\\d{2}$/.test(v) ? d.startOf('day') : null; }
+  return null;
+}`,
+  kDatetime: `function kDatetime(v) {
+  if (v === null || v === undefined) return null;
+  if (dayjs.isDayjs(v)) return v;
+  if (typeof v === 'string') { const d = dayjs(v); return d.isValid() ? d : null; }
+  return null;
+}`,
+  kDuration: `function kDuration(v) {
+  if (v === null || v === undefined) return null;
+  if (dayjs.isDuration(v)) return v;
+  if (typeof v === 'string') { const d = dayjs.duration(v); return isNaN(d.asMilliseconds()) ? null : d; }
+  return null;
+}`,
 };

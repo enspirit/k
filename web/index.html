@@ -27,8 +27,9 @@
           <a href="#doc/variables" data-action="click->tabs#switch" data-tab="doc">Variables</a>
           <a href="#doc/conditionals" data-action="click->tabs#switch" data-tab="doc">Conditionals</a>
           <a href="#doc/lambdas" data-action="click->tabs#switch" data-tab="doc">Lambdas</a>
-          <a href="#doc/ranges" data-action="click->tabs#switch" data-tab="doc">Ranges</a>
           <a href="#doc/assertions" data-action="click->tabs#switch" data-tab="doc">Assertions</a>
+          <a href="#doc/type-selectors" data-action="click->tabs#switch" data-tab="doc">Type Selectors</a>
+          <a href="#doc/ranges" data-action="click->tabs#switch" data-tab="doc">Ranges</a>
           <span class="submenu-section">Tools</span>
           <a href="#doc/examples" data-action="click->tabs#switch" data-tab="doc">Examples</a>
           <a href="#doc/javascript-api" data-action="click->tabs#switch" data-tab="doc">JavaScript API</a>
@@ -41,6 +42,7 @@
           <a href="#stdlib/stdlib-temporal" data-action="click->tabs#switch" data-tab="stdlib">Temporal</a>
           <a href="#stdlib/stdlib-string" data-action="click->tabs#switch" data-tab="stdlib">String</a>
           <a href="#stdlib/stdlib-introspection" data-action="click->tabs#switch" data-tab="stdlib">Introspection</a>
+          <a href="#stdlib/stdlib-type-selectors" data-action="click->tabs#switch" data-tab="stdlib">Type Selectors</a>
         </div>
       </div>
       <a href="#blog" data-tabs-target="tab" data-action="click->tabs#switch" data-tab="blog">Blog</a>
@@ -285,8 +287,9 @@ inRange && passing;</pre>
         <a href="#doc/variables" data-action="click->tabs#switch" data-tab="doc">Variables</a>
         <a href="#doc/conditionals" data-action="click->tabs#switch" data-tab="doc">Conditionals</a>
         <a href="#doc/lambdas" data-action="click->tabs#switch" data-tab="doc">Lambdas</a>
-        <a href="#doc/ranges" data-action="click->tabs#switch" data-tab="doc">Ranges</a>
         <a href="#doc/assertions" data-action="click->tabs#switch" data-tab="doc">Assertions</a>
+        <a href="#doc/type-selectors" data-action="click->tabs#switch" data-tab="doc">Type Selectors</a>
+        <a href="#doc/ranges" data-action="click->tabs#switch" data-tab="doc">Ranges</a>
         <span class="toc-section">Tools</span>
         <a href="#doc/examples" data-action="click->tabs#switch" data-tab="doc">Examples</a>
         <a href="#doc/javascript-api" data-action="click->tabs#switch" data-tab="doc">JavaScript API</a>
@@ -722,6 +725,37 @@ inRange && passing;</pre>
         </div>
       </section>
 
+      <section class="doc-section" id="type-selectors">
+        <h2>Type Selectors</h2>
+        <p>Type selectors convert values to specific types, parsing strings when needed. They return <code>NoVal</code> on invalid input, making them composable with the <code>|</code> alternative operator.</p>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Parse String to Integer</div>
+          <pre class="example-code">Int('123')</pre>
+          <p class="example-desc">Parses the string <code>'123'</code> to the integer <code>123</code>.</p>
+        </div>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Parse with Default</div>
+          <pre class="example-code">Int('abc') | 0</pre>
+          <p class="example-desc">Returns <code>0</code> because <code>'abc'</code> cannot be parsed as an integer.</p>
+        </div>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Parse Date</div>
+          <pre class="example-code">Date('2025-01-15') == D2025-01-15</pre>
+          <p class="example-desc">Parses an ISO date string to a Date value.</p>
+        </div>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Parse Duration</div>
+          <pre class="example-code">Duration('P1D') == P1D</pre>
+          <p class="example-desc">Parses an ISO 8601 duration string.</p>
+        </div>
+
+        <p>Available type selectors: <code>Int()</code>, <code>Float()</code>, <code>Bool()</code>, <code>Date()</code>, <code>Datetime()</code>, <code>Duration()</code>. See <a href="#stdlib/stdlib-type-selectors" data-action="click->tabs#switch" data-tab="stdlib">Stdlib → Type Selectors</a> for details.</p>
+      </section>
+
       <section class="doc-section" id="ranges">
         <h2>Range Membership</h2>
         <p>Check if a value falls within a range using the <code>in</code> operator.</p>
@@ -881,6 +915,7 @@ compileToSQL(ast);        // =&gt; "2 + 3 * 4"</pre>
         <a href="#stdlib/stdlib-temporal" data-action="click->tabs#switch" data-tab="stdlib">Temporal</a>
         <a href="#stdlib/stdlib-string" data-action="click->tabs#switch" data-tab="stdlib">String</a>
         <a href="#stdlib/stdlib-introspection" data-action="click->tabs#switch" data-tab="stdlib">Introspection</a>
+        <a href="#stdlib/stdlib-type-selectors" data-action="click->tabs#switch" data-tab="stdlib">Type Selectors</a>
       </nav>
     </aside>
     <div class="stdlib-content">
@@ -1118,6 +1153,61 @@ compileToSQL(ast);        // =&gt; "2 + 3 * 4"</pre>
             <p class="fn-desc">Returns the value if it's not null, otherwise returns the default. Like <code>??</code> in JavaScript or <code>COALESCE</code> in SQL.</p>
             <div class="fn-example"><code class="example-code">orVal(42, 0)</code><span class="fn-result">→ 42</span></div>
           </div>
+        </div>
+      </section>
+
+      <section class="stdlib-section" id="stdlib-type-selectors" data-stdlib-search-target="section">
+        <h2>Type Selectors</h2>
+        <p>Type selectors parse strings to typed values. They return <code>NoVal</code> on invalid input, making them safe to use with the <code>|</code> alternative operator for defaults.</p>
+
+        <div class="stdlib-grid" data-stdlib-search-target="grid">
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">Int</div>
+            <div class="fn-sig">(value: String | Int | Float) → Int | NoVal</div>
+            <p class="fn-desc">Parses a string to an integer. Returns the value unchanged if already an Int, truncates Floats.</p>
+            <div class="fn-example"><code class="example-code">Int('123')</code><span class="fn-result">→ 123</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">Float</div>
+            <div class="fn-sig">(value: String | Int | Float) → Float | NoVal</div>
+            <p class="fn-desc">Parses a string to a floating-point number. Returns the value unchanged if already numeric.</p>
+            <div class="fn-example"><code class="example-code">Float('3.14')</code><span class="fn-result">→ 3.14</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">Bool</div>
+            <div class="fn-sig">(value: String | Bool) → Bool | NoVal</div>
+            <p class="fn-desc">Parses <code>'true'</code> or <code>'false'</code> strings to boolean. Returns <code>NoVal</code> for other strings.</p>
+            <div class="fn-example"><code class="example-code">Bool('true')</code><span class="fn-result">→ true</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">Date</div>
+            <div class="fn-sig">(value: String | Date) → Date | NoVal</div>
+            <p class="fn-desc">Parses an ISO date string (YYYY-MM-DD) to a Date. Returns <code>NoVal</code> for invalid formats.</p>
+            <div class="fn-example"><code class="example-code">Date('2025-01-15')</code><span class="fn-result">→ D2025-01-15</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">Datetime</div>
+            <div class="fn-sig">(value: String | DateTime) → DateTime | NoVal</div>
+            <p class="fn-desc">Parses an ISO datetime string to a DateTime. Returns <code>NoVal</code> for invalid formats.</p>
+            <div class="fn-example"><code class="example-code">Datetime('2025-01-15T10:30:00')</code><span class="fn-result">→ D2025-01-15T10:30:00</span></div>
+          </div>
+
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">Duration</div>
+            <div class="fn-sig">(value: String | Duration) → Duration | NoVal</div>
+            <p class="fn-desc">Parses an ISO 8601 duration string. Returns <code>NoVal</code> for invalid formats.</p>
+            <div class="fn-example"><code class="example-code">Duration('P1D')</code><span class="fn-result">→ P1D</span></div>
+          </div>
+        </div>
+
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Type Selectors with Defaults</div>
+          <pre class="example-code">Int('abc') | 0</pre>
+          <p class="example-desc">Use the <code>|</code> operator to provide a default when parsing fails.</p>
         </div>
       </section>
 

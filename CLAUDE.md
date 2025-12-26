@@ -17,6 +17,9 @@ Following the vision, design and implementation choices MUST target a language t
 portable and safe, in that order. We SHOULD always restrict Elo's powerfullness if a wanted feature leads to a
 violation of those principles.
 
+**CRITICAL** when adding a language construct or stdlib function, you MUST also document it in README (no details)
+and on website (with example).
+
 ## Architecture
 
 Elo currently has the following components :

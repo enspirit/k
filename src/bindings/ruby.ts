@@ -230,6 +230,75 @@ export function createRubyBinding(): StdLib<string> {
     return `raise ${message}`;
   });
 
+  // Type selectors (information contracts)
+  // Int - identity for int, truncate for float, parse for string
+  rubyLib.register('Int', [Types.int], (args, ctx) => ctx.emit(args[0]));
+  rubyLib.register('Int', [Types.float], (args, ctx) => `${ctx.emit(args[0])}.to_i`);
+  rubyLib.register('Int', [Types.string], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(s) { Integer(s) rescue nil }).call(${v})`;
+  });
+  rubyLib.register('Int', [Types.any], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(v) { case v when nil; nil when Integer; v when Float; v.to_i when String; Integer(v) rescue nil else nil end }).call(${v})`;
+  });
+
+  // Float - identity for float, convert for int, parse for string
+  rubyLib.register('Float', [Types.float], (args, ctx) => ctx.emit(args[0]));
+  rubyLib.register('Float', [Types.int], (args, ctx) => `${ctx.emit(args[0])}.to_f`);
+  rubyLib.register('Float', [Types.string], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(s) { Float(s) rescue nil }).call(${v})`;
+  });
+  rubyLib.register('Float', [Types.any], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(v) { case v when nil; nil when Float; v when Integer; v.to_f when String; Float(v) rescue nil else nil end }).call(${v})`;
+  });
+
+  // Bool - identity for bool, parse "true"/"false" for string
+  rubyLib.register('Bool', [Types.bool], (args, ctx) => ctx.emit(args[0]));
+  rubyLib.register('Bool', [Types.string], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(s) { case s when 'true'; true when 'false'; false else nil end }).call(${v})`;
+  });
+  rubyLib.register('Bool', [Types.any], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(v) { case v when nil; nil when true, false; v when 'true'; true when 'false'; false else nil end }).call(${v})`;
+  });
+
+  // Date - identity for date, parse ISO for string
+  rubyLib.register('Date', [Types.date], (args, ctx) => ctx.emit(args[0]));
+  rubyLib.register('Date', [Types.string], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(s) { s =~ /^\\d{4}-\\d{2}-\\d{2}$/ ? (Date.parse(s) rescue nil) : nil }).call(${v})`;
+  });
+  rubyLib.register('Date', [Types.any], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(v) { case v when nil; nil when Date; v when String; v =~ /^\\d{4}-\\d{2}-\\d{2}$/ ? (Date.parse(v) rescue nil) : nil else nil end }).call(${v})`;
+  });
+
+  // Datetime - identity for datetime, parse ISO for string
+  rubyLib.register('Datetime', [Types.datetime], (args, ctx) => ctx.emit(args[0]));
+  rubyLib.register('Datetime', [Types.string], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(s) { DateTime.parse(s) rescue nil }).call(${v})`;
+  });
+  rubyLib.register('Datetime', [Types.any], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(v) { case v when nil; nil when DateTime, Time; v when String; DateTime.parse(v) rescue nil else nil end }).call(${v})`;
+  });
+
+  // Duration - identity for duration, parse ISO for string
+  rubyLib.register('Duration', [Types.duration], (args, ctx) => ctx.emit(args[0]));
+  rubyLib.register('Duration', [Types.string], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(s) { ActiveSupport::Duration.parse(s) rescue nil }).call(${v})`;
+  });
+  rubyLib.register('Duration', [Types.any], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(v) { case v when nil; nil when ActiveSupport::Duration; v when String; ActiveSupport::Duration.parse(v) rescue nil else nil end }).call(${v})`;
+  });
+
   // No fallback - unknown functions should fail at compile time
   // (StdLib.emit() will throw if no implementation is found)
 

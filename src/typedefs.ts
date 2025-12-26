@@ -269,6 +269,41 @@ export function createTypeDefs(): TypeDefs {
   // fail(message) - throws an error with the given message (never returns)
   defs.register('fail', [Types.string], Types.any);
 
+  // ============================================
+  // Type selectors (information contracts)
+  // ============================================
+  // Int(x) - coerce to Int, returns NoVal on failure
+  defs.register('Int', [Types.int], Types.int);
+  defs.register('Int', [Types.float], Types.int);
+  defs.register('Int', [Types.string], Types.any); // may return NoVal
+  defs.register('Int', [Types.any], Types.any);
+
+  // Float(x) - coerce to Float, returns NoVal on failure
+  defs.register('Float', [Types.float], Types.float);
+  defs.register('Float', [Types.int], Types.float);
+  defs.register('Float', [Types.string], Types.any); // may return NoVal
+  defs.register('Float', [Types.any], Types.any);
+
+  // Bool(x) - coerce to Bool, returns NoVal on failure
+  defs.register('Bool', [Types.bool], Types.bool);
+  defs.register('Bool', [Types.string], Types.any); // may return NoVal
+  defs.register('Bool', [Types.any], Types.any);
+
+  // Date(x) - coerce to Date, returns NoVal on failure
+  defs.register('Date', [Types.date], Types.date);
+  defs.register('Date', [Types.string], Types.any); // may return NoVal
+  defs.register('Date', [Types.any], Types.any);
+
+  // Datetime(x) - coerce to Datetime, returns NoVal on failure
+  defs.register('Datetime', [Types.datetime], Types.datetime);
+  defs.register('Datetime', [Types.string], Types.any); // may return NoVal
+  defs.register('Datetime', [Types.any], Types.any);
+
+  // Duration(x) - coerce to Duration, returns NoVal on failure
+  defs.register('Duration', [Types.duration], Types.duration);
+  defs.register('Duration', [Types.string], Types.any); // may return NoVal
+  defs.register('Duration', [Types.any], Types.any);
+
   // Fallback: unknown functions return any
   defs.registerFallback(() => Types.any);
 

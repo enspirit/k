@@ -233,6 +233,47 @@ export function createSQLBinding(): StdLib<string> {
   // Error handling - uses elo_fail() PL/pgSQL function that raises an exception
   sqlLib.register('fail', [Types.string], (args, ctx) => `elo_fail(${ctx.emit(args[0])})`);
 
+  // Type selectors (information contracts)
+  // These use elo_* PL/pgSQL functions that return NULL on parse failure
+
+  // Int - identity for int, truncate for float, parse for string
+  sqlLib.register('Int', [Types.int], (args, ctx) => ctx.emit(args[0]));
+  sqlLib.register('Int', [Types.float], (args, ctx) => `TRUNC(${ctx.emit(args[0])})::INTEGER`);
+  sqlLib.register('Int', [Types.string], (args, ctx) => `elo_int(${ctx.emit(args[0])})`);
+  sqlLib.register('Int', [Types.any], (args, ctx) => `elo_int(${ctx.emit(args[0])})`);
+
+  // Float - identity for float, convert for int, parse for string
+  sqlLib.register('Float', [Types.float], (args, ctx) => ctx.emit(args[0]));
+  sqlLib.register('Float', [Types.int], (args, ctx) => `${ctx.emit(args[0])}::DOUBLE PRECISION`);
+  sqlLib.register('Float', [Types.string], (args, ctx) => `elo_float(${ctx.emit(args[0])})`);
+  sqlLib.register('Float', [Types.any], (args, ctx) => `elo_float(${ctx.emit(args[0])})`);
+
+  // Bool - identity for bool, parse "true"/"false" for string
+  sqlLib.register('Bool', [Types.bool], (args, ctx) => ctx.emit(args[0]));
+  sqlLib.register('Bool', [Types.string], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `CASE ${v} WHEN 'true' THEN TRUE WHEN 'false' THEN FALSE ELSE NULL END`;
+  });
+  sqlLib.register('Bool', [Types.any], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `CASE ${v} WHEN 'true' THEN TRUE WHEN 'false' THEN FALSE ELSE NULL END`;
+  });
+
+  // Date - identity for date, parse ISO for string
+  sqlLib.register('Date', [Types.date], (args, ctx) => ctx.emit(args[0]));
+  sqlLib.register('Date', [Types.string], (args, ctx) => `elo_date(${ctx.emit(args[0])})`);
+  sqlLib.register('Date', [Types.any], (args, ctx) => `elo_date(${ctx.emit(args[0])})`);
+
+  // Datetime - identity for datetime, parse ISO for string
+  sqlLib.register('Datetime', [Types.datetime], (args, ctx) => ctx.emit(args[0]));
+  sqlLib.register('Datetime', [Types.string], (args, ctx) => `elo_datetime(${ctx.emit(args[0])})`);
+  sqlLib.register('Datetime', [Types.any], (args, ctx) => `elo_datetime(${ctx.emit(args[0])})`);
+
+  // Duration - identity for duration, parse ISO for string
+  sqlLib.register('Duration', [Types.duration], (args, ctx) => ctx.emit(args[0]));
+  sqlLib.register('Duration', [Types.string], (args, ctx) => `elo_duration(${ctx.emit(args[0])})`);
+  sqlLib.register('Duration', [Types.any], (args, ctx) => `elo_duration(${ctx.emit(args[0])})`);
+
   // No fallback - unknown functions should fail at compile time
   // (StdLib.emit() will throw if no implementation is found)
 

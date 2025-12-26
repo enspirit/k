@@ -286,6 +286,39 @@ export function createJavaScriptBinding(): StdLib<string> {
     return `(function() { throw new Error(${message}); })()`;
   });
 
+  // Type selectors (information contracts)
+  // Int - identity for int/float, parse for string
+  jsLib.register('Int', [Types.int], (args, ctx) => ctx.emit(args[0]));
+  jsLib.register('Int', [Types.float], (args, ctx) => `Math.trunc(${ctx.emit(args[0])})`);
+  jsLib.register('Int', [Types.string], helperCall('kInt'));
+  jsLib.register('Int', [Types.any], helperCall('kInt'));
+
+  // Float - identity for float, convert for int, parse for string
+  jsLib.register('Float', [Types.float], (args, ctx) => ctx.emit(args[0]));
+  jsLib.register('Float', [Types.int], (args, ctx) => ctx.emit(args[0])); // JS numbers are already floats
+  jsLib.register('Float', [Types.string], helperCall('kFloat'));
+  jsLib.register('Float', [Types.any], helperCall('kFloat'));
+
+  // Bool - identity for bool, parse "true"/"false" for string
+  jsLib.register('Bool', [Types.bool], (args, ctx) => ctx.emit(args[0]));
+  jsLib.register('Bool', [Types.string], helperCall('kBool'));
+  jsLib.register('Bool', [Types.any], helperCall('kBool'));
+
+  // Date - identity for date, parse ISO for string
+  jsLib.register('Date', [Types.date], (args, ctx) => ctx.emit(args[0]));
+  jsLib.register('Date', [Types.string], helperCall('kDate'));
+  jsLib.register('Date', [Types.any], helperCall('kDate'));
+
+  // Datetime - identity for datetime, parse ISO for string
+  jsLib.register('Datetime', [Types.datetime], (args, ctx) => ctx.emit(args[0]));
+  jsLib.register('Datetime', [Types.string], helperCall('kDatetime'));
+  jsLib.register('Datetime', [Types.any], helperCall('kDatetime'));
+
+  // Duration - identity for duration, parse ISO for string
+  jsLib.register('Duration', [Types.duration], (args, ctx) => ctx.emit(args[0]));
+  jsLib.register('Duration', [Types.string], helperCall('kDuration'));
+  jsLib.register('Duration', [Types.any], helperCall('kDuration'));
+
   // No fallback - unknown functions should fail at compile time
   // (StdLib.emit() will throw if no implementation is found)
 

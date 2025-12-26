@@ -31,6 +31,7 @@ See also the Related work section below.
 - **Unary operators**: `-`, `+`, `!`
 - **Pipe operator**: `|>` for function chaining (Elixir-style)
 - **Alternative operator**: `|` for fallback chains (returns first defined value)
+- **Type selectors**: `Int()`, `Float()`, `Bool()`, `Date()`, `Datetime()`, `Duration()` for parsing strings to typed values
 - **Literals**:
   - Numbers: `42`, `3.14`
   - Booleans: `true`, `false`
