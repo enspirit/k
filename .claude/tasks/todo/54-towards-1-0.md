@@ -4,16 +4,30 @@ We must plan for an official 1.0 release. But we have to reach a stable point.
 
 Let's break it down to a feasible plan.
 
-## Idea
+## Primary use case
 
-Let's prioritize the following items :
+Elo receives JSON input and needs to process it. This requires null + arrays support.
 
-- Have a 0.9.x release pipe, ready (github actions that npm publishes)
-- I think json must be first class in Elo. So we need to recondider the null
-  question (literal and type) and have basic support for arrays
-- We need to cross check that the stdlib is powerful enough, and make necessary
-  improvements
-- I think we need a way to execute elo files easily, and reconsider the Try page
-  to have the Run feature more first-class.
-- What else ? A pass of /sceptic maybe ?
+## Roadmap
+
+### JSON first-class support (0.9.x series)
+
+- **54a** - `null` literal (small, unblocks NoVal ergonomics)
+- **54b** - Array type + literals (parser, AST, IR, compilers)
+- **54c** - Array stdlib (`at`, `length`, `first`, `last`)
+- **54d** - Array iteration (`map`, `filter`) — uses existing `fn()`
+
+Design decisions:
+- Arrays are heterogeneous (can mix types)
+- Access syntax: TBD (`arr[0]` vs `at(arr, 0)`)
+
+### Release infrastructure
+
+- GitHub Actions for 0.9.x npm publish pipeline
+
+### Quality & polish
+
+- Stdlib review with /rigorous
+- /sceptic pass before 1.0
+- Run feature improvements on Try page
 
