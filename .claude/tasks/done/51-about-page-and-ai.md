@@ -3,3 +3,6 @@
 The About page should repeat that Elo was co-designed by Claude Code and Bernard
 and fully implemented by Claude Code, under Bernard supervision. And refer to the
 blog.
+
+Also, on home page, the blocs "Built with AI" and "Who's Behind Elo?" look too
+similar. The design could be improved.

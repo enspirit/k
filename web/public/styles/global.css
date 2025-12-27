@@ -1282,26 +1282,122 @@ body.light-theme .js-badge {
   margin-bottom: 1.5rem;
 }
 
-/* AI Native Section */
-.ai-native-section {
+/* Credits Section (Home Page) */
+.credits-section {
   text-align: center;
-  padding: 2rem;
+  padding: 3rem 2rem 2rem;
+  margin-bottom: 1rem;
+}
+
+.credits-section h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+.credits-cards {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.credits-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+}
+
+.credits-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.credits-avatar.human {
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: white;
+}
+
+.credits-avatar.ai {
+  background: linear-gradient(135deg, #10b981, #06b6d4);
+  color: white;
+  font-size: 0.875rem;
+}
+
+.credits-info {
+  text-align: left;
+}
+
+.credits-info h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.125rem;
+}
+
+.credits-info p {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.credits-detail {
+  font-size: 0.75rem !important;
+  opacity: 0.7;
+  margin-top: 0.25rem !important;
+}
+
+.credits-detail a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.credits-detail a:hover {
+  text-decoration: underline;
+}
+
+.credits-plus {
+  font-size: 1.5rem;
+  font-weight: 300;
+  color: var(--text-secondary);
+}
+
+.credits-link {
+  text-align: center;
   margin-bottom: 2rem;
 }
 
-.ai-native-section h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-bottom: 0.75rem;
+.credits-link a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
 }
 
-.ai-native-section p {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.6;
+.credits-link a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+  .credits-cards {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .credits-plus {
+    transform: rotate(90deg);
+  }
 }
 
 /* Home Footer */
@@ -1749,41 +1845,6 @@ body.light-theme .js-badge {
   .blog-post-card {
     padding: 1.25rem;
   }
-}
-
-/* Who Section (Home Page) */
-.who-section {
-  text-align: center;
-  padding: 2rem;
-  margin-bottom: 2rem;
-}
-
-.who-section h2 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-bottom: 0.75rem;
-}
-
-.who-section p {
-  color: var(--text-secondary);
-  font-size: 0.9rem;
-  max-width: 600px;
-  margin: 0 auto 0.75rem;
-  line-height: 1.6;
-}
-
-.who-section a {
-  color: var(--accent);
-  text-decoration: none;
-}
-
-.who-section a:hover {
-  text-decoration: underline;
-}
-
-.about-link {
-  font-weight: 500;
 }
 
 /* About Panel */
