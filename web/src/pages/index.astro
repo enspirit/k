@@ -1,0 +1,178 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const url = (path: string) => `${base}${path}`;
+---
+
+<Layout activeNav="home">
+  <main class="home-panel" data-controller="doc">
+    <div class="home-content">
+      <section class="hero">
+        <h1>The Elo Language</h1>
+        <p class="tagline">A simple, well-designed, portable, and safe data expression language</p>
+        <p class="subtitle">Elo compiles to JavaScript, Ruby, and SQL. Built for No-Code tools where non-technical users need to manipulate data easily and safely.</p>
+        <a href={url('/playground')} class="cta-button">Try it now</a>
+      </section>
+
+      <section class="features">
+        <div class="feature-card">
+          <div class="feature-icon">=</div>
+          <h3>Simple by Design</h3>
+          <p>A pure data language: everything is a value, no reference semantics, no <code>new</code>. One equality operator that just works. Safe for non-technical users.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">3x</div>
+          <h3>Truly Portable</h3>
+          <p>One expression compiles to semantically equivalent JavaScript, Ruby, and SQL. Frontend, backend, and database speak the same language.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">T</div>
+          <h3>Temporal Arithmetic</h3>
+          <p>First-class dates, times, and durations with intuitive syntax. <code>TODAY + P30D</code>, <code>NOW in SOQ..EOQ</code> — date logic that just works.</p>
+        </div>
+      </section>
+
+      <section class="comparison">
+        <h2>Elo vs JavaScript</h2>
+        <p class="comparison-intro">See how Elo simplifies common data expressions</p>
+
+        <div class="comparison-grid">
+          <div class="comparison-example clickable" data-action="click->doc#tryExample">
+            <div class="comparison-header">
+              <span class="lang-badge elo-badge">Elo</span>
+              <span class="comparison-title">Has the 30-day trial expired?</span>
+            </div>
+            <pre class="comparison-code example-code">let
+  signup = D2024-06-15
+in
+  TODAY > signup + P30D</pre>
+          </div>
+          <div class="comparison-example js-example">
+            <div class="comparison-header">
+              <span class="lang-badge js-badge">JavaScript</span>
+              <span class="comparison-title">The same thing...</span>
+            </div>
+            <pre class="comparison-code code-js">const signup = new Date('2024-06-15');
+const trialEnd = new Date(signup);
+trialEnd.setDate(trialEnd.getDate() + 30);
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+today > trialEnd;</pre>
+          </div>
+        </div>
+
+        <div class="comparison-grid">
+          <div class="comparison-example clickable" data-action="click->doc#tryExample">
+            <div class="comparison-header">
+              <span class="lang-badge elo-badge">Elo</span>
+              <span class="comparison-title">Range validation</span>
+            </div>
+            <pre class="comparison-code example-code">let
+  score = 85
+in
+  score in 0..100 and score not in 0...60</pre>
+          </div>
+          <div class="comparison-example js-example">
+            <div class="comparison-header">
+              <span class="lang-badge js-badge">JavaScript</span>
+              <span class="comparison-title">The same thing...</span>
+            </div>
+            <pre class="comparison-code code-js">const score = 85;
+const inRange = score >= 0 && score <= 100;
+const passing = !(score >= 0 && score < 60);
+inRange && passing;</pre>
+          </div>
+        </div>
+
+        <div class="comparison-grid">
+          <div class="comparison-example clickable" data-action="click->doc#tryExample">
+            <div class="comparison-header">
+              <span class="lang-badge elo-badge">Elo</span>
+              <span class="comparison-title">Data transformation lambda</span>
+            </div>
+            <pre class="comparison-code example-code">fn( item ~> item.price * 1.21 )</pre>
+          </div>
+          <div class="comparison-example js-example">
+            <div class="comparison-header">
+              <span class="lang-badge js-badge">JavaScript</span>
+              <span class="comparison-title">The same thing...</span>
+            </div>
+            <pre class="comparison-code code-js">// Works in JS, but what about Ruby? SQL?
+// Elo compiles to all three targets.
+(item) => item.price * 1.21</pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="targets-section">
+        <h2>One Expression, Three Targets</h2>
+        <p class="targets-intro">Elo compiles to idiomatic code in each target language</p>
+
+        <div class="targets-demo">
+          <div class="target-input clickable" data-action="click->doc#tryExample">
+            <span class="lang-badge elo-badge">Elo</span>
+            <pre class="example-code">2 ^ 10 > 1000 and TODAY >= SOY</pre>
+          </div>
+          <div class="targets-output">
+            <div class="target-card">
+              <span class="lang-badge js-badge">JavaScript</span>
+              <pre>Math.pow(2, 10) > 1000 && dayjs().startOf('day') >= dayjs().startOf('year')</pre>
+            </div>
+            <div class="target-card">
+              <span class="lang-badge ruby-badge">Ruby</span>
+              <pre>2 ** 10 > 1000 && Date.today >= Date.today.beginning_of_year</pre>
+            </div>
+            <div class="target-card">
+              <span class="lang-badge sql-badge">SQL</span>
+              <pre>POWER(2, 10) > 1000 AND CURRENT_DATE >= DATE_TRUNC('year', CURRENT_DATE)</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="cta-section">
+        <h2>Ready to try Elo?</h2>
+        <p>Jump into the playground and start writing temporal expressions that just work.</p>
+        <a href={url('/playground')} class="cta-button">Open Playground</a>
+      </section>
+
+      <section class="learn-teaser">
+        <div class="learn-teaser-content">
+          <div class="learn-teaser-icon">📚</div>
+          <h2>New to Programming?</h2>
+          <p>
+            Elo is designed to be your friendly first step into coding.
+            No scary jargon, no confusing concepts—just simple ideas explained clearly.
+          </p>
+          <p class="learn-teaser-highlights">
+            Learn about numbers, text, dates, decisions, and more—at your own pace.
+          </p>
+          <a href={url('/learn')} class="learn-button">Start Learning →</a>
+        </div>
+      </section>
+
+      <section class="ai-native-section">
+        <h2>Built with AI</h2>
+        <p>Elo was conceived, designed, and implemented entirely with <strong>Claude Code</strong>. From lexer to compilers, every line emerged from AI-human collaboration — a demonstration of what's possible when humans and AI build together.</p>
+      </section>
+
+      <section class="who-section">
+        <h2>Who's Behind Elo?</h2>
+        <p>
+          Created by <strong>Bernard Lambeau</strong> at <a href="https://enspirit.dev" target="_blank">Enspirit</a>,
+          building on 25 years of software engineering &amp; language design experience with projects like
+          <a href="https://finitio.io" target="_blank">Finitio</a>,
+          <a href="https://www.relational-algebra.dev" target="_blank">Bmg</a>, and
+          <a href="https://klaro.cards" target="_blank">Klaro Cards</a>.
+        </p>
+        <p>
+          <a href={url('/about')} class="about-link">Learn more about the project →</a>
+        </p>
+      </section>
+
+      <Footer className="home-footer" />
+    </div>
+  </main>
+</Layout>

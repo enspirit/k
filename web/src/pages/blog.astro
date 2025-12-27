@@ -1,0 +1,118 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Elo Blog" activeNav="blog">
+  <main class="blog-panel" data-controller="blog">
+    <article class="blog-content">
+      <header class="page-header centered">
+        <h1>Blog</h1>
+        <p class="page-intro">Stories, insights, and lessons from building Elo</p>
+      </header>
+
+      <article class="blog-post" id="day-two-refinement" data-blog-target="post">
+        <header class="post-header" data-action="click->blog#toggle">
+          <h2>Day Two: The Art of Refinement</h2>
+          <div class="post-meta">
+            <time datetime="2024-12-26">December 26, 2024</time>
+            <span class="post-author">By Bernard Lambeau & Claude</span>
+          </div>
+        </header>
+
+        <div class="post-content">
+          <p class="lead">
+            Day one was about building something from nothing. Day two was different—it was about refinement, rebranding, and preparing Elo for the world.
+          </p>
+
+          <h3>The Morning Revelation</h3>
+          <p>
+            We started day two by looking at what we'd built. The compiler worked. Tests passed. But something felt off about the generated code. Take this simple Elo expression:
+          </p>
+          <blockquote><code>let x = 1 in x + 1</code></blockquote>
+          <p>The JavaScript output looked like this:</p>
+          <pre><code>((x) => x + 1)(1)</code></pre>
+          <p>
+            Technically correct. But when debugging generated code, this IIFE-wrapped style is nearly impossible to follow.
+            The new output? Clean, readable imperative code:
+          </p>
+          <pre><code>(function() &#123; let x = 1; return x + 1; &#125;)()</code></pre>
+
+          <h3>Error Handling: A Finitio Inheritance</h3>
+          <p>
+            The biggest feature of day two was error handling—but not the usual try/catch kind. Elo needed something portable across Ruby, JavaScript, and SQL.
+            We designed an <strong>alternative operator</strong>. The <code>|</code> symbol means "try this, or else try that":
+          </p>
+          <pre><code>Date&lt;iso8601&gt;(input) | Date&lt;dmy&gt;(input) | fail("Invalid date")</code></pre>
+
+          <h3>From K to Elo: The Rebranding</h3>
+          <p>
+            The language started as "K"—a terrible name, already taken by a famous array language. Day two brought a complete rebranding:
+          </p>
+          <ul>
+            <li><strong>New name:</strong> Elo (named after Elodie—a reminder that life is more than code)</li>
+            <li><strong>New extension:</strong> <code>.elo</code> files instead of <code>.k</code></li>
+            <li><strong>New CLI:</strong> <code>eloc</code> (the Elo compiler)</li>
+          </ul>
+        </div>
+
+        <footer class="post-footer">
+          <p>View today's task files: <a href="https://github.com/enspirit/elo/tree/main/.claude/tasks/done" target="_blank">Done tasks on GitHub</a>.</p>
+        </footer>
+      </article>
+
+      <article class="blog-post" id="building-k-with-claude" data-blog-target="post">
+        <header class="post-header" data-action="click->blog#toggle">
+          <h2>Building Elo: A Human-AI Collaboration Story</h2>
+          <div class="post-meta">
+            <time datetime="2024-12-25">December 25, 2024</time>
+            <span class="post-author">By Bernard Lambeau & Claude</span>
+          </div>
+        </header>
+
+        <div class="post-content">
+          <p class="lead">
+            Elo was built in a single day through an intense collaboration between a human developer and Claude Code. Here's what we learned about making AI pair programming actually work.
+          </p>
+
+          <h3>The Starting Point</h3>
+          <p>
+            It began with a nearly empty directory: just a README with an idea. Bernard had a clear vision—a small expression language that could compile to Ruby, JavaScript, and SQL—but no code. The first prompt was simple:
+          </p>
+          <blockquote>
+            "Read README. I want to invent a small language that compiles to Ruby, Javascript and SQL. Let's start with arithmetic expressions involving scalars and (open) variables."
+          </blockquote>
+
+          <h3>What Worked: The Task File Pattern</h3>
+          <p>
+            The most effective pattern we discovered was the <strong>task file</strong>. Before each significant change, Bernard would write a short markdown file describing the problem, the idea, and follow-up refinements after seeing results.
+          </p>
+
+          <h3>Vision vs. Execution</h3>
+          <p>A clear division of labor emerged naturally:</p>
+          <ul>
+            <li><strong>Bernard</strong> provided the vision, domain expertise, design principles, and course corrections</li>
+            <li><strong>Claude</strong> handled implementation details, proposed architectural solutions, wrote the code, and maintained test coverage</li>
+          </ul>
+          <p>
+            <strong>Here's the remarkable part: Bernard didn't write a single line of code.</strong> Not one. He wrote specifications in markdown files, reviewed outputs, and provided feedback—but never touched the TypeScript.
+          </p>
+
+          <h3>The Result</h3>
+          <p>
+            In roughly 24 hours of collaboration, we built a complete expression language with a parser, type system, three compilers, a standard library, a CLI tool, and a documentation website. Not bad for a day's work.
+          </p>
+          <p>
+            Elo isn't just a demonstration that AI can write code. It's a demonstration that <strong>humans and AI can build together</strong>—each contributing what they do best.
+          </p>
+        </div>
+
+        <footer class="post-footer">
+          <p>The complete history of our collaboration is preserved in <a href="https://github.com/enspirit/elo/tree/main/.claude/tasks" target="_blank">the task files on GitHub</a>.</p>
+        </footer>
+      </article>
+    </article>
+
+    <Footer className="blog-footer" />
+  </main>
+</Layout>

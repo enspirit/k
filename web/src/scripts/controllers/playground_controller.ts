@@ -12,9 +12,10 @@ import {
   parse,
   compileToRuby,
   compileToJavaScript,
-  compileToSQL
-} from '../../src/index';
-import { getPrelude, Target as PreludeTarget } from '../../src/preludes';
+  compileToSQL,
+  getPrelude
+} from '@enspirit/elo';
+import type { PreludeTarget } from '@enspirit/elo';
 import { elo } from '../codemirror/elo-language';
 import { eloDarkTheme, eloLightTheme } from '../codemirror/elo-theme';
 import { highlightJS, highlightRuby, highlightSQL } from '../highlighter';
@@ -63,8 +64,22 @@ export default class PlaygroundController extends Controller {
     });
     this.themeObserver.observe(document.body, { attributes: true });
 
+    // Check for code in URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const codeFromUrl = urlParams.get('code');
+    if (codeFromUrl) {
+      this.setCode(codeFromUrl);
+      // Clean URL without reload
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+
     // Compile on initial load
     this.compile();
+
+    // Auto-run if requested via URL
+    if (urlParams.get('run') === '1' && codeFromUrl) {
+      setTimeout(() => this.run(), 100);
+    }
   }
 
   private initializeEditor() {

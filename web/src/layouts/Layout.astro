@@ -1,0 +1,148 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  activeNav?: 'home' | 'try' | 'learn' | 'doc' | 'stdlib' | 'blog' | 'about';
+}
+
+const {
+  title = 'Elo — An expression language',
+  description = 'A simple, well-designed, portable, and safe data expression language that compiles to JavaScript, Ruby, and SQL.',
+  activeNav = 'home'
+} = Astro.props;
+
+// Helper to prefix paths with base URL
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const url = (path: string) => `${base}${path}`;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content={description}>
+  <title>{title}</title>
+  <link rel="stylesheet" href={url('/styles/global.css')}>
+  <script>
+    // Apply theme immediately to avoid flash
+    const storedTheme = localStorage.getItem('elo-theme');
+    const isLightMode = storedTheme ? storedTheme === 'light' : true;
+    if (isLightMode) {
+      document.body.classList.add('light-theme');
+    }
+  </script>
+</head>
+<body>
+  <header>
+    <a href={url('/')} class="logo">Elo — An expression language</a>
+    <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle menu">
+      <span class="hamburger-icon"></span>
+    </button>
+    <nav id="main-nav">
+      <a href={url('/')} class:list={[{ active: activeNav === 'home' }]}>Home</a>
+      <a href={url('/playground')} class:list={[{ active: activeNav === 'try' }]}>Try</a>
+      <a href={url('/learn')} class:list={[{ active: activeNav === 'learn' }]}>Learn</a>
+      <div class="nav-group">
+        <a href={url('/docs')} class:list={[{ active: activeNav === 'doc' }]}>Reference</a>
+        <div class="nav-submenu">
+          <span class="submenu-section">Language</span>
+          <a href={url('/docs#getting-started')}>Getting Started</a>
+          <a href={url('/docs#types')}>Types</a>
+          <a href={url('/docs#literals')}>Literals</a>
+          <a href={url('/docs#objects')}>Objects</a>
+          <a href={url('/docs#arrays')}>Arrays</a>
+          <a href={url('/docs#operators')}>Operators</a>
+          <a href={url('/docs#variables')}>Variables</a>
+          <a href={url('/docs#conditionals')}>Conditionals</a>
+          <a href={url('/docs#lambdas')}>Lambdas</a>
+          <a href={url('/docs#ranges')}>Ranges</a>
+          <a href={url('/docs#type-selectors')}>Type Selectors</a>
+          <a href={url('/docs#assertions')}>Assertions</a>
+          <span class="submenu-section">Tools</span>
+          <a href={url('/docs#examples')}>Examples</a>
+          <a href={url('/docs#javascript-api')}>JavaScript API</a>
+          <a href={url('/docs#command-line')}>Command Line</a>
+        </div>
+      </div>
+      <div class="nav-group">
+        <a href={url('/stdlib')} class:list={[{ active: activeNav === 'stdlib' }]}>Stdlib</a>
+        <div class="nav-submenu">
+          <a href={url('/stdlib#numeric')}>Numeric</a>
+          <a href={url('/stdlib#temporal')}>Temporal</a>
+          <a href={url('/stdlib#string')}>String</a>
+          <a href={url('/stdlib#array')}>Array</a>
+          <a href={url('/stdlib#introspection')}>Introspection</a>
+          <a href={url('/stdlib#type-selectors')}>Type Selectors</a>
+        </div>
+      </div>
+      <a href={url('/blog')} class:list={[{ active: activeNav === 'blog' }]}>Blog</a>
+      <a href={url('/about')} class:list={[{ active: activeNav === 'about' }]}>About</a>
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark mode">
+        <span class="theme-icon">&#9790;</span>
+      </button>
+    </nav>
+  </header>
+
+  <slot />
+
+  <script>
+    import { Application } from '@hotwired/stimulus';
+    import PlaygroundController from '../scripts/controllers/playground_controller';
+    import DocController from '../scripts/controllers/doc_controller';
+    import StdlibSearchController from '../scripts/controllers/stdlib_search_controller';
+    import BlogController from '../scripts/controllers/blog_controller';
+    import { highlightAll, highlightAllJS } from '../scripts/highlighter';
+
+    // Start Stimulus application
+    const application = Application.start();
+    (window as any).Stimulus = application;
+
+    // Register controllers
+    application.register('playground', PlaygroundController);
+    application.register('doc', DocController);
+    application.register('stdlib-search', StdlibSearchController);
+    application.register('blog', BlogController);
+
+    // Theme toggle functionality
+    function initTheme() {
+      const themeToggle = document.getElementById('theme-toggle');
+      const themeIcon = themeToggle?.querySelector('.theme-icon');
+
+      updateIcon();
+
+      themeToggle?.addEventListener('click', () => {
+        document.body.classList.toggle('light-theme');
+        const isLight = document.body.classList.contains('light-theme');
+        localStorage.setItem('elo-theme', isLight ? 'light' : 'dark');
+        updateIcon();
+      });
+
+      function updateIcon() {
+        if (themeIcon) {
+          const isLight = document.body.classList.contains('light-theme');
+          themeIcon.innerHTML = isLight ? '&#9790;' : '&#9728;';
+        }
+      }
+    }
+
+    // Mobile menu toggle
+    function initMobileMenu() {
+      const toggle = document.getElementById('mobile-menu-toggle');
+      const nav = document.getElementById('main-nav');
+
+      toggle?.addEventListener('click', () => {
+        nav?.classList.toggle('open');
+      });
+    }
+
+    // Apply syntax highlighting and init
+    document.addEventListener('DOMContentLoaded', () => {
+      highlightAll('.example-code');
+      highlightAllJS('.code-js');
+      initTheme();
+      initMobileMenu();
+    });
+  </script>
+</body>
+</html>

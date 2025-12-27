@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Try Elo" activeNav="try">
+  <main data-controller="playground">
+    <section class="editor-panel">
+      <div
+        data-playground-target="editor"
+        data-initial-code="let x = 12, y = 13 in assert(x + y == 25)"
+      ></div>
+    </section>
+
+    <section class="output-panel">
+      <div class="panel-header">
+        <select
+          data-playground-target="language"
+          data-action="change->playground#compile"
+        >
+          <option value="javascript">JavaScript</option>
+          <option value="ruby">Ruby</option>
+          <option value="sql">SQL</option>
+        </select>
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            data-playground-target="pretty"
+            data-action="change->playground#compile"
+            checked
+          />
+          Pretty
+        </label>
+        <label class="checkbox-label">
+          <input
+            type="checkbox"
+            data-playground-target="prelude"
+            data-action="change->playground#compile"
+          />
+          Prelude
+        </label>
+        <div class="button-group">
+          <button
+            data-playground-target="copyButton"
+            data-action="click->playground#copy"
+            class="secondary-button"
+          >Copy</button>
+          <button
+            data-playground-target="saveButton"
+            data-action="click->playground#save"
+            class="secondary-button"
+          >Save</button>
+          <button
+            data-playground-target="runButton"
+            data-action="click->playground#run"
+            class="run-button"
+          >Run</button>
+        </div>
+      </div>
+      <pre data-playground-target="output"></pre>
+      <div class="result" data-playground-target="result"></div>
+      <div class="error" data-playground-target="error"></div>
+    </section>
+  </main>
+</Layout>

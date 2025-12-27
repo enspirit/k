@@ -23,8 +23,8 @@
     "docker:down": "docker compose down",
     "docker:logs": "docker compose logs -f",
     "fixtures:regenerate": "./scripts/regenerate-fixtures.sh",
-    "build:web": "esbuild web/main.ts --bundle --outfile=web/dist/bundle.js --format=esm --target=es2020",
-    "dev:web": "esbuild web/main.ts --bundle --outfile=web/dist/bundle.js --format=esm --target=es2020 --watch --servedir=web"
+    "build:web": "cd web && npm run build",
+    "dev:web": "cd web && npm run dev"
   },
   "keywords": [
     "compiler",

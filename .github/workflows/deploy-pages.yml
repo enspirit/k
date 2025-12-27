@@ -27,11 +27,14 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install root dependencies
         run: npm ci
 
-      - name: Build web bundle
-        run: npm run build:web
+      - name: Install web dependencies
+        run: cd web && npm ci
+
+      - name: Build Astro site
+        run: cd web && npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -39,7 +42,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./web
+          path: ./web/dist
 
   deploy:
     environment:

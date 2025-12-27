@@ -1,0 +1,395 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Elo Documentation" activeNav="doc">
+  <main class="doc-panel" data-controller="doc">
+    <aside class="doc-toc">
+      <nav>
+        <span class="toc-section">Language</span>
+        <a href="#getting-started">Getting Started</a>
+        <a href="#types">Types</a>
+        <a href="#literals">Literals</a>
+        <a href="#objects">Objects</a>
+        <a href="#arrays">Arrays</a>
+        <a href="#operators">Operators</a>
+        <a href="#variables">Variables</a>
+        <a href="#conditionals">Conditionals</a>
+        <a href="#lambdas">Lambdas</a>
+        <a href="#ranges">Ranges</a>
+        <a href="#type-selectors">Type Selectors</a>
+        <a href="#assertions">Assertions</a>
+        <span class="toc-section">Tools</span>
+        <a href="#examples">Examples</a>
+        <a href="#javascript-api">JavaScript API</a>
+        <a href="#command-line">Command Line</a>
+      </nav>
+    </aside>
+    <article class="doc-content">
+      <header class="page-header">
+        <h1>The Elo Language</h1>
+        <p class="page-intro">
+          Elo is a small expression language that compiles to <strong>JavaScript</strong>,
+          <strong>Ruby</strong>, and <strong>SQL</strong>. Write once, run anywhere.
+        </p>
+      </header>
+
+      <section class="doc-section" id="getting-started">
+        <h2>Getting Started</h2>
+        <p>
+          Elo expressions compile to equivalent code in all three target languages.
+          Click any example to try it in the playground.
+        </p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Hello, Math!</div>
+          <pre class="example-code">2 + 3 * 4</pre>
+          <p class="example-desc">Basic arithmetic follows standard precedence rules.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="types">
+        <h2>Types</h2>
+        <p>Elo has a simple type system with the following types. Use <code>typeOf()</code> to inspect types at runtime.</p>
+        <table class="type-table">
+          <thead>
+            <tr><th>Type</th><th>Description</th><th>Examples</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>Int</code></td><td>Integer numbers</td><td><code>42</code>, <code>-7</code>, <code>0</code></td></tr>
+            <tr><td><code>Float</code></td><td>Floating-point numbers</td><td><code>3.14</code>, <code>-0.5</code></td></tr>
+            <tr><td><code>Bool</code></td><td>Boolean values</td><td><code>true</code>, <code>false</code></td></tr>
+            <tr><td><code>String</code></td><td>Text strings</td><td><code>'hello'</code>, <code>'world'</code></td></tr>
+            <tr><td><code>DateTime</code></td><td>Dates and timestamps</td><td><code>D2024-01-15</code>, <code>NOW</code>, <code>TODAY</code></td></tr>
+            <tr><td><code>Duration</code></td><td>Time periods</td><td><code>P1D</code>, <code>PT2H30M</code>, <code>P1Y2M</code></td></tr>
+            <tr><td><code>Object</code></td><td>Key-value objects</td><td><code>&#123;name: 'Alice', age: 30&#125;</code></td></tr>
+            <tr><td><code>Array</code></td><td>Ordered collections</td><td><code>[1, 2, 3]</code>, <code>['a', 'b']</code></td></tr>
+            <tr><td><code>Fn</code></td><td>Lambda functions and predicates</td><td><code>fn( x ~> x * 2 )</code>, <code>fn( x | x > 0 )</code></td></tr>
+            <tr><td><code>Null</code></td><td>Null values</td><td><code>null</code></td></tr>
+          </tbody>
+        </table>
+        <p class="note"><strong>Note:</strong> Use <code>null</code> for absent values. Use <code>isNull()</code> to check for null, and the <code>|</code> operator to provide defaults: <code>x | 'default'</code>.</p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Type Introspection</div>
+          <pre class="example-code">typeOf(42) == 'Int' and typeOf(P1D) == 'Duration'</pre>
+          <p class="example-desc">Use <code>typeOf()</code> to get the type name as a string.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="literals">
+        <h2>Literals</h2>
+        <p>Elo supports numbers, booleans, strings, dates, and durations as first-class values.</p>
+        <h3>Numbers</h3>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Integers &amp; Floats</div>
+          <pre class="example-code">42 + 3.14</pre>
+          <p class="example-desc">Numbers include integers and floating-point values.</p>
+        </div>
+        <h3>Booleans</h3>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Boolean Literals</div>
+          <pre class="example-code">true and not false</pre>
+          <p class="example-desc"><code>true</code> and <code>false</code> are boolean literals.</p>
+        </div>
+        <h3>Strings</h3>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">String Literal</div>
+          <pre class="example-code">'hello world'</pre>
+          <p class="example-desc">Strings use single quotes. Escape with backslash: <code>'it\'s working'</code>.</p>
+        </div>
+        <h3>Dates &amp; Times</h3>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Date Literal</div>
+          <pre class="example-code">D2025-12-25</pre>
+          <p class="example-desc">ISO date format with <code>D</code> prefix.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Temporal Keywords</div>
+          <pre class="example-code">TODAY &lt; NOW</pre>
+          <p class="example-desc"><code>NOW</code> is the current timestamp, <code>TODAY</code> is midnight today.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Period Boundaries</div>
+          <pre class="example-code">SOY &lt;= TODAY and TODAY &lt;= EOY</pre>
+          <p class="example-desc">Start/End of Year (<code>SOY</code>/<code>EOY</code>), Quarter (<code>SOQ</code>/<code>EOQ</code>), Month (<code>SOM</code>/<code>EOM</code>), Week (<code>SOW</code>/<code>EOW</code>).</p>
+        </div>
+        <h3>Durations</h3>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Duration Literal</div>
+          <pre class="example-code">P1Y2M3D</pre>
+          <p class="example-desc">1 year, 2 months, 3 days. Use <code>P</code> prefix (ISO 8601).</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Time Durations</div>
+          <pre class="example-code">PT2H30M</pre>
+          <p class="example-desc">2 hours and 30 minutes. Use <code>PT</code> for time-only durations.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="objects">
+        <h2>Object Literals</h2>
+        <p>Elo supports object literals with key-value pairs. Objects compile to native structures in each target language.</p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Simple Object</div>
+          <pre class="example-code">&#123;name: 'Alice', age: 30&#125;</pre>
+          <p class="example-desc">Create an object with named properties.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Property Access</div>
+          <pre class="example-code">&#123;budget: 1500&#125;.budget</pre>
+          <p class="example-desc">Access properties with dot notation.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Object with Let</div>
+          <pre class="example-code">let obj = &#123;x: 10, y: 20&#125; in obj.x + obj.y</pre>
+          <p class="example-desc">Bind an object to a variable and access its properties.</p>
+        </div>
+        <p class="note"><strong>Note:</strong> In SQL, objects compile to PostgreSQL JSONB using <code>jsonb_build_object()</code>.</p>
+      </section>
+
+      <section class="doc-section" id="arrays">
+        <h2>Array Literals</h2>
+        <p>Elo supports array literals containing any expression. Arrays are heterogeneous and compile to native arrays.</p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Simple Array</div>
+          <pre class="example-code">[1, 2, 3]</pre>
+          <p class="example-desc">Create an array with integer elements.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Mixed Types</div>
+          <pre class="example-code">[1, 'two', true, null]</pre>
+          <p class="example-desc">Arrays can mix different types including null.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Nested Arrays</div>
+          <pre class="example-code">[[1, 2], [3, 4]]</pre>
+          <p class="example-desc">Arrays can contain other arrays.</p>
+        </div>
+        <p class="note"><strong>Note:</strong> In SQL, arrays compile to PostgreSQL <code>ARRAY[...]</code> syntax.</p>
+      </section>
+
+      <section class="doc-section" id="operators">
+        <h2>Operators</h2>
+        <p>Elo provides arithmetic, comparison, and logical operators.</p>
+        <h3>Arithmetic</h3>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Basic Operations</div>
+          <pre class="example-code">(10 + 5) * 2 - 8 / 4</pre>
+          <p class="example-desc">Addition <code>+</code>, subtraction <code>-</code>, multiplication <code>*</code>, division <code>/</code>.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Power &amp; Modulo</div>
+          <pre class="example-code">2 ^ 10 + 17 % 5</pre>
+          <p class="example-desc">Power <code>^</code> and remainder <code>%</code> operators.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Date Arithmetic</div>
+          <pre class="example-code">TODAY + P7D</pre>
+          <p class="example-desc">Add durations to dates. Subtract with <code>-</code>.</p>
+        </div>
+        <h3>Comparison</h3>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Comparison Operators</div>
+          <pre class="example-code">10 > 5 and 3 &lt;= 3</pre>
+          <p class="example-desc">Use <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>==</code>, <code>!=</code>.</p>
+        </div>
+        <h3>Logical</h3>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Logical Operators</div>
+          <pre class="example-code">(5 > 3 and 2 &lt; 4) or not (1 == 2)</pre>
+          <p class="example-desc">Combine conditions with <code>and</code>, <code>or</code>, and <code>not</code>.</p>
+        </div>
+        <h3>Pipe Operator</h3>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Function Chaining</div>
+          <pre class="example-code">'  hello world  ' |> trim |> upper</pre>
+          <p class="example-desc">The pipe operator <code>|&gt;</code> passes the left value as the first argument to the right function.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Pipe with Arguments</div>
+          <pre class="example-code">'42' |> padStart(5, '0')</pre>
+          <p class="example-desc">Additional arguments follow the piped value.</p>
+        </div>
+        <h3>Alternative Operator</h3>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Fallback Chain</div>
+          <pre class="example-code">indexOf('hello', 'x') | indexOf('hello', 'l') | -1</pre>
+          <p class="example-desc">The <code>|</code> operator returns the first non-null value.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="variables">
+        <h2>Local Variables</h2>
+        <p>Use <code>let ... in</code> expressions to bind local variables.</p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Simple Binding</div>
+          <pre class="example-code">let x = 10 in x * 2</pre>
+          <p class="example-desc">Bind a value to a name, then use it in an expression.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Multiple Bindings</div>
+          <pre class="example-code">let width = 5, height = 3 in width * height</pre>
+          <p class="example-desc">Bind multiple variables separated by commas.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="conditionals">
+        <h2>Conditionals</h2>
+        <p>Use <code>if ... then ... else</code> expressions to branch based on conditions.</p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Simple Conditional</div>
+          <pre class="example-code">if 5 > 3 then 'yes' else 'no'</pre>
+          <p class="example-desc">Returns 'yes' if the condition is true, 'no' otherwise.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Conditional with Let</div>
+          <pre class="example-code">let x = 10 in if x > 5 then 'big' else 'small'</pre>
+          <p class="example-desc">Combine conditionals with local variables.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="lambdas">
+        <h2>Lambdas and Predicates</h2>
+        <p>Elo provides two kinds of anonymous functions:</p>
+        <ul>
+          <li><strong>Lambdas</strong>: <code>fn( params ~> body )</code> — general functions</li>
+          <li><strong>Predicates</strong>: <code>fn( params | body )</code> — functions that return boolean</li>
+        </ul>
+        <h3>Lambda Expressions</h3>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Simple Lambda</div>
+          <pre class="example-code">fn( x ~> x * 2 )</pre>
+          <p class="example-desc">A function that doubles its input.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Multiple Parameters</div>
+          <pre class="example-code">fn( x, y ~> x + y )</pre>
+          <p class="example-desc">Lambdas can take multiple parameters.</p>
+        </div>
+        <h3>Predicate Expressions</h3>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Simple Predicate</div>
+          <pre class="example-code">fn( x | x > 0 )</pre>
+          <p class="example-desc">A predicate that tests if a number is positive.</p>
+        </div>
+        <h3>Invoking Lambdas</h3>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Call a Lambda</div>
+          <pre class="example-code">let double = fn( x ~> x * 2 ) in double(5)</pre>
+          <p class="example-desc">Bind a lambda to a name, then call it. Returns 10.</p>
+        </div>
+        <p class="note"><strong>Note:</strong> Lambdas compile to JavaScript and Ruby only. SQL does not support function expressions.</p>
+      </section>
+
+      <section class="doc-section" id="ranges">
+        <h2>Range Membership</h2>
+        <p>Check if a value falls within a range using the <code>in</code> operator.</p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Inclusive Range</div>
+          <pre class="example-code">5 in 1..10</pre>
+          <p class="example-desc">True if 5 &gt;= 1 AND 5 &lt;= 10. Both ends are included.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Exclusive End Range</div>
+          <pre class="example-code">5 in 1...10</pre>
+          <p class="example-desc">True if 5 &gt;= 1 AND 5 &lt; 10. End is excluded.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Date Range Check</div>
+          <pre class="example-code">TODAY in SOY..EOY</pre>
+          <p class="example-desc">Check if today is within the current year.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="type-selectors">
+        <h2>Type Selectors</h2>
+        <p>Type selectors convert values to specific types, parsing strings when needed. They return <code>null</code> on invalid input.</p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Parse String to Integer</div>
+          <pre class="example-code">Int('123')</pre>
+          <p class="example-desc">Parses the string to the integer <code>123</code>.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Parse with Default</div>
+          <pre class="example-code">Int('abc') | 0</pre>
+          <p class="example-desc">Returns <code>0</code> because <code>'abc'</code> cannot be parsed.</p>
+        </div>
+        <p>Available: <code>Int()</code>, <code>Float()</code>, <code>Bool()</code>, <code>Date()</code>, <code>Datetime()</code>, <code>Duration()</code>.</p>
+      </section>
+
+      <section class="doc-section" id="assertions">
+        <h2>Assertions</h2>
+        <p>Use <code>assert()</code> to validate conditions at runtime.</p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Simple Assert</div>
+          <pre class="example-code">assert(2 + 2 == 4)</pre>
+          <p class="example-desc">Throws an error if the condition is false.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Fail with Message</div>
+          <pre class="example-code">indexOf('hello', 'x') | fail('character not found')</pre>
+          <p class="example-desc">Use <code>fail(message)</code> to throw an error with a custom message.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="examples">
+        <h2>Real-World Examples</h2>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Subscription Check</div>
+          <pre class="example-code">let
+  signup_date = D2024-01-15,
+  trial_period = P30D,
+  trial_end = signup_date + trial_period
+in
+  TODAY > trial_end</pre>
+          <p class="example-desc">Check if a 30-day trial has expired.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="javascript-api">
+        <h2>JavaScript API</h2>
+        <p>Install with <code>npm install @enspirit/elo</code>.</p>
+        <h3>compile()</h3>
+        <pre class="code-js">import &#123; compile &#125; from '@enspirit/elo';
+import dayjs from 'dayjs';
+
+const double = compile('fn(x ~> x * 2)', &#123; runtime: &#123; dayjs &#125; &#125;);
+double(21); // => 42</pre>
+        <h3>Lower-Level API</h3>
+        <pre class="code-js">import &#123; parse, compileToJavaScript, compileToRuby, compileToSQL &#125; from '@enspirit/elo';
+
+const ast = parse('2 + 3 * 4');
+compileToJavaScript(ast); // => "2 + 3 * 4"
+compileToRuby(ast);       // => "2 + 3 * 4"
+compileToSQL(ast);        // => "2 + 3 * 4"</pre>
+      </section>
+
+      <section class="doc-section" id="command-line">
+        <h2>Command Line</h2>
+        <p>Elo provides a CLI tool <code>eloc</code> for compiling expressions from the terminal.</p>
+        <pre class="code-js"># Compile expression to JavaScript (default)
+eloc -e "2 + 3 * 4"
+
+# Compile to Ruby
+eloc -e "2 + 3 * 4" -t ruby
+
+# Compile to SQL
+eloc -e "2 + 3 * 4" -t sql
+
+# Include runtime prelude
+eloc -e "NOW + PT2H" -t ruby -p</pre>
+        <table class="type-table">
+          <thead><tr><th>Option</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>-e, --expression</code></td><td>Expression to compile</td></tr>
+            <tr><td><code>-t, --target</code></td><td>Target: <code>js</code>, <code>ruby</code>, <code>sql</code></td></tr>
+            <tr><td><code>-p, --prelude</code></td><td>Include runtime imports</td></tr>
+            <tr><td><code>-f, --file</code></td><td>Output to file</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <Footer className="doc-footer" />
+    </article>
+  </main>
+</Layout>

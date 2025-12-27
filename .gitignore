@@ -1,6 +1,10 @@
 node_modules/
 dist/
-web/dist/
 *.log
 .DS_Store
 .claude/safe-setup
+
+# Astro
+web/node_modules/
+web/dist/
+web/.astro/

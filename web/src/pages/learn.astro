@@ -1,0 +1,286 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const url = (path: string) => `${base}${path}`;
+---
+
+<Layout title="Learn Elo" activeNav="learn">
+  <main class="learn-panel" data-controller="doc">
+    <aside class="learn-toc">
+      <nav>
+        <span class="toc-section">Lessons</span>
+        <a href="#lesson-1">1. Playing with Numbers</a>
+        <a href="#lesson-2">2. Words, Words, Words</a>
+        <a href="#lesson-3">3. True or False?</a>
+        <a href="#lesson-4">4. Making Decisions</a>
+        <a href="#lesson-5">5. Naming Things</a>
+        <a href="#lesson-6">6. Time Flies</a>
+        <a href="#lesson-7">7. Bundling Data</a>
+        <a href="#lesson-8">8. Building Blocks</a>
+        <a href="#lesson-9">9. Piping It Through</a>
+        <span class="toc-section">Next</span>
+        <a href="#lesson-next">What's Next?</a>
+      </nav>
+    </aside>
+    <article class="learn-content">
+      <header class="page-header">
+        <h1>Learn Elo</h1>
+        <p class="page-intro">
+          Programming doesn't have to be scary. Think of Elo like a powerful calculator: you write expressions,
+          and Elo gives you results. No complex programs—just math, text, dates, and logic.
+          Let's learn together, one step at a time.
+        </p>
+      </header>
+
+      <section class="lesson" id="lesson-1">
+        <h2>1. Playing with Numbers</h2>
+        <p>
+          Let's start with something familiar: math. Elo understands numbers and basic arithmetic.
+          No special syntax, no tricks—just write it like you'd write it on paper.
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">2 + 3 * 4</pre>
+        </div>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">(2 + 3) * 4</pre>
+        </div>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">20 / 4 + 6 * 7</pre>
+        </div>
+      </section>
+
+      <section class="lesson" id="lesson-2">
+        <h2>2. Words, Words, Words</h2>
+        <p>
+          Text in Elo is called a <em>String</em>. Just wrap your words in quotes:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">'Hello, World!'</pre>
+        </div>
+        <p>
+          Want to combine strings? Use the <code>+</code> operator (think of it as gluing words together):
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">'Hello, ' + 'World!'</pre>
+        </div>
+        <p>
+          Elo has handy functions to transform text:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">upper('hello')</pre>
+        </div>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">trim('  spaces  ')</pre>
+        </div>
+        <p class="lesson-tip">
+          <strong>Keep it simple:</strong> Elo uses single quotes for all strings. No double quotes, no backticks—just one way to write text.
+        </p>
+      </section>
+
+      <section class="lesson" id="lesson-3">
+        <h2>3. True or False?</h2>
+        <p>
+          Computers love yes/no questions. In Elo, we have <code>true</code> and <code>false</code>:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">5 > 3</pre>
+        </div>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">10 <= 10</pre>
+        </div>
+        <p>
+          You can combine conditions with <code>and</code>, <code>or</code>, and <code>not</code>:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">true and false</pre>
+        </div>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">5 > 3 or 2 == 2</pre>
+        </div>
+        <p class="lesson-tip">
+          <strong>Real-world example:</strong> <code>age >= 18 and hasLicense</code> — Can this person drive?
+        </p>
+      </section>
+
+      <section class="lesson" id="lesson-4">
+        <h2>4. Making Decisions</h2>
+        <p>
+          Life is full of choices. Elo handles them with <code>if</code>/<code>then</code>/<code>else</code>:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">if 5 > 3 then 'yes' else 'no'</pre>
+        </div>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">if 10 > 100 then 'big' else 'small'</pre>
+        </div>
+        <p>
+          Notice something? In Elo, <code>if</code> is an <em>expression</em>—it always produces a value.
+          There's no "do this, then do that." Everything is about computing a result.
+        </p>
+        <p class="lesson-tip">
+          <strong>Think spreadsheets:</strong> It's like Excel's <code>=IF(A1>10, "big", "small")</code>, but cleaner!
+        </p>
+      </section>
+
+      <section class="lesson" id="lesson-5">
+        <h2>5. Naming Things</h2>
+        <p>
+          Repeating yourself is boring. Give values a name with <code>let</code>:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let price = 100 in price * 1.21</pre>
+        </div>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let name = 'World' in 'Hello, ' + name + '!'</pre>
+        </div>
+        <p>
+          You can name multiple things:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let width = 10, height = 5 in width * height</pre>
+        </div>
+        <p class="lesson-tip">
+          <strong>No surprises:</strong> In Elo, names don't change. Once <code>price</code> is 100, it's always 100.
+          No reassignments, no mutations, no bugs from unexpected changes. That's a feature, not a bug!
+        </p>
+      </section>
+
+      <section class="lesson" id="lesson-6">
+        <h2>6. Time Flies</h2>
+        <p>
+          Elo speaks dates and times fluently. Write them naturally:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">D2024-12-25</pre>
+        </div>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">TODAY</pre>
+        </div>
+        <p>
+          The magic happens with <em>durations</em>. Want to know what's 30 days from today?
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">TODAY + P30D</pre>
+        </div>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">NOW + PT2H30M</pre>
+        </div>
+        <p>
+          Extract parts of dates:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">year(TODAY)</pre>
+        </div>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">month(TODAY)</pre>
+        </div>
+        <p class="lesson-tip">
+          <strong>Pro tip:</strong> <code>P1Y2M3D</code> means "1 year, 2 months, 3 days."
+          <code>PT</code> is for time: <code>PT1H30M</code> = 1 hour 30 minutes.
+        </p>
+      </section>
+
+      <section class="lesson" id="lesson-7">
+        <h2>7. Bundling Data</h2>
+        <p>
+          Real data comes in bundles. A person has a name, age, email. Elo uses <em>objects</em>:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">&#123; name: 'Alice', age: 30, city: 'Brussels' &#125;</pre>
+        </div>
+        <p>
+          Access parts with a dot:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let person = &#123; name: 'Alice', age: 30 &#125; in person.name</pre>
+        </div>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let person = &#123; name: 'Bob', age: 25 &#125; in person.age >= 18</pre>
+        </div>
+        <p class="lesson-tip">
+          <strong>Sounds familiar?</strong> If you've seen JSON, you've seen this.
+          Elo objects work the same way.
+        </p>
+      </section>
+
+      <section class="lesson" id="lesson-8">
+        <h2>8. Building Blocks</h2>
+        <p>
+          Functions are reusable recipes. Define them with <code>fn</code>:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let double = fn( x ~> x * 2 ) in double(5)</pre>
+        </div>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let greet = fn( name ~> 'Hello, ' + name + '!' ) in greet('Elo')</pre>
+        </div>
+        <p>
+          The arrow <code>~></code> means "takes this, produces that." Simple!
+        </p>
+        <p>
+          Functions can take multiple inputs:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let add = fn( a, b ~> a + b ) in add(3, 4)</pre>
+        </div>
+        <p class="lesson-tip">
+          <strong>Read the arrow:</strong> <code>fn( x ~> x * 2 )</code> reads as "a function that takes x and produces x times 2."
+        </p>
+      </section>
+
+      <section class="lesson" id="lesson-9">
+        <h2>9. Piping It Through</h2>
+        <p>
+          Sometimes you want to chain operations. The pipe operator <code>|></code> makes it readable:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">upper(trim('  hello  '))</pre>
+        </div>
+        <p>
+          With pipes, the same code reads left-to-right:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">'  hello  ' |> trim |> upper</pre>
+        </div>
+        <p>
+          It's like a conveyor belt: data flows from left to right, getting transformed at each step.
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">'  elo is fun  ' |> trim |> upper |> length</pre>
+        </div>
+        <p class="lesson-tip">
+          <strong>Assembly line:</strong> Each step transforms the data and passes it to the next. No nested parentheses, just a clean flow.
+        </p>
+      </section>
+
+      <section class="lesson" id="lesson-next">
+        <h2>What's Next?</h2>
+        <p>
+          You've learned the essentials! Here's where to go from here:
+        </p>
+        <ul class="next-steps">
+          <li>
+            <a href={url('/playground')}><strong>Try the Playground</strong></a>
+            — Experiment with everything you've learned
+          </li>
+          <li>
+            <a href={url('/docs')}><strong>Read the Reference</strong></a>
+            — Dive deeper into Elo's features
+          </li>
+          <li>
+            <a href={url('/stdlib')}><strong>Explore the Stdlib</strong></a>
+            — Discover all built-in functions
+          </li>
+        </ul>
+        <p class="lesson-closing">
+          Remember: Elo compiles to JavaScript, Ruby, and SQL. What you write once runs everywhere.
+          <br>Happy coding!
+        </p>
+      </section>
+
+      <Footer className="learn-footer" />
+    </article>
+  </main>
+</Layout>
