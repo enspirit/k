@@ -66,7 +66,7 @@ export default class TabsController extends Controller {
     });
 
     // If there's a section, scroll to it after a brief delay (for DOM to update)
-    if (section && (tabName === 'doc' || tabName === 'stdlib')) {
+    if (section && (tabName === 'doc' || tabName === 'stdlib' || tabName === 'learn')) {
       setTimeout(() => {
         const sectionElement = document.getElementById(section);
         if (sectionElement) {

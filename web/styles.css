@@ -97,7 +97,8 @@ nav a.active {
 body.light-theme nav a:hover,
 body.light-theme .nav-group > a:hover,
 body.light-theme .doc-toc nav a:hover,
-body.light-theme .stdlib-toc nav a:hover {
+body.light-theme .stdlib-toc nav a:hover,
+body.light-theme .learn-toc nav a:hover {
   background: rgba(0, 0, 0, 0.05);
 }
 
@@ -1646,7 +1647,8 @@ body.light-theme .js-badge {
 
   /* Hide TOC on mobile - burger menu is used instead */
   .doc-toc,
-  .stdlib-toc {
+  .stdlib-toc,
+  .learn-toc {
     display: none;
   }
 
@@ -2223,34 +2225,72 @@ body.light-theme .js-badge {
 /* ==================== */
 
 .learn-panel {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 2rem;
+  display: flex;
+  overflow-y: auto;
+  background: var(--bg-primary);
+}
+
+/* Learn Table of Contents Sidebar */
+.learn-toc {
+  width: 200px;
+  flex-shrink: 0;
+  padding: 2rem 1rem;
+  border-right: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  height: fit-content;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.learn-toc nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.learn-toc nav a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.375rem 0.75rem;
+  border-radius: 4px;
+  font-size: 0.8125rem;
+  transition: all 0.15s ease;
+}
+
+.learn-toc nav a:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.learn-toc nav a.active {
+  color: var(--accent);
+  background: rgba(99, 102, 241, 0.1);
 }
 
 .learn-content {
-  background: var(--bg);
+  flex: 1;
+  max-width: 900px;
+  padding: 2rem;
+  min-width: 0;
 }
 
 .learn-header {
-  text-align: center;
   margin-bottom: 3rem;
   padding-bottom: 2rem;
   border-bottom: 1px solid var(--border);
 }
 
 .learn-header h1 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   color: var(--text-primary);
 }
 
 .learn-intro {
-  font-size: 1.25rem;
+  font-size: 1.1rem;
   color: var(--text-secondary);
-  max-width: 600px;
-  margin: 0 auto;
   line-height: 1.6;
 }
 
@@ -2399,16 +2439,16 @@ body.light-theme .js-badge {
 
 /* Learn responsive */
 @media (max-width: 768px) {
-  .learn-panel {
-    padding: 1rem;
+  .learn-content {
+    padding: 1.5rem 1rem;
   }
 
   .learn-header h1 {
-    font-size: 1.75rem;
+    font-size: 1.5rem;
   }
 
   .learn-intro {
-    font-size: 1.1rem;
+    font-size: 1rem;
   }
 
   .lesson h2 {
