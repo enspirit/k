@@ -3,3 +3,4 @@ dist/
 web/dist/
 *.log
 .DS_Store
+.claude/safe-setup
