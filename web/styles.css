@@ -373,6 +373,9 @@ select:focus {
 .page-header {
   display: block;
   margin-bottom: 2rem;
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .page-header h1 {
