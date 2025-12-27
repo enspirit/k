@@ -366,6 +366,42 @@ select:focus {
   display: none !important;
 }
 
+/* ==================== */
+/* Shared Page Header   */
+/* ==================== */
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.page-intro {
+  font-size: 1.125rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.page-intro strong {
+  color: var(--accent);
+}
+
+/* Centered variant for pages without sidebar */
+.page-header.centered {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.page-header.centered .page-intro {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
 /* Documentation Panel */
 .doc-panel {
   display: flex;
@@ -429,28 +465,9 @@ select:focus {
 
 .doc-content {
   flex: 1;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 900px;
   padding: 2rem;
   min-width: 0;
-}
-
-.doc-content h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-}
-
-.doc-content .intro {
-  font-size: 1.125rem;
-  color: var(--text-secondary);
-  margin-bottom: 2rem;
-  line-height: 1.6;
-}
-
-.doc-content .intro strong {
-  color: var(--accent);
 }
 
 .doc-section {
@@ -1453,28 +1470,9 @@ body.light-theme .js-badge {
 
 .stdlib-content {
   flex: 1;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width: 900px;
   padding: 2rem;
   min-width: 0;
-}
-
-.stdlib-header {
-  margin-bottom: 2rem;
-}
-
-.stdlib-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-}
-
-.stdlib-header .intro {
-  font-size: 1.125rem;
-  color: var(--text-secondary);
-  margin-bottom: 1.5rem;
-  line-height: 1.6;
 }
 
 .stdlib-search-bar {
@@ -1652,11 +1650,13 @@ body.light-theme .js-badge {
     display: none;
   }
 
-  .doc-content {
+  .doc-content,
+  .stdlib-content,
+  .learn-content {
     padding: 1.5rem 1rem;
   }
 
-  .doc-content h1 {
+  .page-header h1 {
     font-size: 1.5rem;
   }
 
@@ -1689,23 +1689,6 @@ body.light-theme .js-badge {
   }
 
   /* Stdlib responsive */
-  .stdlib-content {
-    padding: 1rem;
-  }
-
-  .stdlib-header {
-    margin-bottom: 1.25rem;
-  }
-
-  .stdlib-header h1 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .stdlib-header .intro {
-    display: none;
-  }
-
   .stdlib-search-bar {
     max-width: 100%;
   }
@@ -1728,25 +1711,9 @@ body.light-theme .js-badge {
 }
 
 .blog-content {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 3rem 2rem;
-}
-
-.blog-header {
-  margin-bottom: 3rem;
-  text-align: center;
-}
-
-.blog-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.blog-intro {
-  color: var(--text-secondary);
-  font-size: 1.1rem;
 }
 
 /* Blog Post */
@@ -1970,25 +1937,9 @@ body.light-theme .js-badge {
 }
 
 .about-content {
-  max-width: 1200px;
+  max-width: 800px;
   margin: 0 auto;
   padding: 3rem 2rem;
-}
-
-.about-header {
-  margin-bottom: 3rem;
-  text-align: center;
-}
-
-.about-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-}
-
-.about-intro {
-  color: var(--text-secondary);
-  font-size: 1.1rem;
 }
 
 .about-section {
@@ -2148,12 +2099,9 @@ body.light-theme .js-badge {
 
 /* About responsive */
 @media (max-width: 768px) {
-  .about-content {
+  .about-content,
+  .blog-content {
     padding: 2rem 1rem;
-  }
-
-  .about-header h1 {
-    font-size: 1.5rem;
   }
 
   .related-work-grid,
@@ -2273,25 +2221,6 @@ body.light-theme .js-badge {
   max-width: 900px;
   padding: 2rem;
   min-width: 0;
-}
-
-.learn-header {
-  margin-bottom: 3rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid var(--border);
-}
-
-.learn-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-}
-
-.learn-intro {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-  line-height: 1.6;
 }
 
 /* Lessons */
@@ -2439,18 +2368,6 @@ body.light-theme .js-badge {
 
 /* Learn responsive */
 @media (max-width: 768px) {
-  .learn-content {
-    padding: 1.5rem 1rem;
-  }
-
-  .learn-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .learn-intro {
-    font-size: 1rem;
-  }
-
   .lesson h2 {
     font-size: 1.25rem;
   }
