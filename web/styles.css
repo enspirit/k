@@ -2276,6 +2276,13 @@ body.light-theme .js-badge {
   border-radius: 8px;
   margin: 1rem 0;
   overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lesson-example:hover {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
 }
 
 .lesson-example pre {

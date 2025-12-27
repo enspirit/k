@@ -294,7 +294,7 @@ inRange && passing;</pre>
   </main>
 
   <!-- Learn Panel -->
-  <main data-tabs-target="panel" data-panel="learn" class="learn-panel hidden">
+  <main data-tabs-target="panel" data-panel="learn" class="learn-panel hidden" data-controller="doc">
     <aside class="learn-toc">
       <nav>
         <span class="toc-section">Lessons</span>
@@ -326,7 +326,7 @@ inRange && passing;</pre>
           Let's start with something familiar: math. Elo understands numbers and basic arithmetic.
           No special syntax, no tricks—just write it like you'd write it on paper.
         </p>
-        <div class="lesson-example">
+        <div class="lesson-example" data-action="click->doc#tryExample">
           <pre class="example-code">2 + 3
 10 - 4
 6 * 7
@@ -338,9 +338,9 @@ inRange && passing;</pre>
         <p>
           You can combine operations too. Elo follows the usual rules—multiplication before addition:
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">2 + 3 * 4      // That's 14, not 20
-(2 + 3) * 4    // Now it's 20</pre>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">2 + 3 * 4      # That's 14, not 20
+(2 + 3) * 4    # Now it's 20</pre>
         </div>
         <p class="lesson-tip">
           <strong>Fun fact:</strong> Elo doesn't have "variables that change." Once you name something, it stays that way.
@@ -353,25 +353,25 @@ inRange && passing;</pre>
         <p>
           Text in Elo is called a <em>String</em>. Just wrap your words in quotes:
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">"Hello, World!"
-"Elo is fun"</pre>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">'Hello, World!'
+'Elo is fun'</pre>
         </div>
         <p>
-          Want to combine strings? Use the <code>++</code> operator (think of it as gluing words together):
+          Want to combine strings? Use the <code>+</code> operator (think of it as gluing words together):
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">"Hello, " ++ "World!"     // "Hello, World!"
-"Elo" ++ " " ++ "rocks"   // "Elo rocks"</pre>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">'Hello, ' + 'World!'     # 'Hello, World!'
+'Elo' + ' ' + 'rocks'    # 'Elo rocks'</pre>
         </div>
         <p>
           Elo has handy functions to transform text:
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">upcase("hello")      // "HELLO"
-downcase("SHOUT")    // "shout"
-length("Elo")        // 3
-trim("  space  ")    // "space"</pre>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">upper('hello')       # 'HELLO'
+lower('SHOUT')       # 'shout'
+length('Elo')        # 3
+trim('  space  ')    # 'space'</pre>
         </div>
       </section>
 
@@ -380,19 +380,19 @@ trim("  space  ")    // "space"</pre>
         <p>
           Computers love yes/no questions. In Elo, we have <code>true</code> and <code>false</code>:
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">5 > 3          // true (5 is greater than 3)
-2 == 2         // true (2 equals 2)
-"a" == "b"     // false (different letters)
-10 <= 10       // true (10 is less than or equal to 10)</pre>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">5 > 3          # true (5 is greater than 3)
+2 == 2         # true (2 equals 2)
+'a' == 'b'     # false (different letters)
+10 <= 10       # true (10 is less than or equal to 10)</pre>
         </div>
         <p>
           You can combine conditions with <code>and</code>, <code>or</code>, and <code>not</code>:
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">true and false    // false (both must be true)
-true or false     // true (at least one is true)
-not(true)         // false (flips the value)</pre>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">true and false    # false (both must be true)
+true or false     # true (at least one is true)
+not true          # false (flips the value)</pre>
         </div>
         <p class="lesson-tip">
           <strong>Real-world example:</strong> <code>age >= 18 and hasLicense</code> — Can this person drive?
@@ -404,12 +404,13 @@ not(true)         // false (flips the value)</pre>
         <p>
           Life is full of choices. Elo handles them with <code>if</code>/<code>then</code>/<code>else</code>:
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">if 5 > 3 then "yes" else "no"    // "yes"
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">if 5 > 3 then 'yes' else 'no'
 
-if age >= 18
-  then "Welcome!"
-  else "Sorry, adults only"</pre>
+let age = 18 in
+  if age >= 18
+    then 'Welcome!'
+    else 'Sorry, adults only'</pre>
         </div>
         <p>
           Notice something? In Elo, <code>if</code> is an <em>expression</em>—it always produces a value.
@@ -425,20 +426,20 @@ if age >= 18
         <p>
           Repeating yourself is boring. Give values a name with <code>let</code>:
         </p>
-        <div class="lesson-example">
+        <div class="lesson-example" data-action="click->doc#tryExample">
           <pre class="example-code">let price = 100 in
-  price * 1.21      // 121 (price with 21% tax)
+  price * 1.21
 
-let name = "World" in
-  "Hello, " ++ name ++ "!"</pre>
+let name = 'World' in
+  'Hello, ' + name + '!'</pre>
         </div>
         <p>
           You can name multiple things:
         </p>
-        <div class="lesson-example">
+        <div class="lesson-example" data-action="click->doc#tryExample">
           <pre class="example-code">let width = 10,
     height = 5 in
-  width * height    // 50 (the area)</pre>
+  width * height</pre>
         </div>
         <p class="lesson-tip">
           <strong>No surprises:</strong> Once <code>price</code> is 100, it's always 100.
@@ -451,27 +452,27 @@ let name = "World" in
         <p>
           Elo speaks dates and times fluently. Write them naturally:
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">D2024-12-25                // Christmas 2024
-D2024-12-31T23:59:59       // New Year's Eve, one second to midnight
-TODAY                      // Whatever today is
-NOW                        // Right now, including time</pre>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">D2024-12-25                # Christmas 2024
+D2024-12-31T23:59:59Z      # New Year's Eve
+TODAY                      # Whatever today is
+NOW                        # Right now, with time</pre>
         </div>
         <p>
           The magic happens with <em>durations</em>. Want to know what's 30 days from today?
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">TODAY + P30D               // 30 days from now
-D2024-01-01 + P1Y          // One year later
-NOW + PT2H30M              // 2 hours and 30 minutes from now</pre>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">TODAY + P30D               # 30 days from now
+D2024-01-01 + P1Y          # One year later
+NOW + PT2H30M              # 2.5 hours from now</pre>
         </div>
         <p>
           Extract parts of dates:
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">year(TODAY)      // 2024 (or whatever year it is)
-month(TODAY)     // 1-12
-day(TODAY)       // 1-31</pre>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">year(TODAY)      # current year
+month(TODAY)     # 1-12
+day(TODAY)       # 1-31</pre>
         </div>
         <p class="lesson-tip">
           <strong>Pro tip:</strong> <code>P1Y2M3D</code> means "1 year, 2 months, 3 days."
@@ -484,22 +485,22 @@ day(TODAY)       // 1-31</pre>
         <p>
           Real data comes in bundles. A person has a name, age, email. Elo uses <em>objects</em>:
         </p>
-        <div class="lesson-example">
+        <div class="lesson-example" data-action="click->doc#tryExample">
           <pre class="example-code">{
-  name: "Alice",
+  name: 'Alice',
   age: 30,
-  city: "Brussels"
+  city: 'Brussels'
 }</pre>
         </div>
         <p>
           Access parts with a dot:
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">let person = { name: "Alice", age: 30 } in
-  person.name              // "Alice"
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let person = { name: 'Alice', age: 30 } in
+  person.name
 
-let person = { name: "Bob", age: 25 } in
-  person.age >= 18         // true</pre>
+let person = { name: 'Bob', age: 25 } in
+  person.age >= 18</pre>
         </div>
         <p class="lesson-tip">
           <strong>Sounds familiar?</strong> If you've seen JSON, you've seen this.
@@ -512,12 +513,12 @@ let person = { name: "Bob", age: 25 } in
         <p>
           Functions are reusable recipes. Define them with <code>fn</code>:
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">let double = fn(x ~> x * 2) in
-  double(5)               // 10
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let double = fn( x ~> x * 2 ) in
+  double(5)
 
-let greet = fn(name ~> "Hello, " ++ name ++ "!") in
-  greet("Elo")            // "Hello, Elo!"</pre>
+let greet = fn( name ~> 'Hello, ' + name + '!' ) in
+  greet('Elo')</pre>
         </div>
         <p>
           The arrow <code>~></code> means "takes this, produces that." Simple!
@@ -525,12 +526,12 @@ let greet = fn(name ~> "Hello, " ++ name ++ "!") in
         <p>
           Functions can take multiple inputs:
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">let add = fn(a, b ~> a + b) in
-  add(3, 4)               // 7
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let add = fn( a, b ~> a + b ) in
+  add(3, 4)
 
-let fullName = fn(first, last ~> first ++ " " ++ last) in
-  fullName("Ada", "Lovelace")  // "Ada Lovelace"</pre>
+let fullName = fn( first, last ~> first + ' ' + last ) in
+  fullName('Ada', 'Lovelace')</pre>
         </div>
       </section>
 
@@ -539,21 +540,21 @@ let fullName = fn(first, last ~> first ++ " " ++ last) in
         <p>
           Sometimes you want to chain operations. The pipe operator <code>|></code> makes it readable:
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">// Without pipes (inside-out reading):
-upcase(trim("  hello  "))
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code"># Without pipes (inside-out reading):
+upper(trim('  hello  '))
 
-// With pipes (left-to-right reading):
-"  hello  " |> trim |> upcase    // "HELLO"</pre>
+# With pipes (left-to-right reading):
+'  hello  ' |> trim |> upper</pre>
         </div>
         <p>
           It's like a conveyor belt: data flows from left to right, getting transformed at each step.
         </p>
-        <div class="lesson-example">
-          <pre class="example-code">"  elo is fun  "
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">'  elo is fun  '
   |> trim
-  |> upcase
-  |> length     // 10</pre>
+  |> upper
+  |> length</pre>
         </div>
         <p class="lesson-tip">
           <strong>Think Unix pipes:</strong> <code>cat file | grep "error" | wc -l</code>—same idea, cleaner syntax.
