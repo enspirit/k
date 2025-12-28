@@ -19,6 +19,7 @@ import Layout from '../layouts/Layout.astro';
             <option value="objects">Objects</option>
             <option value="arrays">Arrays</option>
             <option value="nulls">Null handling</option>
+            <option value="input">Input Data (_)</option>
           </optgroup>
           <optgroup label="Functions">
             <option value="lambdas">Lambdas</option>
@@ -36,10 +37,27 @@ import Layout from '../layouts/Layout.astro';
           class="run-button"
         >Run</button>
       </div>
-      <div
-        data-playground-target="editor"
-        data-initial-code="let x = 12, y = 13 in x + y"
-      ></div>
+      <div class="editor-split">
+        <div class="editor-pane">
+          <div class="pane-header">
+            <span class="pane-label">Elo Code</span>
+          </div>
+          <div
+            data-playground-target="editor"
+            data-initial-code="let x = 12, y = 13 in x + y"
+            class="editor-content"
+          ></div>
+        </div>
+        <div class="editor-pane input-pane">
+          <div class="pane-header">
+            <span class="pane-label">Input data (<code>_</code>)</span>
+          </div>
+          <div
+            data-playground-target="inputEditor"
+            class="editor-content"
+          ></div>
+        </div>
+      </div>
     </section>
 
     <section class="output-panel">

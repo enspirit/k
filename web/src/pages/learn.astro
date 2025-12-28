@@ -19,15 +19,16 @@ const url = (path: string) => `${base}${path}`;
         <span class="toc-section">Intermediate</span>
         <a href="#lesson-6" data-learn-progress-target="tocLink"><span class="toc-check"></span>6. Time Flies</a>
         <a href="#lesson-7" data-learn-progress-target="tocLink"><span class="toc-check"></span>7. Bundling Data</a>
-        <a href="#lesson-8" data-learn-progress-target="tocLink"><span class="toc-check"></span>8. Lists of Things</a>
-        <a href="#lesson-9" data-learn-progress-target="tocLink"><span class="toc-check"></span>9. Building Blocks</a>
-        <a href="#lesson-10" data-learn-progress-target="tocLink"><span class="toc-check"></span>10. Piping It Through</a>
+        <a href="#lesson-8" data-learn-progress-target="tocLink"><span class="toc-check"></span>8. Input Data</a>
+        <a href="#lesson-9" data-learn-progress-target="tocLink"><span class="toc-check"></span>9. Lists of Things</a>
+        <a href="#lesson-10" data-learn-progress-target="tocLink"><span class="toc-check"></span>10. Building Blocks</a>
+        <a href="#lesson-11" data-learn-progress-target="tocLink"><span class="toc-check"></span>11. Piping It Through</a>
         <span class="toc-section">Advanced</span>
-        <a href="#lesson-11" data-learn-progress-target="tocLink"><span class="toc-check"></span>11. Transforming Lists</a>
-        <a href="#lesson-12" data-learn-progress-target="tocLink"><span class="toc-check"></span>12. Checking Lists</a>
-        <a href="#lesson-13" data-learn-progress-target="tocLink"><span class="toc-check"></span>13. Handling Nulls</a>
-        <a href="#lesson-14" data-learn-progress-target="tocLink"><span class="toc-check"></span>14. Time Ranges</a>
-        <a href="#lesson-15" data-learn-progress-target="tocLink"><span class="toc-check"></span>15. Parsing Data</a>
+        <a href="#lesson-12" data-learn-progress-target="tocLink"><span class="toc-check"></span>12. Transforming Lists</a>
+        <a href="#lesson-13" data-learn-progress-target="tocLink"><span class="toc-check"></span>13. Checking Lists</a>
+        <a href="#lesson-14" data-learn-progress-target="tocLink"><span class="toc-check"></span>14. Handling Nulls</a>
+        <a href="#lesson-15" data-learn-progress-target="tocLink"><span class="toc-check"></span>15. Time Ranges</a>
+        <a href="#lesson-16" data-learn-progress-target="tocLink"><span class="toc-check"></span>16. Parsing Data</a>
         <span class="toc-section">Next</span>
         <a href="#lesson-next">What's Next?</a>
       </nav>
@@ -254,8 +255,38 @@ const url = (path: string) => `${base}${path}`;
 
       <section class="lesson" id="lesson-8" data-learn-progress-target="lesson">
         <div class="lesson-header">
-          <h2>8. Lists of Things</h2>
+          <h2>8. Input Data</h2>
           <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-8" data-learn-progress-target="toggleBtn">
+            <span class="toggle-check"></span><span class="toggle-text">Mark as complete</span>
+          </button>
+        </div>
+        <p>
+          Real programs don't just compute with literals—they work with data from the outside world.
+          In Elo, external input is always available through the special <code>_</code> variable:
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">_ * 2</pre>
+        </div>
+        <p>
+          When you use <code>_</code>, your expression becomes a function that takes input and produces output.
+          In the playground, you can provide input data in the bottom panel as JSON.
+        </p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">_.price * _.quantity</pre>
+        </div>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">_.budget * 1.21</pre>
+        </div>
+        <p class="lesson-tip">
+          <strong>Think transformation:</strong> Every Elo expression with <code>_</code> is a data transformation.
+          Input flows in, gets computed, and a result flows out. Try it in the <a href={url('/playground')}>playground</a> with the "Input Data" example!
+        </p>
+      </section>
+
+      <section class="lesson" id="lesson-9" data-learn-progress-target="lesson">
+        <div class="lesson-header">
+          <h2>9. Lists of Things</h2>
+          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-9" data-learn-progress-target="toggleBtn">
             <span class="toggle-check"></span><span class="toggle-text">Mark as complete</span>
           </button>
         </div>
@@ -288,10 +319,10 @@ const url = (path: string) => `${base}${path}`;
         </p>
       </section>
 
-      <section class="lesson" id="lesson-9" data-learn-progress-target="lesson">
+      <section class="lesson" id="lesson-10" data-learn-progress-target="lesson">
         <div class="lesson-header">
-          <h2>9. Building Blocks</h2>
-          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-9" data-learn-progress-target="toggleBtn">
+          <h2>10. Building Blocks</h2>
+          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-10" data-learn-progress-target="toggleBtn">
             <span class="toggle-check"></span><span class="toggle-text">Mark as complete</span>
           </button>
         </div>
@@ -319,10 +350,10 @@ const url = (path: string) => `${base}${path}`;
         </p>
       </section>
 
-      <section class="lesson" id="lesson-10" data-learn-progress-target="lesson">
+      <section class="lesson" id="lesson-11" data-learn-progress-target="lesson">
         <div class="lesson-header">
-          <h2>10. Piping It Through</h2>
-          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-10" data-learn-progress-target="toggleBtn">
+          <h2>11. Piping It Through</h2>
+          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-11" data-learn-progress-target="toggleBtn">
             <span class="toggle-check"></span><span class="toggle-text">Mark as complete</span>
           </button>
         </div>
@@ -349,10 +380,10 @@ const url = (path: string) => `${base}${path}`;
         </p>
       </section>
 
-      <section class="lesson" id="lesson-11" data-learn-progress-target="lesson">
+      <section class="lesson" id="lesson-12" data-learn-progress-target="lesson">
         <div class="lesson-header">
-          <h2>11. Transforming Lists</h2>
-          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-11" data-learn-progress-target="toggleBtn">
+          <h2>12. Transforming Lists</h2>
+          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-12" data-learn-progress-target="toggleBtn">
             <span class="toggle-check"></span><span class="toggle-text">Mark as complete</span>
           </button>
         </div>
@@ -384,10 +415,10 @@ const url = (path: string) => `${base}${path}`;
         </p>
       </section>
 
-      <section class="lesson" id="lesson-12" data-learn-progress-target="lesson">
+      <section class="lesson" id="lesson-13" data-learn-progress-target="lesson">
         <div class="lesson-header">
-          <h2>12. Checking Lists</h2>
-          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-12" data-learn-progress-target="toggleBtn">
+          <h2>13. Checking Lists</h2>
+          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-13" data-learn-progress-target="toggleBtn">
             <span class="toggle-check"></span><span class="toggle-text">Mark as complete</span>
           </button>
         </div>
@@ -413,10 +444,10 @@ const url = (path: string) => `${base}${path}`;
         </p>
       </section>
 
-      <section class="lesson" id="lesson-13" data-learn-progress-target="lesson">
+      <section class="lesson" id="lesson-14" data-learn-progress-target="lesson">
         <div class="lesson-header">
-          <h2>13. Handling Nulls</h2>
-          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-13" data-learn-progress-target="toggleBtn">
+          <h2>14. Handling Nulls</h2>
+          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-14" data-learn-progress-target="toggleBtn">
             <span class="toggle-check"></span><span class="toggle-text">Mark as complete</span>
           </button>
         </div>
@@ -444,10 +475,10 @@ const url = (path: string) => `${base}${path}`;
         </p>
       </section>
 
-      <section class="lesson" id="lesson-14" data-learn-progress-target="lesson">
+      <section class="lesson" id="lesson-15" data-learn-progress-target="lesson">
         <div class="lesson-header">
-          <h2>14. Time Ranges</h2>
-          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-14" data-learn-progress-target="toggleBtn">
+          <h2>15. Time Ranges</h2>
+          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-15" data-learn-progress-target="toggleBtn">
             <span class="toggle-check"></span><span class="toggle-text">Mark as complete</span>
           </button>
         </div>
@@ -474,10 +505,10 @@ const url = (path: string) => `${base}${path}`;
         </p>
       </section>
 
-      <section class="lesson" id="lesson-15" data-learn-progress-target="lesson">
+      <section class="lesson" id="lesson-16" data-learn-progress-target="lesson">
         <div class="lesson-header">
-          <h2>15. Parsing Data</h2>
-          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-15" data-learn-progress-target="toggleBtn">
+          <h2>16. Parsing Data</h2>
+          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="lesson-16" data-learn-progress-target="toggleBtn">
             <span class="toggle-check"></span><span class="toggle-text">Mark as complete</span>
           </button>
         </div>
@@ -510,7 +541,7 @@ const url = (path: string) => `${base}${path}`;
       <section class="lesson" id="lesson-next">
         <h2>What's Next?</h2>
         <p>
-          Congratulations! You've completed all 15 lessons—from basic arithmetic to advanced list processing and data parsing.
+          Congratulations! You've completed all 16 lessons—from basic arithmetic to advanced list processing and data parsing.
         </p>
         <ul class="next-steps">
           <li>

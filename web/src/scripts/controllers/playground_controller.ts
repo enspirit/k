@@ -3,6 +3,7 @@ import { EditorView, keymap } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { bracketMatching } from '@codemirror/language';
+import { json } from '@codemirror/lang-json';
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 import isoWeek from 'dayjs/plugin/isoWeek';
@@ -12,6 +13,7 @@ import {
   parse,
   compileToRuby,
   compileToJavaScript,
+  compileToJavaScriptWithMeta,
   compileToSQL,
   getPrelude
 } from '@enspirit/elo';
@@ -79,13 +81,19 @@ in {
   year: year(today),
   month: month(today)
 }`,
-  durations: `P1D + PT2H`
+  durations: `P1D + PT2H`,
+  input: `_.price * _.quantity`
+};
+
+const EXAMPLE_INPUTS: Record<string, string> = {
+  input: `{"price": 100, "quantity": 2}`
 };
 
 export default class PlaygroundController extends Controller {
-  static targets = ['editor', 'output', 'language', 'pretty', 'prelude', 'error', 'result', 'resultPanel', 'copyButton', 'saveButton', 'runButton', 'examples'];
+  static targets = ['editor', 'inputEditor', 'output', 'language', 'pretty', 'prelude', 'error', 'result', 'resultPanel', 'copyButton', 'saveButton', 'runButton', 'examples'];
 
   declare editorTarget: HTMLDivElement;
+  declare inputEditorTarget: HTMLDivElement;
   declare outputTarget: HTMLPreElement;
   declare languageTarget: HTMLSelectElement;
   declare prettyTarget: HTMLInputElement;
@@ -99,6 +107,7 @@ export default class PlaygroundController extends Controller {
   declare examplesTarget: HTMLSelectElement;
 
   private editorView: EditorView | null = null;
+  private inputEditorView: EditorView | null = null;
   private themeObserver: MutationObserver | null = null;
   private compileVersion = 0;
   private currentOutput = ''; // Raw output for copy/save
@@ -106,12 +115,13 @@ export default class PlaygroundController extends Controller {
 
   connect() {
     this.initializeEditor();
+    this.initializeInputEditor();
 
     // Watch for theme changes on body
     this.themeObserver = new MutationObserver((mutations) => {
       for (const mutation of mutations) {
         if (mutation.attributeName === 'class') {
-          this.reinitializeEditor();
+          this.reinitializeEditors();
         }
       }
     });
@@ -179,11 +189,41 @@ export default class PlaygroundController extends Controller {
     });
   }
 
-  private reinitializeEditor() {
+  private initializeInputEditor() {
+    const currentInput = this.inputEditorView?.state.doc.toString() || '';
+    const isLight = document.body.classList.contains('light-theme');
+    const theme = isLight ? eloLightTheme : eloDarkTheme;
+
+    this.inputEditorView = new EditorView({
+      state: EditorState.create({
+        doc: currentInput,
+        extensions: [
+          history(),
+          bracketMatching(),
+          keymap.of([...defaultKeymap, ...historyKeymap]),
+          json(),
+          ...theme,
+          EditorView.updateListener.of((update) => {
+            if (update.docChanged) {
+              this.scheduleAutoRun();
+            }
+          }),
+          EditorView.lineWrapping
+        ]
+      }),
+      parent: this.inputEditorTarget
+    });
+  }
+
+  private reinitializeEditors() {
     if (this.editorView) {
       this.editorView.destroy();
     }
+    if (this.inputEditorView) {
+      this.inputEditorView.destroy();
+    }
     this.initializeEditor();
+    this.initializeInputEditor();
   }
 
   disconnect() {
@@ -196,6 +236,10 @@ export default class PlaygroundController extends Controller {
       this.editorView.destroy();
       this.editorView = null;
     }
+    if (this.inputEditorView) {
+      this.inputEditorView.destroy();
+      this.inputEditorView = null;
+    }
     if (this.runTimeout) {
       clearTimeout(this.runTimeout);
     }
@@ -205,6 +249,8 @@ export default class PlaygroundController extends Controller {
     const exampleId = this.examplesTarget.value;
     if (exampleId && EXAMPLES[exampleId]) {
       this.setCode(EXAMPLES[exampleId]);
+      // Set input data if example has one
+      this.setInputData(EXAMPLE_INPUTS[exampleId] || '');
       this.examplesTarget.value = ''; // Reset dropdown
     }
   }
@@ -236,6 +282,18 @@ export default class PlaygroundController extends Controller {
     if (this.editorView) {
       this.editorView.dispatch({
         changes: { from: 0, to: this.editorView.state.doc.length, insert: code }
+      });
+    }
+  }
+
+  getInputData(): string {
+    return this.inputEditorView?.state.doc.toString() || '';
+  }
+
+  setInputData(data: string) {
+    if (this.inputEditorView) {
+      this.inputEditorView.dispatch({
+        changes: { from: 0, to: this.inputEditorView.state.doc.length, insert: data }
       });
     }
   }
@@ -304,10 +362,29 @@ export default class PlaygroundController extends Controller {
 
     try {
       const ast = parse(input);
-      const jsCode = compileToJavaScript(ast);
+      const { code: jsCode, usesInput } = compileToJavaScriptWithMeta(ast);
+
+      // Parse input data if provided
+      let inputData: unknown = null;
+      const inputDataStr = this.getInputData().trim();
+      if (inputDataStr) {
+        try {
+          inputData = JSON.parse(inputDataStr);
+        } catch {
+          this.showError('Invalid JSON in input data');
+          this.hideResult();
+          return;
+        }
+      }
 
       // Evaluate the JavaScript code
-      const result = eval(jsCode);
+      let result;
+      if (usesInput) {
+        const fn = eval(jsCode);
+        result = fn(inputData);
+      } else {
+        result = eval(jsCode);
+      }
 
       // Display the result
       this.showResult(this.formatResult(result));
