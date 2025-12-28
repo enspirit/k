@@ -233,7 +233,7 @@ const url = (path: string) => `${base}${path}`;
           </button>
         </div>
         <p>
-          Real data comes in bundles. A person has a name, age, email. Elo uses <em>objects</em>:
+          Real data comes in bundles. A person has a name, age, email. Elo uses <em>tuples</em>:
         </p>
         <div class="lesson-example" data-action="click->doc#tryExample">
           <pre class="example-code">&#123; name: 'Alice', age: 30, city: 'Brussels' &#125;</pre>
@@ -249,7 +249,7 @@ const url = (path: string) => `${base}${path}`;
         </div>
         <p class="lesson-tip">
           <strong>Sounds familiar?</strong> If you've seen JSON, you've seen this.
-          Elo objects work the same way. More on <a href={url('/docs#objects')}>objects</a>.
+          Elo tuples work the same way. More on <a href={url('/docs#tuples')}>tuples</a>.
         </p>
       </section>
 
@@ -292,7 +292,7 @@ const url = (path: string) => `${base}${path}`;
         </div>
         <p>
           Sometimes you have multiple items: a list of prices, names, or dates.
-          Elo uses <em>arrays</em> for this—just wrap items in square brackets:
+          Elo uses <em>lists</em> for this—just wrap items in square brackets:
         </p>
         <div class="lesson-example" data-action="click->doc#tryExample">
           <pre class="example-code">[1, 2, 3, 4, 5]</pre>
@@ -307,15 +307,15 @@ const url = (path: string) => `${base}${path}`;
           <pre class="example-code">length([1, 2, 3, 4, 5])</pre>
         </div>
         <p>
-          Arrays can hold any type—even mixed types or other arrays:
+          Lists can hold any type—even mixed types or other lists:
         </p>
         <div class="lesson-example" data-action="click->doc#tryExample">
           <pre class="example-code">let fruits = ['apple', 'banana'] in length(fruits)</pre>
         </div>
         <p class="lesson-tip">
-          <strong>Think shopping lists:</strong> An array is just an ordered collection.
-          You'll learn how to transform and filter arrays in the Advanced section!
-          See all <a href={url('/stdlib#array')}>array functions</a>.
+          <strong>Think shopping lists:</strong> A list is just an ordered collection.
+          You'll learn how to transform and filter lists in the Advanced section!
+          See all <a href={url('/stdlib#lists')}>list functions</a>.
         </p>
       </section>
 
@@ -388,7 +388,7 @@ const url = (path: string) => `${base}${path}`;
           </button>
         </div>
         <p>
-          Now that you know arrays and functions, let's combine them! The <code>map</code> function
+          Now that you know lists and functions, let's combine them! The <code>map</code> function
           applies a transformation to every item in a list:
         </p>
         <div class="lesson-example" data-action="click->doc#tryExample">

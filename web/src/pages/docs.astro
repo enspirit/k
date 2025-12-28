@@ -11,8 +11,8 @@ import Footer from '../components/Footer.astro';
         <a href="#getting-started">Getting Started</a>
         <a href="#types">Types</a>
         <a href="#literals">Literals</a>
-        <a href="#objects">Objects</a>
-        <a href="#arrays">Arrays</a>
+        <a href="#tuples">Tuples</a>
+        <a href="#lists">Lists</a>
         <a href="#operators">Operators</a>
         <a href="#variables">Variables</a>
         <a href="#input">Input Data</a>
@@ -135,55 +135,55 @@ import Footer from '../components/Footer.astro';
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Nested Path</div>
           <pre class="example-code">.user.address.city</pre>
-          <p class="example-desc">Navigate through nested objects.</p>
+          <p class="example-desc">Navigate through nested tuples.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Path with Array Index</div>
+          <div class="example-header">Path with List Index</div>
           <pre class="example-code">.items.0.name</pre>
-          <p class="example-desc">Access array elements by index.</p>
+          <p class="example-desc">Access list elements by index.</p>
         </div>
       </section>
 
-      <section class="doc-section" id="objects">
-        <h2>Object Literals</h2>
-        <p>Elo supports object literals with key-value pairs. Objects compile to native structures in each target language.</p>
+      <section class="doc-section" id="tuples">
+        <h2>Tuples</h2>
+        <p>Elo tuples are collections of named values. They use JSON-like syntax with key-value pairs and compile to native structures in each target language.</p>
         <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Simple Object</div>
+          <div class="example-header">Simple Tuple</div>
           <pre class="example-code">&#123;name: 'Alice', age: 30&#125;</pre>
-          <p class="example-desc">Create an object with named properties.</p>
+          <p class="example-desc">Create a tuple with named attributes.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Property Access</div>
+          <div class="example-header">Attribute Access</div>
           <pre class="example-code">&#123;budget: 1500&#125;.budget</pre>
-          <p class="example-desc">Access properties with dot notation.</p>
+          <p class="example-desc">Access attributes with dot notation.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Object with Let</div>
-          <pre class="example-code">let obj = &#123;x: 10, y: 20&#125; in obj.x + obj.y</pre>
-          <p class="example-desc">Bind an object to a variable and access its properties.</p>
+          <div class="example-header">Tuple with Let</div>
+          <pre class="example-code">let t = &#123;x: 10, y: 20&#125; in t.x + t.y</pre>
+          <p class="example-desc">Bind a tuple to a variable and access its attributes.</p>
         </div>
-        <p class="note"><strong>Note:</strong> In SQL, objects compile to PostgreSQL JSONB using <code>jsonb_build_object()</code>.</p>
+        <p class="note"><strong>Note:</strong> Tuples look like JavaScript objects but Elo uses relational terminology. In SQL, they compile to PostgreSQL JSONB using <code>jsonb_build_object()</code>.</p>
       </section>
 
-      <section class="doc-section" id="arrays">
-        <h2>Array Literals</h2>
-        <p>Elo supports array literals containing any expression. Arrays are heterogeneous and compile to native arrays.</p>
+      <section class="doc-section" id="lists">
+        <h2>Lists</h2>
+        <p>Elo lists are ordered sequences using JSON-like array syntax. Lists are heterogeneous and compile to native arrays.</p>
         <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Simple Array</div>
+          <div class="example-header">Simple List</div>
           <pre class="example-code">[1, 2, 3]</pre>
-          <p class="example-desc">Create an array with integer elements.</p>
+          <p class="example-desc">Create a list with integer elements.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Mixed Types</div>
           <pre class="example-code">[1, 'two', true, null]</pre>
-          <p class="example-desc">Arrays can mix different types including null.</p>
+          <p class="example-desc">Lists can mix different types including null.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Nested Arrays</div>
+          <div class="example-header">Nested Lists</div>
           <pre class="example-code">[[1, 2], [3, 4]]</pre>
-          <p class="example-desc">Arrays can contain other arrays.</p>
+          <p class="example-desc">Lists can contain other lists.</p>
         </div>
-        <p class="note"><strong>Note:</strong> In SQL, arrays compile to PostgreSQL <code>ARRAY[...]</code> syntax.</p>
+        <p class="note"><strong>Note:</strong> Lists look like JavaScript arrays but Elo uses relational terminology. In SQL, they compile to PostgreSQL <code>ARRAY[...]</code> syntax.</p>
       </section>
 
       <section class="doc-section" id="operators">
@@ -261,9 +261,9 @@ import Footer from '../components/Footer.astro';
           <p class="example-desc">Doubles the input value.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Object Input</div>
+          <div class="example-header">Tuple Input</div>
           <pre class="example-code">_.price * _.quantity</pre>
-          <p class="example-desc">Access properties of an input object.</p>
+          <p class="example-desc">Access attributes of an input tuple.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Input with Transformation</div>

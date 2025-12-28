@@ -51,12 +51,12 @@ const EXAMPLES: Record<string, string> = {
     height = 5,
     area = width * height
 in area`,
-  objects: `let person = {
+  tuples: `let person = {
   name: 'Alice',
   age: 30,
   city: 'Brussels'
 } in person.name`,
-  arrays: `let numbers = [1, 2, 3, 4, 5] in {
+  lists: `let numbers = [1, 2, 3, 4, 5] in {
   first: first(numbers),
   last: last(numbers),
   length: length(numbers)
