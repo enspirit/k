@@ -10,7 +10,7 @@ import Footer from '../components/Footer.astro';
         <a href="#numeric">Numeric</a>
         <a href="#temporal">Temporal</a>
         <a href="#string">String</a>
-        <a href="#array">Array</a>
+        <a href="#array">List</a>
         <a href="#introspection">Introspection</a>
         <a href="#type-selectors">Type Selectors</a>
       </nav>
@@ -191,66 +191,66 @@ import Footer from '../components/Footer.astro';
       </section>
 
       <section class="stdlib-section" id="array" data-stdlib-search-target="section">
-        <h2>Array Functions</h2>
-        <p>Functions for working with arrays.</p>
+        <h2>List Functions</h2>
+        <p>Functions for working with lists.</p>
         <div class="stdlib-grid" data-stdlib-search-target="grid">
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">length</div>
-            <div class="fn-sig">(arr: Array) → Int</div>
-            <p class="fn-desc">Returns the number of elements in the array.</p>
+            <div class="fn-sig">(list: List) → Int</div>
+            <p class="fn-desc">Returns the number of elements in the list.</p>
             <div class="fn-example"><code class="example-code">length([1, 2, 3])</code><span class="fn-result">→ 3</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">at</div>
-            <div class="fn-sig">(arr: Array, index: Int) → Any</div>
+            <div class="fn-sig">(list: List, index: Int) → Any</div>
             <p class="fn-desc">Returns the element at the given index (0-based).</p>
             <div class="fn-example"><code class="example-code">at([1, 2, 3], 1)</code><span class="fn-result">→ 2</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">first</div>
-            <div class="fn-sig">(arr: Array) → Any</div>
-            <p class="fn-desc">Returns the first element of the array.</p>
+            <div class="fn-sig">(list: List) → Any</div>
+            <p class="fn-desc">Returns the first element of the list.</p>
             <div class="fn-example"><code class="example-code">first([1, 2, 3])</code><span class="fn-result">→ 1</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">last</div>
-            <div class="fn-sig">(arr: Array) → Any</div>
-            <p class="fn-desc">Returns the last element of the array.</p>
+            <div class="fn-sig">(list: List) → Any</div>
+            <p class="fn-desc">Returns the last element of the list.</p>
             <div class="fn-example"><code class="example-code">last([1, 2, 3])</code><span class="fn-result">→ 3</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">isEmpty</div>
-            <div class="fn-sig">(arr: Array) → Bool</div>
-            <p class="fn-desc">Returns <code>true</code> if the array is empty.</p>
+            <div class="fn-sig">(list: List) → Bool</div>
+            <p class="fn-desc">Returns <code>true</code> if the list is empty.</p>
             <div class="fn-example"><code class="example-code">isEmpty([])</code><span class="fn-result">→ true</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">map</div>
-            <div class="fn-sig">(arr: Array, fn: Fn) → Array</div>
-            <p class="fn-desc">Returns a new array with <code>fn</code> applied to each element. <em>JS/Ruby only.</em></p>
+            <div class="fn-sig">(list: List, fn: Function) → List</div>
+            <p class="fn-desc">Returns a new list with <code>fn</code> applied to each element. <em>JS/Ruby only.</em></p>
             <div class="fn-example"><code class="example-code">map([1, 2, 3], fn(x ~> x * 2))</code><span class="fn-result">→ [2, 4, 6]</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">filter</div>
-            <div class="fn-sig">(arr: Array, predicate: Fn) → Array</div>
+            <div class="fn-sig">(list: List, predicate: Function) → List</div>
             <p class="fn-desc">Returns elements where predicate returns <code>true</code>. <em>JS/Ruby only.</em></p>
             <div class="fn-example"><code class="example-code">filter([1, 2, 3, 4], fn(x ~> x > 2))</code><span class="fn-result">→ [3, 4]</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">reduce</div>
-            <div class="fn-sig">(arr: Array, initial: Any, fn: Fn) → Any</div>
-            <p class="fn-desc">Reduces the array to a single value. <em>JS/Ruby only.</em></p>
+            <div class="fn-sig">(list: List, initial: Any, fn: Function) → Any</div>
+            <p class="fn-desc">Reduces the list to a single value. <em>JS/Ruby only.</em></p>
             <div class="fn-example"><code class="example-code">reduce([1, 2, 3], 0, fn(acc, x ~> acc + x))</code><span class="fn-result">→ 6</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">any</div>
-            <div class="fn-sig">(arr: Array, predicate: Fn) → Bool</div>
+            <div class="fn-sig">(list: List, predicate: Function) → Bool</div>
             <p class="fn-desc">Returns <code>true</code> if any element satisfies predicate. <em>JS/Ruby only.</em></p>
             <div class="fn-example"><code class="example-code">any([1, 2, 3], fn(x ~> x > 2))</code><span class="fn-result">→ true</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">all</div>
-            <div class="fn-sig">(arr: Array, predicate: Fn) → Bool</div>
+            <div class="fn-sig">(list: List, predicate: Function) → Bool</div>
             <p class="fn-desc">Returns <code>true</code> if all elements satisfy predicate. <em>JS/Ruby only.</em></p>
             <div class="fn-example"><code class="example-code">all([1, 2, 3], fn(x ~> x > 0))</code><span class="fn-result">→ true</span></div>
           </div>

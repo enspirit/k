@@ -230,11 +230,11 @@ export function createSQLBinding(): StdLib<string> {
   sqlLib.register('hour', [Types.datetime], (args, ctx) => `EXTRACT(HOUR FROM ${ctx.emit(args[0])})`);
   sqlLib.register('minute', [Types.datetime], (args, ctx) => `EXTRACT(MINUTE FROM ${ctx.emit(args[0])})`);
 
-  // Type introspection - map PostgreSQL types to K type names
+  // Type introspection - map PostgreSQL types to Elo type names
   sqlLib.register('typeOf', [Types.any], (args, ctx) => {
     const v = ctx.emit(args[0]);
     return `CASE WHEN ${v} IS NULL THEN 'Null' ` +
-      `WHEN pg_typeof(${v})::text LIKE '%[]' THEN 'Array' ` +
+      `WHEN pg_typeof(${v})::text LIKE '%[]' THEN 'List' ` +
       `ELSE CASE pg_typeof(${v})::text ` +
       `WHEN 'integer' THEN 'Int' ` +
       `WHEN 'bigint' THEN 'Int' ` +
@@ -248,7 +248,7 @@ export function createSQLBinding(): StdLib<string> {
       `WHEN 'date' THEN 'DateTime' ` +
       `WHEN 'timestamp without time zone' THEN 'DateTime' ` +
       `WHEN 'timestamp with time zone' THEN 'DateTime' ` +
-      `ELSE 'Object' END END`;
+      `ELSE 'Tuple' END END`;
   });
 
   // Null handling

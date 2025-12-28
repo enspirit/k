@@ -66,9 +66,9 @@ export const JS_HELPERS: Record<string, string> = {
   if (typeof v === 'number') return Number.isInteger(v) ? 'Int' : 'Float';
   if (typeof v === 'boolean') return 'Bool';
   if (typeof v === 'string') return 'String';
-  if (typeof v === 'function') return 'Fn';
-  if (Array.isArray(v)) return 'Array';
-  return 'Object';
+  if (typeof v === 'function') return 'Function';
+  if (Array.isArray(v)) return 'List';
+  return 'Tuple';
 }`,
   kIsNull: `function kIsNull(v) { return v === null || v === undefined; }`,
   // Type selectors
