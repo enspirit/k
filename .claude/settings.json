@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git:*)",
+      "Bash(npm:*)",
+      "Bash(node:*)",
+      "Bash(ruby:*)",
+      "Bash(psql:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(grep:*)",
+      "Bash(echo:*)",
+      "Bash(printf:*)",
+      "Bash(wc:*)",
+      "Bash(mkdir:*)",
+      "Bash(chmod:*)",
+      "Bash(timeout:*)",
+      "Bash(bash:*)",
+      "Bash(./bin/eloc:*)",
+      "Bash(./scripts/*:*)",
+      "Bash(./test/*:*)",
+      "WebSearch",
+      "WebFetch(domain:*)",
+      "SlashCommand(*)",
+      "Skill(*)"
+    ],
+    "deny": [
+      "Bash(rm -rf /*:*)",
+      "Bash(git push:*)"
+    ]
+  }
+}

@@ -1,0 +1,34 @@
+FROM alpine:latest
+
+# Install packages: base tools, node, ruby, postgresql client
+RUN apk update && apk add --no-cache \
+    bash \
+    curl \
+    git \
+    build-base \
+    python3 \
+    py3-pip \
+    nodejs \
+    npm \
+    ruby \
+    ruby-dev \
+    postgresql-client \
+    vim \
+    sudo
+
+# Create non-root user with sudo access
+RUN addgroup -S elo && adduser -S elo -G elo \
+    && echo "elo ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
+# Install Claude Code CLI globally
+RUN npm install -g @anthropic-ai/claude-code
+RUN gem install activesupport
+
+# Set up working directory
+WORKDIR /workspace
+
+# Switch to non-root user
+USER elo
+
+# Default command - keep container running
+CMD ["bash"]

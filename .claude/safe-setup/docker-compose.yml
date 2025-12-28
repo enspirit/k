@@ -1,0 +1,27 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.claude
+    container_name: claude
+    volumes:
+      - ../..:/workspace
+    environment:
+      - PGHOST=postgres
+      - PGUSER=elo
+      - PGPASSWORD=elo
+      - PGDATABASE=elo
+    depends_on:
+      - postgres
+    stdin_open: true
+    tty: true
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: claude-postgres
+    environment:
+      - POSTGRES_USER=elo
+      - POSTGRES_PASSWORD=elo
+      - POSTGRES_DB=elo
+    ports:
+      - "5433:5432"

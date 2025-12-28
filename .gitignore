@@ -2,7 +2,6 @@ node_modules/
 dist/
 *.log
 .DS_Store
-.claude/safe-setup
 
 # Astro
 web/node_modules/
