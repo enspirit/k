@@ -19,7 +19,9 @@ cd .claude/safe-setup
 # Create your .env file from template
 cp .env.example .env
 
-# Edit .env if needed
+# Edit .env to set your git identity
+# GIT_USER_NAME=Your Name
+# GIT_USER_EMAIL=your.email@example.com
 
 # Build and start containers
 make up
@@ -27,6 +29,11 @@ make up
 # Enter the dev environment
 make shell
 ```
+
+## Persistent Data
+
+- **Claude history**: Stored in a named Docker volume (`claude-history`) that persists across container restarts
+- **Git configuration**: Automatically set from `GIT_USER_NAME` and `GIT_USER_EMAIL` environment variables
 
 ## Inside the Container
 

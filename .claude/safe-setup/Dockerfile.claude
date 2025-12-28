@@ -27,8 +27,16 @@ RUN gem install activesupport
 # Set up working directory
 WORKDIR /workspace
 
+# Copy and set up entrypoint
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+# Create .claude directory for history persistence
+RUN mkdir -p /home/elo/.claude && chown -R elo:elo /home/elo/.claude
+
 # Switch to non-root user
 USER elo
 
-# Default command - keep container running
+# Use entrypoint to configure git and run command
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["bash"]
