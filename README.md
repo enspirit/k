@@ -32,7 +32,7 @@ See also the Related work section below.
 - **Pipe operator**: `|>` for function chaining (Elixir-style), parentheses optional
 - **Alternative operator**: `|` for fallback chains (returns first defined value)
 - **Type selectors**: `Int()`, `Float()`, `Bool()`, `Date()`, `Datetime()`, `Duration()` for parsing strings to typed values
-- **Lambdas**: `fn(x ~> x * 2)` for anonymous functions, `fn(x | x > 0)` for predicates
+- **Lambdas**: `fn(x ~> x * 2)` or `x ~> x * 2` (sugar) for anonymous functions, `fn(x | x > 0)` for predicates
 - **Array iteration**: `map`, `filter`, `reduce`, `any`, `all` (JS/Ruby only)
 - **Literals**:
   - Numbers: `42`, `3.14`

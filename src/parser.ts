@@ -554,6 +554,15 @@ export class Parser {
       const name = token.value;
       this.eat('IDENTIFIER');
 
+      // Lambda sugar: x ~> body (single parameter only)
+      // Body parsed at pipe() level to stop before == and other low-precedence operators
+      // Use fn(x ~> body) syntax for bodies containing == comparisons
+      if (this.currentToken.type === 'ARROW') {
+        this.eat('ARROW');
+        const body = this.pipe();
+        return lambda([name], body);
+      }
+
       // Check if this is a temporal keyword
       const temporalKeywords = ['NOW', 'TODAY', 'TOMORROW', 'YESTERDAY',
         'SOD', 'EOD', 'SOW', 'EOW', 'SOM', 'EOM', 'SOQ', 'EOQ', 'SOY', 'EOY'];

@@ -853,6 +853,78 @@ describe('Parser - Lambda Expressions', () => {
   });
 });
 
+describe('Parser - Lambda Sugar (single param)', () => {
+  it('should parse simple lambda sugar', () => {
+    const ast = parse('x ~> x');
+    assert.strictEqual(ast.type, 'lambda');
+    if (ast.type === 'lambda') {
+      assert.deepStrictEqual(ast.params, ['x']);
+      assert.deepStrictEqual(ast.body, { type: 'variable', name: 'x' });
+    }
+  });
+
+  it('should parse lambda sugar with expression body', () => {
+    const ast = parse('x ~> x * 2');
+    assert.strictEqual(ast.type, 'lambda');
+    if (ast.type === 'lambda') {
+      assert.deepStrictEqual(ast.params, ['x']);
+      assert.strictEqual(ast.body.type, 'binary');
+    }
+  });
+
+  it('should parse lambda sugar as function argument', () => {
+    const ast = parse('map(arr, x ~> x * 2)');
+    assert.strictEqual(ast.type, 'function_call');
+    if (ast.type === 'function_call') {
+      assert.strictEqual(ast.name, 'map');
+      assert.strictEqual(ast.args.length, 2);
+      assert.strictEqual(ast.args[1].type, 'lambda');
+    }
+  });
+
+  it('should parse lambda sugar with pipe operator', () => {
+    const ast = parse('[1,2,3] |> map(x ~> x * 2)');
+    assert.strictEqual(ast.type, 'function_call');
+    if (ast.type === 'function_call') {
+      assert.strictEqual(ast.name, 'map');
+      assert.strictEqual(ast.args.length, 2);
+      assert.strictEqual(ast.args[1].type, 'lambda');
+    }
+  });
+
+  it('should parse lambda sugar with if expression in body', () => {
+    const ast = parse('x ~> if x > 0 then x else 0');
+    assert.strictEqual(ast.type, 'lambda');
+    if (ast.type === 'lambda') {
+      assert.deepStrictEqual(ast.params, ['x']);
+      assert.strictEqual(ast.body.type, 'if');
+    }
+  });
+
+  it('should parse lambda sugar with let expression in body', () => {
+    const ast = parse('x ~> let y = x * 2 in y + 1');
+    assert.strictEqual(ast.type, 'lambda');
+    if (ast.type === 'lambda') {
+      assert.deepStrictEqual(ast.params, ['x']);
+      assert.strictEqual(ast.body.type, 'let');
+    }
+  });
+
+  it('should parse lambda sugar with underscore parameter', () => {
+    const ast = parse('_ ~> _.price * 1.21');
+    assert.strictEqual(ast.type, 'lambda');
+    if (ast.type === 'lambda') {
+      assert.deepStrictEqual(ast.params, ['_']);
+    }
+  });
+
+  it('should produce same AST as fn() syntax', () => {
+    const sugarAst = parse('x ~> x * 2');
+    const fnAst = parse('fn( x ~> x * 2 )');
+    assert.deepStrictEqual(sugarAst, fnAst);
+  });
+});
+
 describe('Parser - Predicate Expressions', () => {
   it('should parse simple predicate with one parameter', () => {
     const ast = parse('fn( x | x )');

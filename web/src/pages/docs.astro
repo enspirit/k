@@ -252,7 +252,7 @@ import Footer from '../components/Footer.astro';
         <h2>Lambdas and Predicates</h2>
         <p>Elo provides two kinds of anonymous functions:</p>
         <ul>
-          <li><strong>Lambdas</strong>: <code>fn( params ~> body )</code> — general functions</li>
+          <li><strong>Lambdas</strong>: <code>fn( params ~> body )</code> or <code>x ~> body</code> (sugar) — general functions</li>
           <li><strong>Predicates</strong>: <code>fn( params | body )</code> — functions that return boolean</li>
         </ul>
         <h3>Lambda Expressions</h3>
@@ -265,6 +265,11 @@ import Footer from '../components/Footer.astro';
           <div class="example-header">Multiple Parameters</div>
           <pre class="example-code">fn( x, y ~> x + y )</pre>
           <p class="example-desc">Lambdas can take multiple parameters.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Sugar Syntax</div>
+          <pre class="example-code">[1, 2, 3] |> map(x ~> x * 2)</pre>
+          <p class="example-desc">Single-param lambdas can omit <code>fn()</code>. Returns [2, 4, 6].</p>
         </div>
         <h3>Predicate Expressions</h3>
         <div class="example" data-action="click->doc#tryExample">
