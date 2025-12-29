@@ -10,6 +10,13 @@
  * Each helper is a standalone function that can be included in the output.
  * Used for dynamically-typed operations where types aren't known at compile time.
  */
+/**
+ * Dependencies between helpers. If helper A uses helper B, A depends on B.
+ */
+export const JS_HELPER_DEPS: Record<string, string[]> = {
+  kNeq: ['kEq'],
+};
+
 export const JS_HELPERS: Record<string, string> = {
   kAdd: `function kAdd(l, r) {
   if (dayjs.isDayjs(l) && dayjs.isDuration(r)) return l.add(r);

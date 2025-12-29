@@ -3,7 +3,7 @@ import { IRExpr, IRCall, usesInput } from '../ir';
 import { transform } from '../transform';
 import { EmitContext } from '../stdlib';
 import { createJavaScriptBinding, isNativeBinaryOp } from '../bindings/javascript';
-import { JS_HELPERS } from '../runtime';
+import { JS_HELPERS, JS_HELPER_DEPS } from '../runtime';
 
 /**
  * JavaScript compilation options
@@ -62,8 +62,19 @@ export function compileToJavaScriptWithMeta(expr: Expr, options?: JavaScriptComp
     return { code: result.code, usesInput: false };
   }
 
+  // Resolve helper dependencies
+  const allHelpers = new Set(result.requiredHelpers);
+  for (const helper of result.requiredHelpers) {
+    const deps = JS_HELPER_DEPS[helper];
+    if (deps) {
+      for (const dep of deps) {
+        allHelpers.add(dep);
+      }
+    }
+  }
+
   // Build helper definitions (sorted for deterministic output)
-  const helperDefs = Array.from(result.requiredHelpers)
+  const helperDefs = Array.from(allHelpers)
     .sort()
     .map(name => JS_HELPERS[name].replace(/\n\s*/g, ' '))
     .join(' ');

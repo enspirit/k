@@ -28,3 +28,15 @@ CASE WHEN INTERVAL 'PT1H' <> INTERVAL 'PT2H' THEN TRUE ELSE (SELECT pg_terminate
 CASE WHEN INTERVAL 'P2D' - INTERVAL 'P1D' = INTERVAL 'P1D' THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
 CASE WHEN INTERVAL 'PT2H' - INTERVAL 'PT1H' = INTERVAL 'PT1H' THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
 CASE WHEN CASE WHEN TIMESTAMP '2024-01-15 10:00:00' - TIMESTAMP '2024-01-15 09:00:00' IS NULL THEN 'Null' WHEN pg_typeof(TIMESTAMP '2024-01-15 10:00:00' - TIMESTAMP '2024-01-15 09:00:00')::text LIKE '%[]' THEN 'List' ELSE CASE pg_typeof(TIMESTAMP '2024-01-15 10:00:00' - TIMESTAMP '2024-01-15 09:00:00')::text WHEN 'integer' THEN 'Int' WHEN 'bigint' THEN 'Int' WHEN 'double precision' THEN 'Float' WHEN 'numeric' THEN 'Float' WHEN 'boolean' THEN 'Bool' WHEN 'text' THEN 'String' WHEN 'character varying' THEN 'String' WHEN 'unknown' THEN 'String' WHEN 'interval' THEN 'Duration' WHEN 'date' THEN 'DateTime' WHEN 'timestamp without time zone' THEN 'DateTime' WHEN 'timestamp with time zone' THEN 'DateTime' ELSE 'Tuple' END END = 'Duration' THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
+CASE WHEN ARRAY[1, 2, 3] = ARRAY[1, 2, 3] THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
+CASE WHEN ARRAY[1, 2] <> ARRAY[1, 2, 3] THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
+CASE WHEN ARRAY[1, 2, 3] <> ARRAY[1, 2, 4] THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
+CASE WHEN ARRAY[] = ARRAY[] THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
+CASE WHEN ARRAY['a', 'b'] = ARRAY['a', 'b'] THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
+CASE WHEN jsonb_build_object('name', 'Alice') = jsonb_build_object('name', 'Alice') THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
+CASE WHEN jsonb_build_object('a', 1, 'b', 2) = jsonb_build_object('a', 1, 'b', 2) THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
+CASE WHEN jsonb_build_object('a', 1) <> jsonb_build_object('a', 2) THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
+CASE WHEN jsonb_build_object('a', 1) <> jsonb_build_object('b', 1) THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
+CASE WHEN '{}'::jsonb = '{}'::jsonb THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
+CASE WHEN jsonb_build_object('nested', jsonb_build_object('x', 1)) = jsonb_build_object('nested', jsonb_build_object('x', 1)) THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
+CASE WHEN ARRAY[ARRAY[1, 2], ARRAY[3, 4]] = ARRAY[ARRAY[1, 2], ARRAY[3, 4]] THEN TRUE ELSE (SELECT pg_terminate_backend(pg_backend_pid())) END
