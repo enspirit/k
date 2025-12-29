@@ -364,6 +364,12 @@ export function createJavaScriptBinding(): StdLib<string> {
   jsLib.register('Duration', [Types.string], helperCall('kDuration'));
   jsLib.register('Duration', [Types.any], helperCall('kDuration'));
 
+  // Data - identity for non-strings, parse JSON for strings
+  jsLib.register('Data', [Types.array], (args, ctx) => ctx.emit(args[0]));
+  jsLib.register('Data', [Types.object], (args, ctx) => ctx.emit(args[0]));
+  jsLib.register('Data', [Types.string], helperCall('kData'));
+  jsLib.register('Data', [Types.any], helperCall('kData'));
+
   // No fallback - unknown functions should fail at compile time
   // (StdLib.emit() will throw if no implementation is found)
 

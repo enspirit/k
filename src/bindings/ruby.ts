@@ -348,6 +348,18 @@ export function createRubyBinding(): StdLib<string> {
     return `(->(v) { case v when nil; nil when ActiveSupport::Duration; v when String; ActiveSupport::Duration.parse(v) rescue nil else nil end }).call(${v})`;
   });
 
+  // Data - identity for non-strings, parse JSON for strings
+  rubyLib.register('Data', [Types.array], (args, ctx) => ctx.emit(args[0]));
+  rubyLib.register('Data', [Types.object], (args, ctx) => ctx.emit(args[0]));
+  rubyLib.register('Data', [Types.string], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(s) { JSON.parse(s, symbolize_names: true) rescue nil }).call(${v})`;
+  });
+  rubyLib.register('Data', [Types.any], (args, ctx) => {
+    const v = ctx.emit(args[0]);
+    return `(->(v) { case v when nil; nil when String; JSON.parse(v, symbolize_names: true) rescue nil else v end }).call(${v})`;
+  });
+
   // No fallback - unknown functions should fail at compile time
   // (StdLib.emit() will throw if no implementation is found)
 

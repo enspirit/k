@@ -322,6 +322,12 @@ import Footer from '../components/Footer.astro';
             <p class="fn-desc">Parses an ISO 8601 duration string.</p>
             <div class="fn-example"><code class="example-code">Duration('P1D')</code><span class="fn-result">→ P1D</span></div>
           </div>
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">Data</div>
+            <div class="fn-sig">(value: String | Any) → List | Tuple | Null</div>
+            <p class="fn-desc">Parses a JSON string. Non-strings are returned as-is.</p>
+            <div class="fn-example"><code class="example-code">Data('&#123;"name": "Alice"&#125;')</code><span class="fn-result">→ &#123;name: 'Alice'&#125;</span></div>
+          </div>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Type Selectors with Defaults</div>

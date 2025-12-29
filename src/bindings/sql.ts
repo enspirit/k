@@ -306,6 +306,12 @@ export function createSQLBinding(): StdLib<string> {
   sqlLib.register('Duration', [Types.string], (args, ctx) => `elo_duration(${ctx.emit(args[0])})`);
   sqlLib.register('Duration', [Types.any], (args, ctx) => `elo_duration(${ctx.emit(args[0])})`);
 
+  // Data - identity for non-strings, parse JSON for strings
+  sqlLib.register('Data', [Types.array], (args, ctx) => ctx.emit(args[0]));
+  sqlLib.register('Data', [Types.object], (args, ctx) => ctx.emit(args[0]));
+  sqlLib.register('Data', [Types.string], (args, ctx) => `elo_data(${ctx.emit(args[0])})`);
+  sqlLib.register('Data', [Types.any], (args, ctx) => `elo_data(${ctx.emit(args[0])})`);
+
   // No fallback - unknown functions should fail at compile time
   // (StdLib.emit() will throw if no implementation is found)
 

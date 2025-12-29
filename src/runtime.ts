@@ -122,4 +122,9 @@ export const JS_HELPERS: Record<string, string> = {
   if (typeof v === 'string') { const d = dayjs.duration(v); return isNaN(d.asMilliseconds()) ? null : d; }
   return null;
 }`,
+  kData: `function kData(v) {
+  if (v === null || v === undefined) return null;
+  if (typeof v === 'string') { try { return JSON.parse(v); } catch { return null; } }
+  return v;
+}`,
 };

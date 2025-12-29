@@ -352,7 +352,12 @@ import Footer from '../components/Footer.astro';
           <pre class="example-code">Int('abc') | 0</pre>
           <p class="example-desc">Returns <code>0</code> because <code>'abc'</code> cannot be parsed.</p>
         </div>
-        <p>Available: <code>Int()</code>, <code>Float()</code>, <code>Bool()</code>, <code>Date()</code>, <code>Datetime()</code>, <code>Duration()</code>.</p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Parse JSON</div>
+          <pre class="example-code">Data('&#123;"name": "Alice"&#125;').name</pre>
+          <p class="example-desc">Parses a JSON string and accesses a property.</p>
+        </div>
+        <p>Available: <code>Int()</code>, <code>Float()</code>, <code>Bool()</code>, <code>Date()</code>, <code>Datetime()</code>, <code>Duration()</code>, <code>Data()</code>.</p>
       </section>
 
       <section class="doc-section" id="assertions">
