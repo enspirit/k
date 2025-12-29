@@ -26,9 +26,45 @@ import Footer from '../components/Footer.astro';
       </header>
 
       <section class="stdlib-section" id="numeric" data-stdlib-search-target="section">
-        <h2>Numeric Functions</h2>
-        <p>Common mathematical functions for numeric operations.</p>
+        <h2>Numeric</h2>
+        <p>Operators and functions for numeric operations.</p>
         <div class="stdlib-grid" data-stdlib-search-target="grid">
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">+</div>
+            <div class="fn-sig">(Int | Float, Int | Float) → Int | Float</div>
+            <p class="fn-desc">Adds two numbers.</p>
+            <div class="fn-example"><code class="example-code">2 + 3</code><span class="fn-result">→ 5</span></div>
+          </div>
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">-</div>
+            <div class="fn-sig">(Int | Float, Int | Float) → Int | Float</div>
+            <p class="fn-desc">Subtracts two numbers.</p>
+            <div class="fn-example"><code class="example-code">10 - 4</code><span class="fn-result">→ 6</span></div>
+          </div>
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">*</div>
+            <div class="fn-sig">(Int | Float, Int | Float) → Int | Float</div>
+            <p class="fn-desc">Multiplies two numbers.</p>
+            <div class="fn-example"><code class="example-code">3 * 4</code><span class="fn-result">→ 12</span></div>
+          </div>
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">/</div>
+            <div class="fn-sig">(Int | Float, Int | Float) → Float</div>
+            <p class="fn-desc">Divides two numbers.</p>
+            <div class="fn-example"><code class="example-code">10 / 4</code><span class="fn-result">→ 2.5</span></div>
+          </div>
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">%</div>
+            <div class="fn-sig">(Int | Float, Int | Float) → Int | Float</div>
+            <p class="fn-desc">Returns the remainder after division.</p>
+            <div class="fn-example"><code class="example-code">10 % 3</code><span class="fn-result">→ 1</span></div>
+          </div>
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">^</div>
+            <div class="fn-sig">(Int | Float, Int | Float) → Int | Float</div>
+            <p class="fn-desc">Raises a number to a power.</p>
+            <div class="fn-example"><code class="example-code">2 ^ 10</code><span class="fn-result">→ 1024</span></div>
+          </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">abs</div>
             <div class="fn-sig">(n: Int | Float) → Int | Float</div>
@@ -57,9 +93,45 @@ import Footer from '../components/Footer.astro';
       </section>
 
       <section class="stdlib-section" id="temporal" data-stdlib-search-target="section">
-        <h2>Temporal Functions</h2>
-        <p>Functions to extract components from dates and datetimes.</p>
+        <h2>Temporal</h2>
+        <p>Operators and functions for dates, datetimes, and durations.</p>
         <div class="stdlib-grid" data-stdlib-search-target="grid">
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">+</div>
+            <div class="fn-sig">(Date | DateTime, Duration) → Date | DateTime</div>
+            <p class="fn-desc">Adds a duration to a date or datetime.</p>
+            <div class="fn-example"><code class="example-code">D2024-01-15 + P7D</code><span class="fn-result">→ D2024-01-22</span></div>
+          </div>
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">+</div>
+            <div class="fn-sig">(Duration, Duration) → Duration</div>
+            <p class="fn-desc">Adds two durations together.</p>
+            <div class="fn-example"><code class="example-code">P1D + PT12H</code><span class="fn-result">→ P1DT12H</span></div>
+          </div>
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">-</div>
+            <div class="fn-sig">(Date | DateTime, Duration) → Date | DateTime</div>
+            <p class="fn-desc">Subtracts a duration from a date or datetime.</p>
+            <div class="fn-example"><code class="example-code">D2024-01-15 - P7D</code><span class="fn-result">→ D2024-01-08</span></div>
+          </div>
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">-</div>
+            <div class="fn-sig">(Date, Date) → Duration</div>
+            <p class="fn-desc">Returns the duration between two dates.</p>
+            <div class="fn-example"><code class="example-code">D2024-01-15 - D2024-01-01</code><span class="fn-result">→ P14D</span></div>
+          </div>
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">*</div>
+            <div class="fn-sig">(Duration, Int | Float) → Duration</div>
+            <p class="fn-desc">Scales a duration by a factor.</p>
+            <div class="fn-example"><code class="example-code">P1D * 2</code><span class="fn-result">→ P2D</span></div>
+          </div>
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">/</div>
+            <div class="fn-sig">(Duration, Int | Float) → Duration</div>
+            <p class="fn-desc">Divides a duration by a factor.</p>
+            <div class="fn-example"><code class="example-code">P10D / 2</code><span class="fn-result">→ P5D</span></div>
+          </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">year</div>
             <div class="fn-sig">(d: Date | DateTime) → Int</div>
@@ -94,9 +166,21 @@ import Footer from '../components/Footer.astro';
       </section>
 
       <section class="stdlib-section" id="string" data-stdlib-search-target="section">
-        <h2>String Functions</h2>
-        <p>A comprehensive set of string manipulation functions.</p>
+        <h2>String</h2>
+        <p>Operators and functions for string manipulation.</p>
         <div class="stdlib-grid" data-stdlib-search-target="grid">
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">+</div>
+            <div class="fn-sig">(String, String) → String</div>
+            <p class="fn-desc">Concatenates two strings.</p>
+            <div class="fn-example"><code class="example-code">'hello' + ' world'</code><span class="fn-result">→ 'hello world'</span></div>
+          </div>
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">*</div>
+            <div class="fn-sig">(String, Int) → String</div>
+            <p class="fn-desc">Repeats a string n times.</p>
+            <div class="fn-example"><code class="example-code">'hi' * 3</code><span class="fn-result">→ 'hihihi'</span></div>
+          </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">length</div>
             <div class="fn-sig">(s: String) → Int</div>
@@ -124,7 +208,7 @@ import Footer from '../components/Footer.astro';
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">concat</div>
             <div class="fn-sig">(a: String, b: String) → String</div>
-            <p class="fn-desc">Concatenates two strings (same as <code>+</code>).</p>
+            <p class="fn-desc">Concatenates two strings. Same as <code>+</code>.</p>
             <div class="fn-example"><code class="example-code">concat('hello', ' world')</code><span class="fn-result">→ 'hello world'</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
@@ -191,9 +275,15 @@ import Footer from '../components/Footer.astro';
       </section>
 
       <section class="stdlib-section" id="lists" data-stdlib-search-target="section">
-        <h2>List Functions</h2>
-        <p>Functions for working with lists.</p>
+        <h2>List</h2>
+        <p>Operators and functions for working with lists.</p>
         <div class="stdlib-grid" data-stdlib-search-target="grid">
+          <div class="stdlib-fn" data-action="click->doc#tryExample">
+            <div class="fn-name">+</div>
+            <div class="fn-sig">(List, List) → List</div>
+            <p class="fn-desc">Concatenates two lists.</p>
+            <div class="fn-example"><code class="example-code">[1, 2] + [3, 4]</code><span class="fn-result">→ [1, 2, 3, 4]</span></div>
+          </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">length</div>
             <div class="fn-sig">(list: List) → Int</div>
