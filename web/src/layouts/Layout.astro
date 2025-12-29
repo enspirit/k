@@ -79,6 +79,7 @@ const url = (path: string) => `${base}${path}`;
       </div>
       <a href={url('/blog')} class:list={[{ active: activeNav === 'blog' }]}>Blog</a>
       <a href={url('/about')} class:list={[{ active: activeNav === 'about' }]}>About</a>
+      <a href={url('/security')} class:list={[{ active: activeNav === 'security' }]}>Security</a>
       <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark mode">
         <span class="theme-icon">&#9790;</span>
       </button>
