@@ -37,10 +37,10 @@ describe('Fixture validation', () => {
           continue;
         }
 
-        // Every non-empty, non-comment line must start with assert(
+        // Every non-empty, non-comment line must start with assert( or assertFails(
         assert.ok(
-          line.startsWith('assert('),
-          `Line ${i + 1} in ${file} must be an assert() call, got: "${line.substring(0, 50)}..."`
+          line.startsWith('assert(') || line.startsWith('assertFails('),
+          `Line ${i + 1} in ${file} must be an assert() or assertFails() call, got: "${line.substring(0, 50)}..."`
         );
       }
     });

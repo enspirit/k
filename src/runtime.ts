@@ -165,5 +165,5 @@ export const JS_HELPERS: Record<string, string> = {
   if (typeof v === 'string') { const d = dayjs(v); if (d.isValid()) return pOk(d, p); }
   return pFail(p, []);
 }`,
-  pUnwrap: `function pUnwrap(r) { return r.success ? r.value : null; }`,
+  pUnwrap: `function pUnwrap(r) { if (r.success) return r.value; throw new Error('Type error at ' + (r.path || '(root)')); }`,
 };

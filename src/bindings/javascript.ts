@@ -198,6 +198,12 @@ export function createJavaScriptBinding(): StdLib<string> {
     });
   }
 
+  // AssertFails - expects a function to throw when called
+  jsLib.register('assertFails', [Types.fn], (args, ctx) => {
+    const fn = ctx.emit(args[0]);
+    return `(function() { try { (${fn})(); throw new Error("Expected error but none thrown"); } catch(e) { if (e.message === "Expected error but none thrown") throw e; return true; } })()`;
+  });
+
   // Array functions
   jsLib.register('length', [Types.array], (args, ctx) => `${ctx.emit(args[0])}.length`);
   jsLib.register('at', [Types.array, Types.int], (args, ctx) =>
