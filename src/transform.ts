@@ -37,6 +37,7 @@ import {
   irTypeSchema,
   irSubtypeConstraint,
   irArrayType,
+  irUnionType,
   inferType,
 } from './ir';
 import { TypeExpr } from './ast';
@@ -213,6 +214,11 @@ function transformTypeExprWithContext(
     case 'array_type':
       return irArrayType(
         transformTypeExprWithContext(typeExpr.elementType, env, defining, depth, maxDepth)
+      );
+
+    case 'union_type':
+      return irUnionType(
+        typeExpr.types.map(t => transformTypeExprWithContext(t, env, defining, depth, maxDepth))
       );
   }
 }

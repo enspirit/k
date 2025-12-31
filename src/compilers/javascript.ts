@@ -353,5 +353,17 @@ function emitTypeExprParser(
       // Store element parser in variable to handle inline functions (like object schemas)
       return `(v, p) => { if (!Array.isArray(v)) return pFail(p, []); const _el = ${elemParser}; const _a = []; for (let _i = 0; _i < v.length; _i++) { const _r = _el(v[_i], p + '[' + _i + ']'); if (!_r.success) return pFail(p, [_r]); _a.push(_r.value); } return pOk(_a, p); }`;
     }
+
+    case 'union_type': {
+      // Union type: Int|String
+      // Try each type in order, return first successful parse (PEG-style)
+      ctx.requireHelper?.('pFail');
+      const parsers = typeExpr.types.map(t => emitTypeExprParser(t, ctx));
+
+      // Generate tries: call each parser directly in order
+      const tries = parsers.map(p => `_r = (${p})(v, p); if (_r.success) return _r;`).join(' ');
+
+      return `(v, p) => { let _r; ${tries} return pFail(p, []); }`;
+    }
   }
 }

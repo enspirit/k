@@ -238,7 +238,7 @@ export interface IRDataPath {
 /**
  * IR type expression (used in type definitions)
  */
-export type IRTypeExpr = IRTypeRef | IRTypeSchema | IRSubtypeConstraint | IRArrayType;
+export type IRTypeExpr = IRTypeRef | IRTypeSchema | IRSubtypeConstraint | IRArrayType | IRUnionType;
 
 /**
  * Reference to a base type
@@ -272,6 +272,15 @@ export interface IRSubtypeConstraint {
 export interface IRArrayType {
   kind: 'array_type';
   elementType: IRTypeExpr;
+}
+
+/**
+ * Union type: Int|String
+ * Tries each type in order, returns first successful parse
+ */
+export interface IRUnionType {
+  kind: 'union_type';
+  types: IRTypeExpr[];
 }
 
 /**
@@ -386,6 +395,10 @@ export function irSubtypeConstraint(baseType: IRTypeExpr, variable: string, cons
 
 export function irArrayType(elementType: IRTypeExpr): IRArrayType {
   return { kind: 'array_type', elementType };
+}
+
+export function irUnionType(types: IRTypeExpr[]): IRUnionType {
+  return { kind: 'union_type', types };
 }
 
 export function irTypeDef(name: string, typeExpr: IRTypeExpr, body: IRExpr): IRTypeDef {

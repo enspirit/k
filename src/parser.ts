@@ -1,4 +1,4 @@
-import { Expr, literal, nullLiteral, stringLiteral, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral, temporalKeyword, functionCall, memberAccess, letExpr, ifExpr, lambda, LetBinding, objectLiteral, ObjectProperty, arrayLiteral, alternative, apply, dataPath, TypeExpr, TypeSchemaProperty, typeRef, typeSchema, typeDef, subtypeConstraint, arrayType } from './ast';
+import { Expr, literal, nullLiteral, stringLiteral, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral, temporalKeyword, functionCall, memberAccess, letExpr, ifExpr, lambda, LetBinding, objectLiteral, ObjectProperty, arrayLiteral, alternative, apply, dataPath, TypeExpr, TypeSchemaProperty, typeRef, typeSchema, typeDef, subtypeConstraint, arrayType, unionType } from './ast';
 
 /**
  * Token types
@@ -1069,9 +1069,29 @@ export class Parser {
   }
 
   /**
-   * Parse a type expression: String, Int(i | i > 0), [Int], { prop: TypeExpr, ... }
+   * Parse a type expression: String, Int|String, Int(i | i > 0), [Int], { prop: TypeExpr, ... }
+   * Handles union types: Int|String|Bool
    */
   private typeExpr(): TypeExpr {
+    const first = this.typeExprPrimary();
+
+    // Check for union type: Type|Type|...
+    if (this.currentToken.type === 'PIPE') {
+      const types: TypeExpr[] = [first];
+      while (this.currentToken.type === 'PIPE') {
+        this.eat('PIPE');
+        types.push(this.typeExprPrimary());
+      }
+      return unionType(types);
+    }
+
+    return first;
+  }
+
+  /**
+   * Parse a primary type expression (without union)
+   */
+  private typeExprPrimary(): TypeExpr {
     // Check for '.' (Any type shorthand)
     if (this.currentToken.type === 'DOT') {
       this.eat('DOT');

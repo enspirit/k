@@ -331,7 +331,7 @@ export function dataPath(segments: (string | number)[]): DataPath {
  * Type expression for type definitions
  * Used in `let Person = { name: String, age: Int }` style declarations
  */
-export type TypeExpr = TypeRef | TypeSchema | SubtypeConstraint | ArrayType;
+export type TypeExpr = TypeRef | TypeSchema | SubtypeConstraint | ArrayType | UnionType;
 
 /**
  * Reference to a base type: String, Int, Bool, Datetime, Any
@@ -366,6 +366,15 @@ export interface SubtypeConstraint {
 export interface ArrayType {
   kind: 'array_type';
   elementType: TypeExpr;
+}
+
+/**
+ * Union type: Int|String, String|Int|Bool
+ * Tries each type in order, returns first successful parse
+ */
+export interface UnionType {
+  kind: 'union_type';
+  types: TypeExpr[];
 }
 
 /**
@@ -421,4 +430,14 @@ export function subtypeConstraint(baseType: TypeExpr, variable: string, constrai
  */
 export function arrayType(elementType: TypeExpr): ArrayType {
   return { kind: 'array_type', elementType };
+}
+
+/**
+ * Creates a union type: Int|String
+ */
+export function unionType(types: TypeExpr[]): UnionType {
+  if (types.length < 2) {
+    throw new Error('Union type must have at least two types');
+  }
+  return { kind: 'union_type', types };
 }
