@@ -198,6 +198,7 @@ function transformTypeExprWithContext(
         typeExpr.properties.map(prop => ({
           key: prop.key,
           typeExpr: transformTypeExprWithContext(prop.typeExpr, env, defining, depth, maxDepth),
+          optional: prop.optional,
         }))
       );
 

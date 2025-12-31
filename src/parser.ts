@@ -49,6 +49,7 @@ type TokenType =
   | 'ELSE'
   | 'FN'
   | 'ASSIGN'
+  | 'QUESTION'
   | 'EOF';
 
 interface Token {
@@ -441,6 +442,7 @@ class Lexer {
       case ']': return { type: 'RBRACKET', value: char, position: pos };
       case ',': return { type: 'COMMA', value: char, position: pos };
       case ':': return { type: 'COLON', value: char, position: pos };
+      case '?': return { type: 'QUESTION', value: char, position: pos };
       case '.':
         return { type: 'DOT', value: char, position: pos };
       case '<': return { type: 'LT', value: char, position: pos };
@@ -1153,7 +1155,7 @@ export class Parser {
   }
 
   /**
-   * Parse a type schema: { name: String, age: Int }
+   * Parse a type schema: { name: String, age: Int, nickname :? String }
    */
   private typeSchemaExpr(): TypeExpr {
     this.eat('LBRACE');
@@ -1170,8 +1172,10 @@ export class Parser {
     const firstName = this.currentToken.value;
     this.eat('IDENTIFIER');
     this.eat('COLON');
+    const firstOptional = (this.currentToken as Token).type === 'QUESTION';
+    if (firstOptional) this.eat('QUESTION');
     const firstType = this.typeExpr();
-    properties.push({ key: firstName, typeExpr: firstType });
+    properties.push({ key: firstName, typeExpr: firstType, optional: firstOptional || undefined });
 
     // Parse additional properties
     while (this.currentToken.type === 'COMMA') {
@@ -1179,8 +1183,10 @@ export class Parser {
       const name = this.currentToken.value;
       this.eat('IDENTIFIER');
       this.eat('COLON');
+      const optional = (this.currentToken as Token).type === 'QUESTION';
+      if (optional) this.eat('QUESTION');
       const propType = this.typeExpr();
-      properties.push({ key: name, typeExpr: propType });
+      properties.push({ key: name, typeExpr: propType, optional: optional || undefined });
     }
 
     this.eat('RBRACE');

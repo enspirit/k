@@ -320,13 +320,18 @@ function emitTypeExprParser(
       ctx.requireHelper?.('pFail');
       const propParsers = typeExpr.properties.map(prop => {
         const propParser = emitTypeExprParser(prop.typeExpr, ctx);
-        return { key: prop.key, parser: propParser };
+        return { key: prop.key, parser: propParser, optional: prop.optional };
       });
 
       // Generate object parser - wrap parser in parens to handle inline functions
-      const propChecks = propParsers.map(({ key, parser }) =>
-        `const _r_${key} = (${parser})(v.${key}, p + '.${key}'); if (!_r_${key}.success) return pFail(p, [_r_${key}]); _o.${key} = _r_${key}.value;`
-      ).join(' ');
+      const propChecks = propParsers.map(({ key, parser, optional }) => {
+        if (optional) {
+          // Optional: if value is null/undefined, set to null; otherwise parse
+          return `if (v.${key} == null) { _o.${key} = null; } else { const _r_${key} = (${parser})(v.${key}, p + '.${key}'); if (!_r_${key}.success) return pFail(p, [_r_${key}]); _o.${key} = _r_${key}.value; }`;
+        }
+        // Required: parse and fail if not successful
+        return `const _r_${key} = (${parser})(v.${key}, p + '.${key}'); if (!_r_${key}.success) return pFail(p, [_r_${key}]); _o.${key} = _r_${key}.value;`;
+      }).join(' ');
 
       return `(v, p) => { if (typeof v !== 'object' || v === null) return pFail(p, []); const _o = {}; ${propChecks} return pOk(_o, p); }`;
     }

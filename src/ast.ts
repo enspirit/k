@@ -383,6 +383,7 @@ export interface UnionType {
 export interface TypeSchemaProperty {
   key: string;
   typeExpr: TypeExpr;
+  optional?: boolean;  // true for `name :? Type` syntax
 }
 
 /**

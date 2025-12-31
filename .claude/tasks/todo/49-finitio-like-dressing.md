@@ -14,7 +14,7 @@
 | **Tuple type** | `[Int, String]` | ❌ | Fixed-length positional - not implemented |
 | **Relation type** | `{{name: String}}` | ❌ | Set of tuples - not implemented |
 | **Set type** | `{Int}` | ❌ | Unique elements - not implemented |
-| **Optional attr** | `name :? String` | ❌ | Optional fields - not implemented |
+| **Optional attr** | `name :? String` | ✅ JS | Missing/null values become null |
 | **Open struct** | `{name: String, ...}` | ❌ | Extra properties preserved - not implemented |
 
 ### Composition Support
@@ -39,7 +39,7 @@ let Result = { ok: Bool } | { error: String } in data |> Result
 
 | Target | Status | Notes |
 |--------|--------|-------|
-| **JavaScript** | ✅ Complete | All constructs work, 27 acceptance tests |
+| **JavaScript** | ✅ Complete | All constructs work, 31 acceptance tests |
 | **Ruby** | ❌ Pending | Throws "not implemented" error |
 | **SQL** | ❌ Pending | Throws "not implemented" error |
 
@@ -74,10 +74,7 @@ let Result = { ok: Bool } | { error: String } in data |> Result
 ### Priority 1: Ruby/SQL Compilers
 Implement type definitions for Ruby and SQL targets using same Result-based approach.
 
-### Priority 2: Optional Attributes
-Add `name :? String` syntax for optional object properties.
-
-### Priority 3: Open Structs
+### Priority 2: Open Structs
 Add `{..., name: String}` to preserve extra properties.
 
 ### Deferred

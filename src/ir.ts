@@ -289,6 +289,7 @@ export interface IRUnionType {
 export interface IRTypeSchemaProperty {
   key: string;
   typeExpr: IRTypeExpr;
+  optional?: boolean;  // true for `name :? Type` syntax
 }
 
 /**
