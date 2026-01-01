@@ -17,4 +17,3 @@
 ->(_) { def k_deep_merge(a, b); return b unless a.is_a?(Hash) && b.is_a?(Hash); result = a.dup; b.each { |k, v| result[k] = k_deep_merge(a[k], v) }; result end; (raise "Assertion failed" unless k_deep_merge({x: [1, 2]}, {x: [3, 4]}) == {x: [3, 4]}; true) }.call(nil);
 ->(_) { def k_deep_merge(a, b); return b unless a.is_a?(Hash) && b.is_a?(Hash); result = a.dup; b.each { |k, v| result[k] = k_deep_merge(a[k], v) }; result end; (raise "Assertion failed" unless k_deep_merge({a: 1}, {a: {b: 2}}) == {a: {b: 2}}; true) }.call(nil);
 ->(_) { def k_deep_merge(a, b); return b unless a.is_a?(Hash) && b.is_a?(Hash); result = a.dup; b.each { |k, v| result[k] = k_deep_merge(a[k], v) }; result end; (raise "Assertion failed" unless k_deep_merge({a: {b: 2}}, {a: 1}) == {a: 1}; true) }.call(nil);
-

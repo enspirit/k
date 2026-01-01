@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readdirSync, readFileSync } from 'fs';
-import { join } from 'path';
+import { readdirSync, readFileSync, statSync } from 'fs';
+import { join, relative } from 'path';
 
 /**
  * Fixture validation tests.
@@ -17,16 +17,40 @@ const TEST_DIR = join(__dirname, '../../../test/fixtures');
 // (e.g., testing functions that always throw)
 const EXEMPT_FILES = ['fail.elo'];
 
-describe('Fixture validation', () => {
-  const files = readdirSync(TEST_DIR).filter(f => f.endsWith('.elo'));
+/**
+ * Recursively find all .elo files in directory and subdirectories
+ */
+function findEloFiles(dir: string): string[] {
+  const files: string[] = [];
+  const entries = readdirSync(dir);
 
-  for (const file of files) {
-    if (EXEMPT_FILES.includes(file)) {
+  for (const entry of entries) {
+    const fullPath = join(dir, entry);
+    const stat = statSync(fullPath);
+
+    if (stat.isDirectory()) {
+      files.push(...findEloFiles(fullPath));
+    } else if (entry.endsWith('.elo')) {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+}
+
+describe('Fixture validation', () => {
+  const files = findEloFiles(TEST_DIR);
+
+  for (const filePath of files) {
+    const fileName = filePath.split('/').pop()!;
+    const displayName = relative(TEST_DIR, filePath);
+
+    if (EXEMPT_FILES.includes(fileName)) {
       continue;
     }
 
-    it(`${file} should have assert() on every line`, () => {
-      const content = readFileSync(join(TEST_DIR, file), 'utf-8');
+    it(`${displayName} should have assert() on every line`, () => {
+      const content = readFileSync(filePath, 'utf-8');
       const lines = content.split('\n');
 
       for (let i = 0; i < lines.length; i++) {
@@ -40,7 +64,7 @@ describe('Fixture validation', () => {
         // Every non-empty, non-comment line must start with assert( or assertFails(
         assert.ok(
           line.startsWith('assert(') || line.startsWith('assertFails('),
-          `Line ${i + 1} in ${file} must be an assert() or assertFails() call, got: "${line.substring(0, 50)}..."`
+          `Line ${i + 1} in ${displayName} must be an assert() or assertFails() call, got: "${line.substring(0, 50)}..."`
         );
       }
     });

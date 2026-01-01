@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Test JavaScript compilation - runs .expected.js files directly
+# Recursively searches test/fixtures subdirectories
 
 set -e
 
@@ -28,21 +29,25 @@ should_skip() {
     return 1
 }
 
-for file in "$TEST_DIR"/*.expected.js; do
+# Find all .expected.js files recursively
+while IFS= read -r -d '' file; do
     if should_skip "$file"; then
         ((SKIPPED++)) || true
         continue
     fi
 
+    # Get relative path for display
+    relpath="${file#$TEST_DIR/}"
+
     # Fixtures now contain self-executing code, run directly with prelude
     if { echo "$PRELUDE"; cat "$file"; } | node - 2>/dev/null; then
-        echo "  ✓ $(basename "$file")"
+        echo "  ✓ $relpath"
         ((PASSED++)) || true
     else
-        echo "  ✗ $(basename "$file")"
+        echo "  ✗ $relpath"
         ((FAILED++)) || true
     fi
-done
+done < <(find "$TEST_DIR" -type f -name "*.expected.js" -print0 | sort -z)
 
 echo "JavaScript: $PASSED passed, $FAILED failed, $SKIPPED skipped"
 

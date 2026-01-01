@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { readdirSync, readFileSync, existsSync } from 'fs';
-import { join } from 'path';
+import { readdirSync, readFileSync, existsSync, statSync } from 'fs';
+import { join, relative, dirname, basename } from 'path';
 import { parse } from '../../src/parser';
 import { compileToJavaScript } from '../../src/compilers/javascript';
 import { compileToRuby } from '../../src/compilers/ruby';
@@ -9,6 +9,11 @@ import { compileToSQL } from '../../src/compilers/sql';
 
 /**
  * Compiler tests using test fixtures from test/ directory.
+ *
+ * Fixtures are organized in subdirectories:
+ * - reference/ - Language constructs (from docs)
+ * - stdlib/ - Standard library functions by type
+ * - others/ - Edge cases and integration tests
  *
  * Each test suite has:
  * - <name>.elo - Elo expressions, one per line
@@ -21,6 +26,27 @@ import { compileToSQL } from '../../src/compilers/sql';
  */
 
 const TEST_DIR = join(__dirname, '../../../test/fixtures');
+
+/**
+ * Recursively find all .elo files in directory and subdirectories
+ */
+function findEloFiles(dir: string): string[] {
+  const files: string[] = [];
+  const entries = readdirSync(dir);
+
+  for (const entry of entries) {
+    const fullPath = join(dir, entry);
+    const stat = statSync(fullPath);
+
+    if (stat.isDirectory()) {
+      files.push(...findEloFiles(fullPath));
+    } else if (entry.endsWith('.elo')) {
+      files.push(fullPath);
+    }
+  }
+
+  return files;
+}
 
 interface TestSuite {
   name: string;
@@ -42,18 +68,22 @@ function tryReadFile(path: string): string[] | null {
 function loadTestSuites(): TestSuite[] {
   const suites: TestSuite[] = [];
 
-  // Find all .elo files
-  const files = readdirSync(TEST_DIR);
-  const eloFiles = files.filter(f => f.endsWith('.elo'));
+  // Find all .elo files recursively
+  const eloFiles = findEloFiles(TEST_DIR);
 
-  for (const eloFile of eloFiles) {
-    const name = eloFile.replace('.elo', '');
+  for (const eloPath of eloFiles) {
+    const dir = dirname(eloPath);
+    const baseName = basename(eloPath, '.elo');
+    // Use relative path for display name (e.g., "reference/arithmetic")
+    const name = relative(TEST_DIR, eloPath).replace('.elo', '');
 
     // Read all related files (expected files are optional)
-    const eloPath = join(TEST_DIR, `${name}.elo`);
-    const jsPath = join(TEST_DIR, `${name}.expected.js`);
-    const rubyPath = join(TEST_DIR, `${name}.expected.ruby`);
-    const sqlPath = join(TEST_DIR, `${name}.expected.sql`);
+    // Try both .ruby and .rb extensions for Ruby files
+    const jsPath = join(dir, `${baseName}.expected.js`);
+    const rubyPath = existsSync(join(dir, `${baseName}.expected.ruby`))
+      ? join(dir, `${baseName}.expected.ruby`)
+      : join(dir, `${baseName}.expected.rb`);
+    const sqlPath = join(dir, `${baseName}.expected.sql`);
 
     const eloContent = readFileSync(eloPath, 'utf-8');
     // Remove trailing newline before splitting to match generated fixture line counts

@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # Test SQL compilation - runs .expected.sql files using psql
+# Recursively searches test/fixtures subdirectories
 # Requires PostgreSQL to be running (docker compose up -d)
 
 set -e
@@ -40,11 +41,15 @@ if ! psql -h "$PGHOST" -U "$PGUSER" -d "$PGDATABASE" -c "SELECT 1" >/dev/null 2>
     exit 0
 fi
 
-for file in "$TEST_DIR"/*.expected.sql; do
+# Find all .expected.sql files recursively
+while IFS= read -r -d '' file; do
     if should_skip "$file"; then
         ((SKIPPED++)) || true
         continue
     fi
+
+    # Get relative path for display
+    relpath="${file#$TEST_DIR/}"
 
     # Run each line as a SELECT statement
     file_passed=true
@@ -59,13 +64,13 @@ for file in "$TEST_DIR"/*.expected.sql; do
     done < "$file"
 
     if [ "$file_passed" = true ]; then
-        echo "  ✓ $(basename "$file")"
+        echo "  ✓ $relpath"
         ((PASSED++)) || true
     else
-        echo "  ✗ $(basename "$file")"
+        echo "  ✗ $relpath"
         ((FAILED++)) || true
     fi
-done
+done < <(find "$TEST_DIR" -type f -name "*.expected.sql" -print0 | sort -z)
 
 echo "SQL: $PASSED passed, $FAILED failed, $SKIPPED skipped"
 
