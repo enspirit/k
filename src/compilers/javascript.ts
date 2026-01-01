@@ -302,6 +302,7 @@ function emitTypeExprParser(
         'Any': 'pAny',
         'String': 'pString',
         'Int': 'pInt',
+        'Float': 'pFloat',
         'Bool': 'pBool',
         'Boolean': 'pBool',
         'Datetime': 'pDatetime',

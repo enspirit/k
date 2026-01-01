@@ -288,6 +288,7 @@ function emitTypeExprParser(
         'Any': 'p_any',
         'String': 'p_string',
         'Int': 'p_int',
+        'Float': 'p_float',
         'Bool': 'p_bool',
         'Boolean': 'p_bool',
         'Datetime': 'p_datetime',
