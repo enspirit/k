@@ -67,22 +67,22 @@ today > trialEnd;</pre>
           <div class="comparison-example clickable" data-action="click->doc#tryExample">
             <div class="comparison-header">
               <span class="lang-badge elo-badge">Elo</span>
-              <span class="comparison-title">Range validation</span>
+              <span class="comparison-title">Data validation &amp; coercion</span>
             </div>
-            <pre class="comparison-code example-code">let
-  score = 85
-in
-  score in 0..100 and score not in 0...60</pre>
+            <pre class="comparison-code example-code">{`let Event = {
+  name: String,
+  date: Datetime
+} in { name: 'Conf', date: '2025-06-15T09:00:00' } |> Event`}</pre>
           </div>
           <div class="comparison-example js-example">
             <div class="comparison-header">
               <span class="lang-badge js-badge">JavaScript</span>
               <span class="comparison-title">The same thing...</span>
             </div>
-            <pre class="comparison-code code-js">const score = 85;
-const inRange = score >= 0 && score <= 100;
-const passing = !(score >= 0 && score < 60);
-inRange && passing;</pre>
+            <pre class="comparison-code code-js">// Just validation - no coercion!
+if (typeof data.name !== 'string') throw Error();
+if (isNaN(Date.parse(data.date))) throw Error();
+// Elo also coerces strings to Datetime</pre>
           </div>
         </div>
 
@@ -90,18 +90,21 @@ inRange && passing;</pre>
           <div class="comparison-example clickable" data-action="click->doc#tryExample">
             <div class="comparison-header">
               <span class="lang-badge elo-badge">Elo</span>
-              <span class="comparison-title">Data transformation lambda</span>
+              <span class="comparison-title">Data transformation pipeline</span>
             </div>
-            <pre class="comparison-code example-code">fn( item ~> item.price * 1.21 )</pre>
+            <pre class="comparison-code example-code">items
+  |> filter(i ~> i.price > 100)
+  |> map(i ~> i.price * 1.21)</pre>
           </div>
           <div class="comparison-example js-example">
             <div class="comparison-header">
               <span class="lang-badge js-badge">JavaScript</span>
               <span class="comparison-title">The same thing...</span>
             </div>
-            <pre class="comparison-code code-js">// Works in JS, but what about Ruby? SQL?
-// Elo compiles to all three targets.
-(item) => item.price * 1.21</pre>
+            <pre class="comparison-code code-js">// Works in JS, but what about Ruby?
+// Elo compiles to both with same semantics.
+items.filter(i => i.price > 100)
+     .map(i => i.price * 1.21)</pre>
           </div>
         </div>
       </section>
