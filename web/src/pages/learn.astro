@@ -732,7 +732,7 @@ in
           <h4>Solution</h4>
           <div class="lesson-example" data-action="click->doc#tryExample">
             <pre class="example-code">let Product = &#123; name: String, price: Int &#125; in
-  assert(&#123; name: 'Widget', price: '99' &#125; |> Product == &#123; name: 'Widget', price: 99 &#125;)</pre>
+  assert((&#123; name: 'Widget', price: '99' &#125; |> Product) == &#123; name: 'Widget', price: 99 &#125;)</pre>
           </div>
         </div>
       </section>

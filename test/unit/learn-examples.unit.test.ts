@@ -168,3 +168,51 @@ describe('Learn Page Examples - Lesson 15: Parsing Data', () => {
     assert.throws(() => compile("Int('not a number')", { runtime }), /expected Int/);
   });
 });
+
+/**
+ * Exercise Solutions
+ * These tests verify that all exercise solutions on the Learn page
+ * are valid Elo code that compiles and evaluates successfully.
+ */
+
+describe('Learn Page Exercises - Build a Greeting', () => {
+  it('should pass the greeting assertion', () => {
+    assert.strictEqual(compile("assert('Hello, ' + 'World!' == 'Hello, World!')", { runtime }), true);
+  });
+});
+
+describe('Learn Page Exercises - Product Total', () => {
+  it('should pass the product total assertion', () => {
+    assert.strictEqual(compile("assert({ price: 25, quantity: 4 }.price * { price: 25, quantity: 4 }.quantity == 100)", { runtime }), true);
+  });
+});
+
+describe('Learn Page Exercises - Text Transform', () => {
+  it('should pass the text transform assertion', () => {
+    assert.strictEqual(compile("assert(upper(trim('  hello  ')) == 'HELLO')", { runtime }), true);
+  });
+});
+
+describe('Learn Page Exercises - Rectangle Area', () => {
+  it('should pass the rectangle area assertion', () => {
+    assert.strictEqual(compile("let width = 8, height = 5 in assert(width * height == 40)", { runtime }), true);
+  });
+});
+
+describe('Learn Page Exercises - Filter and Double', () => {
+  it('should pass the filter and double assertion', () => {
+    assert.strictEqual(compile("assert(([5, 12, 8, 20, 3, 15] |> filter(x ~> x > 10) |> map(x ~> x * 2)) == [24, 40, 30])", { runtime }), true);
+  });
+});
+
+describe('Learn Page Exercises - Order Total', () => {
+  it('should pass the order total assertion', () => {
+    assert.strictEqual(compile("let order = { price: 50, quantity: 3 } in assert(order.price * order.quantity == 150)", { runtime }), true);
+  });
+});
+
+describe('Learn Page Exercises - Validate Data', () => {
+  it('should pass the validate data assertion', () => {
+    assert.strictEqual(compile("let Product = { name: String, price: Int } in assert(({ name: 'Widget', price: '99' } |> Product) == { name: 'Widget', price: 99 })", { runtime }), true);
+  });
+});
