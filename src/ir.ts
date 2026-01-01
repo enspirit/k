@@ -250,10 +250,15 @@ export interface IRTypeRef {
 
 /**
  * Object type schema
+ * extras controls handling of extra attributes:
+ * - undefined/'closed': extra attributes are not allowed (default)
+ * - 'ignored': extra attributes are allowed but not included in output
+ * - IRTypeExpr: extra attributes are allowed and must match this type
  */
 export interface IRTypeSchema {
   kind: 'type_schema';
   properties: IRTypeSchemaProperty[];
+  extras?: 'closed' | 'ignored' | IRTypeExpr;
 }
 
 /**
@@ -386,8 +391,8 @@ export function irTypeRef(name: string): IRTypeRef {
   return { kind: 'type_ref', name };
 }
 
-export function irTypeSchema(properties: IRTypeSchemaProperty[]): IRTypeSchema {
-  return { kind: 'type_schema', properties };
+export function irTypeSchema(properties: IRTypeSchemaProperty[], extras?: 'closed' | 'ignored' | IRTypeExpr): IRTypeSchema {
+  return { kind: 'type_schema', properties, extras };
 }
 
 export function irSubtypeConstraint(baseType: IRTypeExpr, variable: string, constraint: IRExpr): IRSubtypeConstraint {

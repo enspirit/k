@@ -112,8 +112,8 @@ for (const suite of testSuites) {
     for (let i = 0; i < suite.elo.length; i++) {
       const expr = suite.elo[i].trim();
 
-      // Skip empty lines
-      if (!expr) continue;
+      // Skip empty lines and comment lines
+      if (!expr || expr.startsWith('#')) continue;
 
       const lineNum = i + 1;
 

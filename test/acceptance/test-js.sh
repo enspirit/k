@@ -37,7 +37,7 @@ for file in "$TEST_DIR"/*.expected.js; do
     # Run each line separately to avoid IIFE issues
     # Prepend prelude to provide Duration class
     if while IFS= read -r line; do
-        [ -n "$line" ] && { echo "$PRELUDE"; echo "$line"; } | node - || exit 1
+        if [ -n "$line" ]; then { echo "$PRELUDE"; echo "$line"; } | node - || exit 1; fi
     done < "$file" 2>/dev/null; then
         echo "  ✓ $(basename "$file")"
         ((PASSED++)) || true

@@ -193,14 +193,21 @@ function transformTypeExprWithContext(
     case 'type_ref':
       return irTypeRef(typeExpr.name);
 
-    case 'type_schema':
-      return irTypeSchema(
-        typeExpr.properties.map(prop => ({
-          key: prop.key,
-          typeExpr: transformTypeExprWithContext(prop.typeExpr, env, defining, depth, maxDepth),
-          optional: prop.optional,
-        }))
-      );
+    case 'type_schema': {
+      const props = typeExpr.properties.map(prop => ({
+        key: prop.key,
+        typeExpr: transformTypeExprWithContext(prop.typeExpr, env, defining, depth, maxDepth),
+        optional: prop.optional,
+      }));
+      // Transform extras if it's a TypeExpr, otherwise pass through as-is
+      let extras: 'closed' | 'ignored' | IRTypeExpr | undefined;
+      if (typeExpr.extras === 'closed' || typeExpr.extras === 'ignored' || typeExpr.extras === undefined) {
+        extras = typeExpr.extras;
+      } else {
+        extras = transformTypeExprWithContext(typeExpr.extras, env, defining, depth, maxDepth);
+      }
+      return irTypeSchema(props, extras);
+    }
 
     case 'subtype_constraint': {
       // Transform the base type

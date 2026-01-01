@@ -322,6 +322,7 @@ function emitTypeExprParser(
         const propParser = emitTypeExprParser(prop.typeExpr, ctx);
         return { key: prop.key, parser: propParser, optional: prop.optional };
       });
+      const knownKeys = typeExpr.properties.map(p => p.key);
 
       // Generate object parser - wrap parser in parens to handle inline functions
       const propChecks = propParsers.map(({ key, parser, optional }) => {
@@ -333,7 +334,23 @@ function emitTypeExprParser(
         return `const _r_${key} = (${parser})(v.${key}, p + '.${key}'); if (!_r_${key}.success) return pFail(p, [_r_${key}]); _o.${key} = _r_${key}.value;`;
       }).join(' ');
 
-      return `(v, p) => { if (typeof v !== 'object' || v === null) return pFail(p, []); const _o = {}; ${propChecks} return pOk(_o, p); }`;
+      // Handle extras based on the extras mode
+      let extrasCheck: string;
+      if (typeExpr.extras === undefined || typeExpr.extras === 'closed') {
+        // Closed: fail if any extra keys exist
+        const knownKeysSet = JSON.stringify(knownKeys);
+        extrasCheck = `const _ks = ${knownKeysSet}; for (const _k in v) { if (!_ks.includes(_k)) return pFail(p + '.' + _k, []); }`;
+      } else if (typeExpr.extras === 'ignored') {
+        // Ignored: no check, extras are silently ignored
+        extrasCheck = '';
+      } else {
+        // Typed extras: parse each extra key with the given type
+        const extrasParser = emitTypeExprParser(typeExpr.extras, ctx);
+        const knownKeysSet = JSON.stringify(knownKeys);
+        extrasCheck = `const _ks = ${knownKeysSet}; const _ep = ${extrasParser}; for (const _k in v) { if (!_ks.includes(_k)) { const _re = _ep(v[_k], p + '.' + _k); if (!_re.success) return pFail(p, [_re]); _o[_k] = _re.value; } }`;
+      }
+
+      return `(v, p) => { if (typeof v !== 'object' || v === null) return pFail(p, []); const _o = {}; ${propChecks} ${extrasCheck} return pOk(_o, p); }`;
     }
 
     case 'subtype_constraint': {

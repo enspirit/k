@@ -237,8 +237,12 @@ function main() {
       const content = options.inputFile === '-'
         ? readFileSync(0, 'utf-8')
         : readFileSync(options.inputFile, 'utf-8');
-      // Split into lines and filter out empty lines
-      sources = content.split('\n').filter(line => line.trim() !== '');
+      // Split into lines - keep all lines but mark empty/comment lines as null
+      // so we can output empty lines for them to preserve line numbers
+      sources = content.split('\n').map(line => {
+        const trimmed = line.trim();
+        return (trimmed === '' || trimmed.startsWith('#')) ? '' : line;
+      });
     } catch (error) {
       console.error(`Error reading ${options.inputFile === '-' ? 'stdin' : `file ${options.inputFile}`}: ${error}`);
       process.exit(1);
@@ -254,7 +258,12 @@ function main() {
   try {
     results = sources.map((source, index) => {
       try {
-        return compile(source.trim(), options.target, index === 0 && options.prelude);
+        const trimmed = source.trim();
+        // Skip empty lines and comment lines - return empty result
+        if (trimmed === '' || trimmed.startsWith('#')) {
+          return { code: '', usesInput: false };
+        }
+        return compile(trimmed, options.target, index === 0 && options.prelude);
       } catch (error) {
         throw new Error(`Line ${index + 1}: ${error}`);
       }

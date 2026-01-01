@@ -1155,17 +1155,35 @@ export class Parser {
   }
 
   /**
-   * Parse a type schema: { name: String, age: Int, nickname :? String }
+   * Parse a type schema: { name: String, age: Int, nickname :? String, ... } or { name: String, ...: Int }
+   * extras:
+   * - { x: Int } - closed, no extra attrs allowed
+   * - { x: Int, ... } - ignored, extra attrs allowed but not included
+   * - { x: Int, ...: String } - typed, extra attrs must match type
    */
   private typeSchemaExpr(): TypeExpr {
     this.eat('LBRACE');
 
     const properties: TypeSchemaProperty[] = [];
+    let extras: 'closed' | 'ignored' | TypeExpr | undefined = undefined;
 
     // Handle empty schema
     if (this.currentToken.type === 'RBRACE') {
       this.eat('RBRACE');
-      return typeSchema(properties);
+      return typeSchema(properties, extras);
+    }
+
+    // Handle spread only: { ... } or { ...: Type }
+    if (this.currentToken.type === 'RANGE_EXCL') {
+      this.eat('RANGE_EXCL');
+      if ((this.currentToken as Token).type === 'COLON') {
+        this.eat('COLON');
+        extras = this.typeExpr();
+      } else {
+        extras = 'ignored';
+      }
+      this.eat('RBRACE');
+      return typeSchema(properties, extras);
     }
 
     // Parse first property
@@ -1180,6 +1198,19 @@ export class Parser {
     // Parse additional properties
     while (this.currentToken.type === 'COMMA') {
       this.eat('COMMA');
+
+      // Check for spread operator: ... or ...: Type
+      if ((this.currentToken as Token).type === 'RANGE_EXCL') {
+        this.eat('RANGE_EXCL');
+        if ((this.currentToken as Token).type === 'COLON') {
+          this.eat('COLON');
+          extras = this.typeExpr();
+        } else {
+          extras = 'ignored';
+        }
+        break; // spread must be last
+      }
+
       const name = this.currentToken.value;
       this.eat('IDENTIFIER');
       this.eat('COLON');
@@ -1190,7 +1221,7 @@ export class Parser {
     }
 
     this.eat('RBRACE');
-    return typeSchema(properties);
+    return typeSchema(properties, extras);
   }
 
   private ifExprParse(): Expr {

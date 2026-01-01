@@ -26,3 +26,16 @@ assertFails(fn( ~> let Ints = [Int] in ['1', 'bad', '3'] |> Ints ))
 assertFails(fn( ~> let T = Int|String in true |> T ))
 assertFails(fn( ~> let Person = { age: Int(i | i > 10) } in { age: 10 } |> Person ))
 assertFails(fn( ~> let Person = { name: String, age :? Int } in { name: 'Eve', age: 'bad' } |> Person ))
+# Extra attributes tests
+# Closed (default): extra attributes not allowed
+assertFails(fn( ~> let Person = { name: String } in { name: 'Alice', extra: 'bad' } |> Person ))
+# Ignored (...): extra attributes allowed but not in output
+assert((let Person = { name: String, ... } in { name: 'Alice', extra: 'ignored' } |> Person) == { name: 'Alice' })
+# Typed (...: Type): extra attributes must match type
+assert((let Person = { name: String, ...: Int } in { name: 'Alice', age: '30', score: '100' } |> Person) == { name: 'Alice', age: 30, score: 100 })
+assertFails(fn( ~> let Person = { name: String, ...: Int } in { name: 'Alice', bad: 'not-int' } |> Person ))
+# Open type with just spread and type
+assert((let Scores = { ...: Int } in { a: '1', b: '2' } |> Scores) == { a: 1, b: 2 })
+# Open type with just spread (ignored)
+assert((let Open = { ... } in { a: 1, b: 'two' } |> Open) == {})
+

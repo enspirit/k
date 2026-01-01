@@ -343,10 +343,15 @@ export interface TypeRef {
 
 /**
  * Object type schema: { name: String, age: Int }
+ * extras controls handling of extra attributes:
+ * - undefined/'closed': extra attributes are not allowed (default)
+ * - 'ignored': extra attributes are allowed but not included in output
+ * - TypeExpr: extra attributes are allowed and must match this type
  */
 export interface TypeSchema {
   kind: 'type_schema';
   properties: TypeSchemaProperty[];
+  extras?: 'closed' | 'ignored' | TypeExpr;
 }
 
 /**
@@ -408,8 +413,8 @@ export function typeRef(name: string): TypeRef {
 /**
  * Creates a type schema: { name: String, age: Int }
  */
-export function typeSchema(properties: TypeSchemaProperty[]): TypeSchema {
-  return { kind: 'type_schema', properties };
+export function typeSchema(properties: TypeSchemaProperty[], extras?: 'closed' | 'ignored' | TypeExpr): TypeSchema {
+  return { kind: 'type_schema', properties, extras };
 }
 
 /**

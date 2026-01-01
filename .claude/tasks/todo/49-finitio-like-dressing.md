@@ -9,13 +9,15 @@
 | **Subtype constraint** | `Int(i \| i > 0)` | ✅ JS | Predicate on dressed value |
 | **Union type** | `Int\|String` | ✅ JS | PEG-style: tries left-to-right |
 | **Sequence type** | `[Int]` | ✅ JS | Homogeneous arrays |
-| **Struct type** | `{ name: String }` | ✅ JS | Closed structs (extras stripped) |
+| **Struct type** | `{ name: String }` | ✅ JS | Object schemas with property types |
 | **Named types** | `let Person = ... in` | ✅ JS | Uppercase let bindings |
 | **Tuple type** | `[Int, String]` | ❌ | Fixed-length positional - not implemented |
 | **Relation type** | `{{name: String}}` | ❌ | Set of tuples - not implemented |
 | **Set type** | `{Int}` | ❌ | Unique elements - not implemented |
 | **Optional attr** | `name :? String` | ✅ JS | Missing/null values become null |
-| **Open struct** | `{name: String, ...}` | ❌ | Extra properties preserved - not implemented |
+| **Closed struct** | `{ name: String }` | ✅ JS | Extra attributes cause failure (default) |
+| **Open struct (ignored)** | `{ name: String, ... }` | ✅ JS | Extra attrs allowed but not in output |
+| **Open struct (typed)** | `{ name: String, ...: Int }` | ✅ JS | Extra attrs must match type |
 
 ### Composition Support
 
@@ -64,8 +66,9 @@ let Result = { ok: Bool } | { error: String } in data |> Result
 - Inline parser functions wrapped in parens for immediate invocation
 
 **Test Coverage (`test/fixtures/type-definitions.elo`):**
-- 27 assertions covering all implemented constructs
+- 34 assertions covering all implemented constructs
 - Tests for success cases, failure cases, and edge cases
+- assertFails() helper for testing error-throwing expressions
 
 ---
 
@@ -73,9 +76,6 @@ let Result = { ok: Bool } | { error: String } in data |> Result
 
 ### Priority 1: Ruby/SQL Compilers
 Implement type definitions for Ruby and SQL targets using same Result-based approach.
-
-### Priority 2: Open Structs
-Add `{..., name: String}` to preserve extra properties.
 
 ### Deferred
 - Tuple types `[Int, String]` - low priority, rarely needed
@@ -105,8 +105,8 @@ let Person = { name: String, born: Date } in
 ## Key Design Decisions
 
 1. **Uppercase let bindings for types**: `let Person = {...}` vs `let person = {...}`
-2. **Closed structs by default**: Extra properties are stripped
-3. **Null on failure**: Consistent with existing type selectors
+2. **Closed structs by default**: Extra properties cause failure, use `...` to allow
+3. **Throw on failure**: Type parse failure throws an error (use assertFails for testing)
 4. **PEG-style unions**: Try alternatives left-to-right, return first success
 5. **Result type internally**: `{ success, path, value, cause }` for composability
-6. **Auto-unwrap for users**: `value |> Type` returns dressed value or null
+6. **Auto-unwrap for users**: `value |> Type` returns dressed value or throws on failure
