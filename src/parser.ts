@@ -1195,9 +1195,12 @@ export class Parser {
     const firstType = this.typeExpr();
     properties.push({ key: firstName, typeExpr: firstType, optional: firstOptional || undefined });
 
-    // Parse additional properties
-    while (this.currentToken.type === 'COMMA') {
-      this.eat('COMMA');
+    // Parse additional properties (commas are optional, like Finitio)
+    while (true) {
+      // Consume optional comma
+      if (this.currentToken.type === 'COMMA') {
+        this.eat('COMMA');
+      }
 
       // Check for spread operator: ... or ...: Type
       if ((this.currentToken as Token).type === 'RANGE_EXCL') {
@@ -1209,6 +1212,11 @@ export class Parser {
           extras = 'ignored';
         }
         break; // spread must be last
+      }
+
+      // Check for another property (identifier starts next property)
+      if ((this.currentToken as Token).type !== 'IDENTIFIER') {
+        break; // no more properties
       }
 
       const name = this.currentToken.value;
