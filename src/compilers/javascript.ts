@@ -327,8 +327,8 @@ function emitTypeExprParser(
       // Generate object parser - wrap parser in parens to handle inline functions
       const propChecks = propParsers.map(({ key, parser, optional }) => {
         if (optional) {
-          // Optional: if value is null/undefined, set to null; otherwise parse
-          return `if (v.${key} == null) { _o.${key} = null; } else { const _r_${key} = (${parser})(v.${key}, p + '.${key}'); if (!_r_${key}.success) return pFail(p, [_r_${key}]); _o.${key} = _r_${key}.value; }`;
+          // Optional: if value is null/undefined, skip attribute; otherwise parse
+          return `if (v.${key} != null) { const _r_${key} = (${parser})(v.${key}, p + '.${key}'); if (!_r_${key}.success) return pFail(p, [_r_${key}]); _o.${key} = _r_${key}.value; }`;
         }
         // Required: parse and fail if not successful
         return `const _r_${key} = (${parser})(v.${key}, p + '.${key}'); if (!_r_${key}.success) return pFail(p, [_r_${key}]); _o.${key} = _r_${key}.value;`;
