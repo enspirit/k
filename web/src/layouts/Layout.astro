@@ -65,23 +65,26 @@ const url = (path: string) => `${base}${path}`;
       <div class="nav-group">
         <a href={url('/docs')} class:list={[{ active: activeNav === 'doc' }]}>Reference</a>
         <div class="nav-submenu">
-          <span class="submenu-section">Language</span>
-          <a href={url('/docs#getting-started')}>Getting Started</a>
+          <span class="submenu-section">Core</span>
           <a href={url('/docs#types')}>Types</a>
           <a href={url('/docs#literals')}>Literals</a>
+          <a href={url('/docs#operators')}>Operators</a>
+          <span class="submenu-section">Expressions</span>
+          <a href={url('/docs#variables')}>Variables</a>
+          <a href={url('/docs#conditionals')}>Conditionals</a>
+          <a href={url('/docs#ranges')}>Range Membership</a>
+          <span class="submenu-section">Data</span>
           <a href={url('/docs#tuples')}>Tuples</a>
           <a href={url('/docs#lists')}>Lists</a>
-          <a href={url('/docs#operators')}>Operators</a>
-          <a href={url('/docs#variables')}>Variables</a>
           <a href={url('/docs#input')}>Input Data</a>
-          <a href={url('/docs#conditionals')}>Conditionals</a>
+          <span class="submenu-section">Functions</span>
           <a href={url('/docs#lambdas')}>Lambdas</a>
-          <a href={url('/docs#ranges')}>Ranges</a>
+          <span class="submenu-section">Type System</span>
           <a href={url('/docs#type-selectors')}>Type Selectors</a>
           <a href={url('/docs#type-definitions')}>Type Definitions</a>
+          <span class="submenu-section">Runtime</span>
           <a href={url('/docs#assertions')}>Assertions</a>
           <span class="submenu-section">Tools</span>
-          <a href={url('/docs#examples')}>Examples</a>
           <a href={url('/docs#javascript-api')}>JavaScript API</a>
           <a href={url('/docs#command-line')}>Command Line</a>
         </div>

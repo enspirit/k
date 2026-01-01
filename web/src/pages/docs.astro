@@ -7,23 +7,26 @@ import Footer from '../components/Footer.astro';
   <main class="doc-panel" data-controller="doc">
     <aside class="doc-toc">
       <nav>
-        <span class="toc-section">Language</span>
-        <a href="#getting-started">Getting Started</a>
+        <span class="toc-section">Core</span>
         <a href="#types">Types</a>
         <a href="#literals">Literals</a>
+        <a href="#operators">Operators</a>
+        <span class="toc-section">Expressions</span>
+        <a href="#variables">Variables</a>
+        <a href="#conditionals">Conditionals</a>
+        <a href="#ranges">Range Membership</a>
+        <span class="toc-section">Data</span>
         <a href="#tuples">Tuples</a>
         <a href="#lists">Lists</a>
-        <a href="#operators">Operators</a>
-        <a href="#variables">Variables</a>
         <a href="#input">Input Data</a>
-        <a href="#conditionals">Conditionals</a>
+        <span class="toc-section">Functions</span>
         <a href="#lambdas">Lambdas</a>
-        <a href="#ranges">Ranges</a>
+        <span class="toc-section">Type System</span>
         <a href="#type-selectors">Type Selectors</a>
         <a href="#type-definitions">Type Definitions</a>
+        <span class="toc-section">Runtime</span>
         <a href="#assertions">Assertions</a>
         <span class="toc-section">Tools</span>
-        <a href="#examples">Examples</a>
         <a href="#javascript-api">JavaScript API</a>
         <a href="#command-line">Command Line</a>
       </nav>
@@ -36,19 +39,6 @@ import Footer from '../components/Footer.astro';
           <strong>Ruby</strong>, and <strong>SQL</strong>. Write once, run anywhere.
         </p>
       </header>
-
-      <section class="doc-section" id="getting-started">
-        <h2>Getting Started</h2>
-        <p>
-          Elo expressions compile to equivalent code in all three target languages.
-          Click any example to try it in the playground.
-        </p>
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Hello, Math!</div>
-          <pre class="example-code">2 + 3 * 4</pre>
-          <p class="example-desc">Basic arithmetic follows standard precedence rules.</p>
-        </div>
-      </section>
 
       <section class="doc-section" id="types">
         <h2>Types</h2>
@@ -145,48 +135,6 @@ import Footer from '../components/Footer.astro';
         </div>
       </section>
 
-      <section class="doc-section" id="tuples">
-        <h2>Tuples</h2>
-        <p>Elo tuples are collections of named values. They use JSON-like syntax with key-value pairs and compile to native structures in each target language.</p>
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Simple Tuple</div>
-          <pre class="example-code">&#123;name: 'Alice', age: 30&#125;</pre>
-          <p class="example-desc">Create a tuple with named attributes.</p>
-        </div>
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Attribute Access</div>
-          <pre class="example-code">&#123;budget: 1500&#125;.budget</pre>
-          <p class="example-desc">Access attributes with dot notation.</p>
-        </div>
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Tuple with Let</div>
-          <pre class="example-code">let t = &#123;x: 10, y: 20&#125; in t.x + t.y</pre>
-          <p class="example-desc">Bind a tuple to a variable and access its attributes.</p>
-        </div>
-        <p class="note"><strong>Note:</strong> Tuples look like JavaScript objects but Elo uses relational terminology. In SQL, they compile to PostgreSQL JSONB using <code>jsonb_build_object()</code>.</p>
-      </section>
-
-      <section class="doc-section" id="lists">
-        <h2>Lists</h2>
-        <p>Elo lists are ordered sequences using JSON-like array syntax. Lists are heterogeneous and compile to native arrays.</p>
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Simple List</div>
-          <pre class="example-code">[1, 2, 3]</pre>
-          <p class="example-desc">Create a list with integer elements.</p>
-        </div>
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Mixed Types</div>
-          <pre class="example-code">[1, 'two', true, null]</pre>
-          <p class="example-desc">Lists can mix different types including null.</p>
-        </div>
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Nested Lists</div>
-          <pre class="example-code">[[1, 2], [3, 4]]</pre>
-          <p class="example-desc">Lists can contain other lists.</p>
-        </div>
-        <p class="note"><strong>Note:</strong> Lists look like JavaScript arrays but Elo uses relational terminology. In SQL, they compile to PostgreSQL <code>ARRAY[...]</code> syntax.</p>
-      </section>
-
       <section class="doc-section" id="operators">
         <h2>Operators</h2>
         <p>Elo provides arithmetic, comparison, and logical operators.</p>
@@ -252,6 +200,83 @@ import Footer from '../components/Footer.astro';
         </div>
       </section>
 
+      <section class="doc-section" id="conditionals">
+        <h2>Conditionals</h2>
+        <p>Use <code>if ... then ... else</code> expressions to branch based on conditions.</p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Simple Conditional</div>
+          <pre class="example-code">if 5 > 3 then 'yes' else 'no'</pre>
+          <p class="example-desc">Returns 'yes' if the condition is true, 'no' otherwise.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Conditional with Let</div>
+          <pre class="example-code">let x = 10 in if x > 5 then 'big' else 'small'</pre>
+          <p class="example-desc">Combine conditionals with local variables.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="ranges">
+        <h2>Range Membership</h2>
+        <p>Check if a value falls within a range using the <code>in</code> operator.</p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Inclusive Range</div>
+          <pre class="example-code">5 in 1..10</pre>
+          <p class="example-desc">True if 5 &gt;= 1 AND 5 &lt;= 10. Both ends are included.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Exclusive End Range</div>
+          <pre class="example-code">5 in 1...10</pre>
+          <p class="example-desc">True if 5 &gt;= 1 AND 5 &lt; 10. End is excluded.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Date Range Check</div>
+          <pre class="example-code">TODAY in SOY..EOY</pre>
+          <p class="example-desc">Check if today is within the current year.</p>
+        </div>
+      </section>
+
+      <section class="doc-section" id="tuples">
+        <h2>Tuples</h2>
+        <p>Elo tuples are collections of named values. They use JSON-like syntax with key-value pairs and compile to native structures in each target language.</p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Simple Tuple</div>
+          <pre class="example-code">&#123;name: 'Alice', age: 30&#125;</pre>
+          <p class="example-desc">Create a tuple with named attributes.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Attribute Access</div>
+          <pre class="example-code">&#123;budget: 1500&#125;.budget</pre>
+          <p class="example-desc">Access attributes with dot notation.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Tuple with Let</div>
+          <pre class="example-code">let t = &#123;x: 10, y: 20&#125; in t.x + t.y</pre>
+          <p class="example-desc">Bind a tuple to a variable and access its attributes.</p>
+        </div>
+        <p class="note"><strong>Note:</strong> Tuples look like JavaScript objects but Elo uses relational terminology. In SQL, they compile to PostgreSQL JSONB using <code>jsonb_build_object()</code>.</p>
+      </section>
+
+      <section class="doc-section" id="lists">
+        <h2>Lists</h2>
+        <p>Elo lists are ordered sequences using JSON-like array syntax. Lists are heterogeneous and compile to native arrays.</p>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Simple List</div>
+          <pre class="example-code">[1, 2, 3]</pre>
+          <p class="example-desc">Create a list with integer elements.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Mixed Types</div>
+          <pre class="example-code">[1, 'two', true, null]</pre>
+          <p class="example-desc">Lists can mix different types including null.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Nested Lists</div>
+          <pre class="example-code">[[1, 2], [3, 4]]</pre>
+          <p class="example-desc">Lists can contain other lists.</p>
+        </div>
+        <p class="note"><strong>Note:</strong> Lists look like JavaScript arrays but Elo uses relational terminology. In SQL, they compile to PostgreSQL <code>ARRAY[...]</code> syntax.</p>
+      </section>
+
       <section class="doc-section" id="input">
         <h2>Input Data</h2>
         <p>Every Elo program has access to external input via the special <code>_</code> variable.
@@ -272,21 +297,6 @@ import Footer from '../components/Footer.astro';
           <p class="example-desc">Apply VAT to a budget value from input.</p>
         </div>
         <p class="note"><strong>Note:</strong> When using the CLI with <code>-i</code>, provide JSON input: <code>eloc -e "_.x + _.y" -i '&#123;"x": 1, "y": 2&#125;'</code></p>
-      </section>
-
-      <section class="doc-section" id="conditionals">
-        <h2>Conditionals</h2>
-        <p>Use <code>if ... then ... else</code> expressions to branch based on conditions.</p>
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Simple Conditional</div>
-          <pre class="example-code">if 5 > 3 then 'yes' else 'no'</pre>
-          <p class="example-desc">Returns 'yes' if the condition is true, 'no' otherwise.</p>
-        </div>
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Conditional with Let</div>
-          <pre class="example-code">let x = 10 in if x > 5 then 'big' else 'small'</pre>
-          <p class="example-desc">Combine conditionals with local variables.</p>
-        </div>
       </section>
 
       <section class="doc-section" id="lambdas">
@@ -318,26 +328,6 @@ import Footer from '../components/Footer.astro';
           <p class="example-desc">Bind a lambda to a name, then call it. Returns 10.</p>
         </div>
         <p class="note"><strong>Note:</strong> Lambdas compile to JavaScript and Ruby only. SQL does not support function expressions.</p>
-      </section>
-
-      <section class="doc-section" id="ranges">
-        <h2>Range Membership</h2>
-        <p>Check if a value falls within a range using the <code>in</code> operator.</p>
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Inclusive Range</div>
-          <pre class="example-code">5 in 1..10</pre>
-          <p class="example-desc">True if 5 &gt;= 1 AND 5 &lt;= 10. Both ends are included.</p>
-        </div>
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Exclusive End Range</div>
-          <pre class="example-code">5 in 1...10</pre>
-          <p class="example-desc">True if 5 &gt;= 1 AND 5 &lt; 10. End is excluded.</p>
-        </div>
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Date Range Check</div>
-          <pre class="example-code">TODAY in SOY..EOY</pre>
-          <p class="example-desc">Check if today is within the current year.</p>
-        </div>
       </section>
 
       <section class="doc-section" id="type-selectors">
@@ -459,20 +449,6 @@ in &#123; name: 'Alice', age: '30' &#125; |> Person</pre>
           <div class="example-header">Fail with Message</div>
           <pre class="example-code">indexOf('hello', 'x') | fail('character not found')</pre>
           <p class="example-desc">Use <code>fail(message)</code> to throw an error with a custom message.</p>
-        </div>
-      </section>
-
-      <section class="doc-section" id="examples">
-        <h2>Real-World Examples</h2>
-        <div class="example" data-action="click->doc#tryExample">
-          <div class="example-header">Subscription Check</div>
-          <pre class="example-code">let
-  signup_date = D2024-01-15,
-  trial_period = P30D,
-  trial_end = signup_date + trial_period
-in
-  TODAY > trial_end</pre>
-          <p class="example-desc">Check if a 30-day trial has expired.</p>
         </div>
       </section>
 
