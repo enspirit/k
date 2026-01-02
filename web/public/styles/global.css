@@ -1232,6 +1232,22 @@ body.light-theme .hl-sql-operator {
   margin-bottom: 1.5rem;
 }
 
+.comparison-link {
+  text-align: center;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+}
+
+.comparison-link a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.comparison-link a:hover {
+  text-decoration: underline;
+}
+
 .comparison-example {
   background: var(--bg-secondary);
   border: 1px solid var(--border);
@@ -2596,6 +2612,28 @@ body.light-theme .js-badge {
 /* ================================
    Exercises (within Learn page)
    ================================ */
+
+/* ================================
+   Use Cases (within Learn page)
+   ================================ */
+
+.usecases-section {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.usecases-section h2 {
+  margin: 0 0 1rem 0;
+  font-size: 1.75rem;
+  color: var(--text-primary);
+}
+
+.usecases-intro {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
 
 .exercises-section {
   margin-top: 3rem;

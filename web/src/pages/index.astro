@@ -28,17 +28,17 @@ const url = (path: string) => `${base}${path}`;
         <div class="feature-card">
           <div class="feature-icon">=</div>
           <h3>Simple by Design</h3>
-          <p>A pure data language: everything is a value, no reference semantics, no <code>new</code>. One equality operator that just works. Safe for non-technical users.</p>
+          <p>A pure data language: everything is a value, no reference semantics, no <code>new</code>. One equality operator that just works. Designed to be safe for non-technical users.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">3x</div>
           <h3>Truly Portable</h3>
-          <p>One expression compiles to semantically equivalent JavaScript, Ruby, and SQL. Frontend, backend, and database speak the same language.</p>
+          <p>One expression compiles to semantically equivalent JavaScript, Ruby, and SQL. Frontend, backend, and database all speak the same data language.</p>
         </div>
         <div class="feature-card">
-          <div class="feature-icon">T</div>
-          <h3>Temporal Arithmetic</h3>
-          <p>First-class dates, times, and durations with intuitive syntax. <code>TODAY + P30D</code>, <code>NOW in SOQ..EOQ</code> — date logic that just works.</p>
+          <div class="feature-icon">{`{}`}</div>
+          <h3>Built for Real Data</h3>
+          <p>First-class dates, times, and durations with intuitive syntax. Data schemas that validate and coerce input. Business logic that just works, everywhere.</p>
         </div>
       </section>
 
@@ -115,6 +115,10 @@ items.filter(i => i.price > 100)
      .map(i => i.price * 1.21)</pre>
           </div>
         </div>
+
+        <p class="comparison-link">
+          See more practical applications in the <a href={url('/learn#usecases-intro')}>Use Cases</a> section.
+        </p>
       </section>
 
       <section class="targets-section">
