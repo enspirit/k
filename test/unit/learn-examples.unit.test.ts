@@ -1,19 +1,9 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { compile } from '../../src/compile';
+import { DateTime, Duration } from 'luxon';
 
-// Configure dayjs with required plugins
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-import utc from 'dayjs/plugin/utc';
-dayjs.extend(duration);
-dayjs.extend(isoWeek);
-dayjs.extend(quarterOfYear);
-dayjs.extend(utc);
-
-const runtime = { dayjs };
+const runtime = { DateTime, Duration };
 
 /**
  * This test file validates that all examples shown on the Learn page
@@ -67,16 +57,16 @@ describe('Learn Page Examples - Lesson 5: Variables', () => {
 describe('Learn Page Examples - Lesson 6: Dates', () => {
   it('should evaluate date examples', () => {
     const christmas = compile('D2024-12-25', { runtime });
-    assert.ok(dayjs.isDayjs(christmas));
+    assert.ok(DateTime.isDateTime(christmas));
 
     const today = compile('TODAY', { runtime });
-    assert.ok(dayjs.isDayjs(today));
+    assert.ok(DateTime.isDateTime(today));
 
     const future = compile('TODAY + P30D', { runtime });
-    assert.ok(dayjs.isDayjs(future));
+    assert.ok(DateTime.isDateTime(future));
 
     const later = compile('NOW + PT2H30M', { runtime });
-    assert.ok(dayjs.isDayjs(later));
+    assert.ok(DateTime.isDateTime(later));
 
     const year = compile<number>('year(TODAY)', { runtime });
     assert.strictEqual(typeof year, 'number');
@@ -161,9 +151,9 @@ describe('Learn Page Examples - Lesson 15: Parsing Data', () => {
   it('should evaluate type selector examples', () => {
     assert.strictEqual(compile("Int('42')", { runtime }), 42);
     const date = compile("Date('2024-12-25')", { runtime });
-    assert.ok(dayjs.isDayjs(date));
+    assert.ok(DateTime.isDateTime(date));
     const dur = compile("Duration('P1D')", { runtime });
-    assert.ok(dayjs.isDuration(dur));
+    assert.ok(Duration.isDuration(dur));
     // Type selectors throw on invalid input (Finitio semantics)
     assert.throws(() => compile("Int('not a number')", { runtime }), /expected Int/);
   });

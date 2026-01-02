@@ -1,19 +1,9 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { compile } from '../../src/compile';
+import { DateTime, Duration } from 'luxon';
 
-// Configure dayjs with required plugins
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-import utc from 'dayjs/plugin/utc';
-dayjs.extend(duration);
-dayjs.extend(isoWeek);
-dayjs.extend(quarterOfYear);
-dayjs.extend(utc);
-
-const runtime = { dayjs };
+const runtime = { DateTime, Duration };
 
 describe('compile - basic lambdas', () => {
   it('compiles identity lambda', () => {
@@ -47,15 +37,15 @@ describe('compile - temporal lambdas', () => {
   it('compiles lambda checking date in range', () => {
     const fn = compile<(x: unknown) => boolean>('fn(x ~> x in SOW ... EOW)', { runtime });
     // The function should be callable and return a boolean
-    const result = fn(dayjs());
+    const result = fn(DateTime.now());
     assert.strictEqual(typeof result, 'boolean');
   });
 
   it('compiles lambda with date comparison', () => {
     const fn = compile<(x: unknown) => boolean>('fn(x ~> x >= TODAY)', { runtime });
-    const tomorrow = dayjs().add(1, 'day');
+    const tomorrow = DateTime.now().plus({ days: 1 });
     assert.strictEqual(fn(tomorrow), true);
-    const yesterday = dayjs().subtract(1, 'day');
+    const yesterday = DateTime.now().minus({ days: 1 });
     assert.strictEqual(fn(yesterday), false);
   });
 });

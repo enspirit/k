@@ -13,11 +13,7 @@ export default defineConfig({
     },
     optimizeDeps: {
       include: [
-        'dayjs',
-        'dayjs/plugin/duration',
-        'dayjs/plugin/isoWeek',
-        'dayjs/plugin/quarterOfYear',
-        'dayjs/plugin/utc'
+        'luxon'
       ]
     }
   }

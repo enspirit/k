@@ -12,7 +12,7 @@
     "@codemirror/lang-json": "^6.0.2",
     "@enspirit/elo": "file:..",
     "@hotwired/stimulus": "^3.2.2",
-    "dayjs": "^1.11.10"
+    "luxon": "^3.5.0"
   },
   "devDependencies": {
     "@codemirror/lang-javascript": "^6.2.2",

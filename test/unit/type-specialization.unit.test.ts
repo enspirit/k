@@ -16,18 +16,9 @@ import { IRExpr, irInt, irVariable } from '../../src/ir';
 import { compile } from '../../src/compile';
 import { compileToJavaScript } from '../../src/compilers/javascript';
 import { parse } from '../../src/parser';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-import utc from 'dayjs/plugin/utc';
+import { DateTime, Duration } from 'luxon';
 
-dayjs.extend(duration);
-dayjs.extend(isoWeek);
-dayjs.extend(quarterOfYear);
-dayjs.extend(utc);
-
-const runtime = { dayjs };
+const runtime = { DateTime, Duration };
 
 /** Helper: compile to JS (throws on error) */
 function compileToJS(source: string): string {
@@ -132,27 +123,27 @@ describe('Compilation with Any types in lambdas', () => {
   describe('Temporal extraction functions', () => {
     it('compiles year inside lambda', () => {
       const js = compileToJS('fn(x ~> year(x))');
-      assert.ok(js.includes('.year()'));
+      assert.ok(js.includes('.year'));
     });
 
     it('compiles month inside lambda', () => {
       const js = compileToJS('fn(x ~> month(x))');
-      assert.ok(js.includes('.month()'));
+      assert.ok(js.includes('.month'));
     });
 
     it('compiles day inside lambda', () => {
       const js = compileToJS('fn(x ~> day(x))');
-      assert.ok(js.includes('.date()'));
+      assert.ok(js.includes('.day'));
     });
 
     it('compiles hour inside lambda', () => {
       const js = compileToJS('fn(x ~> hour(x))');
-      assert.ok(js.includes('.hour()'));
+      assert.ok(js.includes('.toUTC().hour'));
     });
 
     it('compiles minute inside lambda', () => {
       const js = compileToJS('fn(x ~> minute(x))');
-      assert.ok(js.includes('.minute()'));
+      assert.ok(js.includes('.toUTC().minute'));
     });
   });
 

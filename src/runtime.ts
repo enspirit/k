@@ -29,31 +29,31 @@ export const JS_HELPER_DEPS: Record<string, string[]> = {
 
 export const JS_HELPERS: Record<string, string> = {
   kAdd: `function kAdd(l, r) {
-  if (dayjs.isDayjs(l) && dayjs.isDuration(r)) return l.add(r);
-  if (dayjs.isDuration(l) && dayjs.isDayjs(r)) return r.add(l);
-  if (dayjs.isDuration(l) && dayjs.isDuration(r)) return dayjs.duration(l.asMilliseconds() + r.asMilliseconds());
+  if (DateTime.isDateTime(l) && Duration.isDuration(r)) return l.plus(r);
+  if (Duration.isDuration(l) && DateTime.isDateTime(r)) return r.plus(l);
+  if (Duration.isDuration(l) && Duration.isDuration(r)) return Duration.fromMillis(l.toMillis() + r.toMillis());
   return l + r;
 }`,
   kSub: `function kSub(l, r) {
-  if (dayjs.isDayjs(l) && dayjs.isDuration(r)) return l.subtract(r);
-  if (dayjs.isDayjs(l) && dayjs.isDayjs(r)) return dayjs.duration(l.valueOf() - r.valueOf());
-  if (dayjs.isDuration(l) && dayjs.isDuration(r)) return dayjs.duration(l.asMilliseconds() - r.asMilliseconds());
+  if (DateTime.isDateTime(l) && Duration.isDuration(r)) return l.minus(r);
+  if (DateTime.isDateTime(l) && DateTime.isDateTime(r)) return Duration.fromMillis(l.toMillis() - r.toMillis());
+  if (Duration.isDuration(l) && Duration.isDuration(r)) return Duration.fromMillis(l.toMillis() - r.toMillis());
   return l - r;
 }`,
   kMul: `function kMul(l, r) {
-  if (dayjs.isDuration(l)) return dayjs.duration(l.asMilliseconds() * r);
-  if (dayjs.isDuration(r)) return dayjs.duration(r.asMilliseconds() * l);
+  if (Duration.isDuration(l)) return Duration.fromMillis(l.toMillis() * r);
+  if (Duration.isDuration(r)) return Duration.fromMillis(r.toMillis() * l);
   return l * r;
 }`,
   kDiv: `function kDiv(l, r) {
-  if (dayjs.isDuration(l) && typeof r === 'number') return dayjs.duration(l.asMilliseconds() / r);
+  if (Duration.isDuration(l) && typeof r === 'number') return Duration.fromMillis(l.toMillis() / r);
   return l / r;
 }`,
   kMod: `function kMod(l, r) { return l % r; }`,
   kPow: `function kPow(l, r) { return Math.pow(l, r); }`,
   kEq: `function kEq(l, r) {
-  if (dayjs.isDuration(l) && dayjs.isDuration(r)) return l.asMilliseconds() === r.asMilliseconds();
-  if (dayjs.isDayjs(l) && dayjs.isDayjs(r)) return l.valueOf() === r.valueOf();
+  if (Duration.isDuration(l) && Duration.isDuration(r)) return l.toMillis() === r.toMillis();
+  if (DateTime.isDateTime(l) && DateTime.isDateTime(r)) return l.toMillis() === r.toMillis();
   if (Array.isArray(l) && Array.isArray(r)) {
     if (l.length !== r.length) return false;
     for (let i = 0; i < l.length; i++) if (!kEq(l[i], r[i])) return false;
@@ -72,14 +72,14 @@ export const JS_HELPERS: Record<string, string> = {
   return !kEq(l, r);
 }`,
   kNeg: `function kNeg(v) {
-  if (dayjs.isDuration(v)) return dayjs.duration(-v.asMilliseconds());
+  if (Duration.isDuration(v)) return Duration.fromMillis(-v.toMillis());
   return -v;
 }`,
   kPos: `function kPos(v) { return +v; }`,
   kTypeOf: `function kTypeOf(v) {
   if (v === null || v === undefined) return 'Null';
-  if (dayjs.isDuration(v)) return 'Duration';
-  if (dayjs.isDayjs(v)) return 'DateTime';
+  if (Duration.isDuration(v)) return 'Duration';
+  if (DateTime.isDateTime(v)) return 'DateTime';
   if (typeof v === 'number') return Number.isInteger(v) ? 'Int' : 'Float';
   if (typeof v === 'boolean') return 'Bool';
   if (typeof v === 'string') return 'String';
@@ -155,20 +155,20 @@ export const JS_HELPERS: Record<string, string> = {
 }`,
   kDate: `function kDate(v) {
   if (v === null || v === undefined) return null;
-  if (dayjs.isDayjs(v)) return v.startOf('day');
-  if (typeof v === 'string') { const d = dayjs(v); return d.isValid() && /^\\d{4}-\\d{2}-\\d{2}$/.test(v) ? d.startOf('day') : null; }
+  if (DateTime.isDateTime(v)) return v.startOf('day');
+  if (typeof v === 'string') { const d = DateTime.fromISO(v); return d.isValid && /^\\d{4}-\\d{2}-\\d{2}$/.test(v) ? d.startOf('day') : null; }
   return null;
 }`,
   kDatetime: `function kDatetime(v) {
   if (v === null || v === undefined) return null;
-  if (dayjs.isDayjs(v)) return v;
-  if (typeof v === 'string') { const d = dayjs(v); return d.isValid() ? d : null; }
+  if (DateTime.isDateTime(v)) return v;
+  if (typeof v === 'string') { const d = DateTime.fromISO(v); return d.isValid ? d : null; }
   return null;
 }`,
   kDuration: `function kDuration(v) {
   if (v === null || v === undefined) return null;
-  if (dayjs.isDuration(v)) return v;
-  if (typeof v === 'string') { const d = dayjs.duration(v); return isNaN(d.asMilliseconds()) ? null : d; }
+  if (Duration.isDuration(v)) return v;
+  if (typeof v === 'string') { const d = Duration.fromISO(v); return d.isValid ? d : null; }
   return null;
 }`,
   kData: `function kData(v) {
@@ -197,8 +197,8 @@ export const JS_HELPERS: Record<string, string> = {
   return pFail(p, 'expected Bool, got ' + (v === null ? 'Null' : typeof v === 'string' ? JSON.stringify(v) : typeof v));
 }`,
   pDatetime: `function pDatetime(v, p) {
-  if (dayjs.isDayjs(v)) return pOk(v, p);
-  if (typeof v === 'string') { const d = dayjs(v); if (d.isValid()) return pOk(d, p); }
+  if (DateTime.isDateTime(v)) return pOk(v, p);
+  if (typeof v === 'string') { const d = DateTime.fromISO(v); if (d.isValid) return pOk(d, p); }
   return pFail(p, 'expected Datetime, got ' + (v === null ? 'Null' : typeof v === 'string' ? 'invalid datetime ' + JSON.stringify(v) : typeof v));
 }`,
   pFloat: `function pFloat(v, p) {
@@ -207,13 +207,13 @@ export const JS_HELPERS: Record<string, string> = {
   return pFail(p, 'expected Float, got ' + (v === null ? 'Null' : typeof v === 'string' ? JSON.stringify(v) : typeof v));
 }`,
   pDate: `function pDate(v, p) {
-  if (dayjs.isDayjs(v)) return pOk(v.startOf('day'), p);
-  if (typeof v === 'string' && /^\\d{4}-\\d{2}-\\d{2}$/.test(v)) { const d = dayjs(v); if (d.isValid()) return pOk(d.startOf('day'), p); }
+  if (DateTime.isDateTime(v)) return pOk(v.startOf('day'), p);
+  if (typeof v === 'string' && /^\\d{4}-\\d{2}-\\d{2}$/.test(v)) { const d = DateTime.fromISO(v); if (d.isValid) return pOk(d.startOf('day'), p); }
   return pFail(p, 'expected Date (YYYY-MM-DD), got ' + (v === null ? 'Null' : typeof v === 'string' ? JSON.stringify(v) : typeof v));
 }`,
   pDuration: `function pDuration(v, p) {
-  if (dayjs.isDuration(v)) return pOk(v, p);
-  if (typeof v === 'string') { const d = dayjs.duration(v); if (!isNaN(d.asMilliseconds())) return pOk(d, p); }
+  if (Duration.isDuration(v)) return pOk(v, p);
+  if (typeof v === 'string') { const d = Duration.fromISO(v); if (d.isValid) return pOk(d, p); }
   return pFail(p, 'expected Duration (ISO 8601), got ' + (v === null ? 'Null' : typeof v === 'string' ? JSON.stringify(v) : typeof v));
 }`,
   pData: `function pData(v, p) {

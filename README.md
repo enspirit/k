@@ -156,32 +156,24 @@ The simplest way to use Elo is with the `compile()` function, which creates a ca
 
 ```typescript
 import { compile } from '@enspirit/elo';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-
-// Configure dayjs with required plugins
-dayjs.extend(duration);
-dayjs.extend(isoWeek);
-dayjs.extend(quarterOfYear);
+import { DateTime, Duration } from 'luxon';
 
 // Compile a lambda to a callable function
 const double = compile<(x: number) => number>(
   'fn(x ~> x * 2)',
-  { runtime: { dayjs } }
+  { runtime: { DateTime, Duration } }
 );
 double(21); // => 42
 
 // Temporal expressions work too
 const inThisWeek = compile<(d: unknown) => boolean>(
   'fn(d ~> d in SOW ... EOW)',
-  { runtime: { dayjs } }
+  { runtime: { DateTime, Duration } }
 );
-inThisWeek(dayjs()); // => true or false
+inThisWeek(DateTime.now()); // => true or false
 ```
 
-The `runtime` option injects dependencies (like `dayjs`) into the compiled function. This avoids global variables and keeps the compiled code portable.
+The `runtime` option injects dependencies (like `DateTime` and `Duration` from luxon) into the compiled function. This avoids global variables and keeps the compiled code portable.
 
 ## Lower-Level API
 

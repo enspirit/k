@@ -296,24 +296,24 @@ describe('JavaScript Compiler - Edge Cases', () => {
 });
 
 describe('JavaScript Compiler - Date Arithmetic', () => {
-  it('should compile date + duration using dayjs.add()', () => {
+  it('should compile date + duration using DateTime.plus()', () => {
     const ast = binary('+', { type: 'date', value: '2024-01-15' }, { type: 'duration', value: 'P1D' });
-    assert.strictEqual(compileToJavaScript(ast), wrapJS("dayjs('2024-01-15').add(dayjs.duration('P1D'))"));
+    assert.strictEqual(compileToJavaScript(ast), wrapJS("DateTime.fromISO('2024-01-15').plus(Duration.fromISO('P1D'))"));
   });
 
-  it('should compile date - duration using dayjs.subtract()', () => {
+  it('should compile date - duration using DateTime.minus()', () => {
     const ast = binary('-', { type: 'date', value: '2024-01-15' }, { type: 'duration', value: 'P1D' });
-    assert.strictEqual(compileToJavaScript(ast), wrapJS("dayjs('2024-01-15').subtract(dayjs.duration('P1D'))"));
+    assert.strictEqual(compileToJavaScript(ast), wrapJS("DateTime.fromISO('2024-01-15').minus(Duration.fromISO('P1D'))"));
   });
 
   it('should compile duration + datetime (commutative)', () => {
     const ast = binary('+', { type: 'duration', value: 'PT2H' }, { type: 'datetime', value: '2024-01-15T10:00:00Z' });
-    assert.strictEqual(compileToJavaScript(ast), wrapJS("dayjs('2024-01-15T10:00:00Z').add(dayjs.duration('PT2H'))"));
+    assert.strictEqual(compileToJavaScript(ast), wrapJS("DateTime.fromISO('2024-01-15T10:00:00Z').plus(Duration.fromISO('PT2H'))"));
   });
 
   it('should compile datetime + duration', () => {
     const ast = binary('+', { type: 'datetime', value: '2024-01-15T10:00:00Z' }, { type: 'duration', value: 'PT1H30M' });
-    assert.strictEqual(compileToJavaScript(ast), wrapJS("dayjs('2024-01-15T10:00:00Z').add(dayjs.duration('PT1H30M'))"));
+    assert.strictEqual(compileToJavaScript(ast), wrapJS("DateTime.fromISO('2024-01-15T10:00:00Z').plus(Duration.fromISO('PT1H30M'))"));
   });
 });
 

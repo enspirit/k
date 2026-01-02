@@ -3,11 +3,7 @@ import { EditorView, keymap } from '@codemirror/view';
 import { EditorState } from '@codemirror/state';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { bracketMatching } from '@codemirror/language';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-import utc from 'dayjs/plugin/utc';
+import { DateTime, Duration } from 'luxon';
 import {
   parse,
   compileToJavaScript,
@@ -15,14 +11,9 @@ import {
 import { elo } from '../codemirror/elo-language';
 import { eloDarkTheme, eloLightTheme } from '../codemirror/elo-theme';
 
-// Enable dayjs plugins
-dayjs.extend(duration);
-dayjs.extend(isoWeek);
-dayjs.extend(quarterOfYear);
-dayjs.extend(utc);
-
-// Make dayjs available globally for eval
-(window as any).dayjs = dayjs;
+// Make luxon DateTime and Duration available globally for eval
+(window as any).DateTime = DateTime;
+(window as any).Duration = Duration;
 
 const STORAGE_KEY = 'elo-exercises-progress';
 

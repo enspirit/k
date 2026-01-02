@@ -4,11 +4,7 @@ import { EditorState } from '@codemirror/state';
 import { defaultKeymap, history, historyKeymap } from '@codemirror/commands';
 import { bracketMatching } from '@codemirror/language';
 import { json } from '@codemirror/lang-json';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-import utc from 'dayjs/plugin/utc';
+import { DateTime, Duration } from 'luxon';
 import {
   parse,
   compileToRuby,
@@ -23,14 +19,9 @@ import { eloDarkTheme, eloLightTheme } from '../codemirror/elo-theme';
 import { highlightJS, highlightRuby, highlightSQL } from '../highlighter';
 import { formatCode } from '../formatters';
 
-// Enable dayjs plugins
-dayjs.extend(duration);
-dayjs.extend(isoWeek);
-dayjs.extend(quarterOfYear);
-dayjs.extend(utc);
-
-// Make dayjs available globally for eval (used by compiled IIFE helpers)
-(window as any).dayjs = dayjs;
+// Make luxon DateTime and Duration available globally for eval (used by compiled IIFE helpers)
+(window as any).DateTime = DateTime;
+(window as any).Duration = Duration;
 
 type TargetLanguage = 'ruby' | 'javascript' | 'sql';
 
@@ -449,9 +440,13 @@ export default class PlaygroundController extends Controller {
     if (typeof value === 'boolean') {
       return value ? 'true' : 'false';
     }
-    // Handle dayjs objects
-    if (value && typeof value === 'object' && value.$d instanceof Date) {
-      return value.format();
+    // Handle luxon DateTime objects
+    if (DateTime.isDateTime(value)) {
+      return value.toISO();
+    }
+    // Handle luxon Duration objects
+    if (Duration.isDuration(value)) {
+      return value.toISO();
     }
     if (value instanceof Date) {
       return value.toISOString();

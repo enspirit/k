@@ -35,7 +35,7 @@ interface EmitResult {
 
 /**
  * Compiles Elo expressions to JavaScript code
- * Uses dayjs for temporal operations
+ * Uses luxon for temporal operations
  *
  * This compiler works in two phases:
  * 1. Transform AST to typed IR
@@ -171,13 +171,13 @@ function emitJS(ir: IRExpr, requiredHelpers?: Set<string>): string {
       return JSON.stringify(ir.value);
 
     case 'date_literal':
-      return `dayjs('${ir.value}')`;
+      return `DateTime.fromISO('${ir.value}')`;
 
     case 'datetime_literal':
-      return `dayjs('${ir.value}')`;
+      return `DateTime.fromISO('${ir.value}')`;
 
     case 'duration_literal':
-      return `dayjs.duration('${ir.value}')`;
+      return `Duration.fromISO('${ir.value}')`;
 
     case 'object_literal': {
       const props = ir.properties.map(p => `${p.key}: ${ctx.emit(p.value)}`).join(', ');

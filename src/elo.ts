@@ -3,14 +3,7 @@
 import { readFileSync } from 'fs';
 import { parse } from './parser';
 import { compileToJavaScriptWithMeta } from './compilers/javascript';
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-
-dayjs.extend(duration);
-dayjs.extend(isoWeek);
-dayjs.extend(quarterOfYear);
+import { DateTime, Duration } from 'luxon';
 
 interface Options {
   expression?: string;
@@ -134,10 +127,10 @@ function evaluate(source: string, inputValue: unknown): unknown {
   const ast = parse(source);
   const result = compileToJavaScriptWithMeta(ast);
 
-  // Create function with dayjs in scope
+  // Create function with luxon DateTime and Duration in scope
   // The compiled code is always a function that takes _ as input
-  const execFn = new Function('dayjs', `return ${result.code}`);
-  const fn = execFn(dayjs);
+  const execFn = new Function('DateTime', 'Duration', `return ${result.code}`);
+  const fn = execFn(DateTime, Duration);
 
   return fn(inputValue);
 }

@@ -92,7 +92,7 @@ describe('CLI - Basic compilation', () => {
 describe('CLI - Temporal expressions', () => {
   it('should compile TODAY to JavaScript', () => {
     const result = eloc('-e "TODAY" -t js');
-    assert.strictEqual(result, "(function(_) { return dayjs().startOf('day'); })");
+    assert.strictEqual(result, "(function(_) { return DateTime.now().startOf('day'); })");
   });
 
   it('should compile TODAY to Ruby', () => {
@@ -107,7 +107,7 @@ describe('CLI - Temporal expressions', () => {
 
   it('should compile NOW to JavaScript', () => {
     const result = eloc('-e "NOW" -t js');
-    assert.strictEqual(result, '(function(_) { return dayjs(); })');
+    assert.strictEqual(result, '(function(_) { return DateTime.now(); })');
   });
 
   it('should compile NOW to Ruby', () => {
@@ -131,9 +131,8 @@ describe('CLI - Prelude inclusion', () => {
 
   it('should include JavaScript prelude', () => {
     const result = eloc('-e "TODAY" -t js -p');
-    assert.ok(result.includes("require('dayjs')"));
-    assert.ok(result.includes('dayjs.extend(duration)'));
-    assert.ok(result.includes("dayjs().startOf('day')"));
+    assert.ok(result.includes("require('luxon')"));
+    assert.ok(result.includes("DateTime.now().startOf('day')"));
     // Note: elo helpers are now embedded in the expression as needed, not in prelude
   });
 

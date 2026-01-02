@@ -425,7 +425,7 @@ describe('nullary', () => {
   });
 
   it('should work with different types', () => {
-    const stringEmitter = nullary("dayjs().startOf('day')");
+    const stringEmitter = nullary("DateTime.now().startOf('day')");
     const numberEmitter = nullary(42);
 
     const stringCtx: EmitContext<string> = {
@@ -438,7 +438,7 @@ describe('nullary', () => {
       emitWithParens: () => 0,
     };
 
-    assert.strictEqual(stringEmitter([], stringCtx), "dayjs().startOf('day')");
+    assert.strictEqual(stringEmitter([], stringCtx), "DateTime.now().startOf('day')");
     assert.strictEqual(numberEmitter([], numberCtx), 42);
   });
 });

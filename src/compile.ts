@@ -13,7 +13,8 @@ import { compileToJavaScript } from './compilers/javascript';
  * All dependencies used by the JS compiler should be listed here.
  */
 export interface EloRuntime {
-  dayjs?: unknown;
+  DateTime?: unknown;
+  Duration?: unknown;
   // Future dependencies can be added here
 }
 
@@ -28,7 +29,7 @@ export interface CompileOptions {
  * List of runtime dependency names to inject.
  * Must match the keys in EloRuntime.
  */
-const RUNTIME_DEPS = ['dayjs'] as const;
+const RUNTIME_DEPS = ['DateTime', 'Duration'] as const;
 
 /**
  * Compiles an Elo expression to a callable JavaScript function.
@@ -40,17 +41,17 @@ const RUNTIME_DEPS = ['dayjs'] as const;
  * @example
  * ```typescript
  * import { compile } from '@enspirit/elo';
- * import dayjs from 'dayjs';
+ * import { DateTime, Duration } from 'luxon';
  *
  * const double = compile<(x: number) => number>(
  *   'fn(x ~> x * 2)',
- *   { runtime: { dayjs } }
+ *   { runtime: { DateTime, Duration } }
  * );
  * double(21); // => 42
  *
  * const inThisWeek = compile<(x: Date) => boolean>(
  *   'fn(x ~> x in SOW ... EOW)',
- *   { runtime: { dayjs } }
+ *   { runtime: { DateTime, Duration } }
  * );
  * inThisWeek(new Date()); // => true or false
  * ```

@@ -9,15 +9,7 @@
 
 export type Target = 'javascript' | 'ruby' | 'sql';
 
-const javascriptPrelude = `const dayjs = require('dayjs');
-const duration = require('dayjs/plugin/duration');
-const isoWeek = require('dayjs/plugin/isoWeek');
-const quarterOfYear = require('dayjs/plugin/quarterOfYear');
-const utc = require('dayjs/plugin/utc');
-dayjs.extend(duration);
-dayjs.extend(isoWeek);
-dayjs.extend(quarterOfYear);
-dayjs.extend(utc);`;
+const javascriptPrelude = `const { DateTime, Duration } = require('luxon');`;
 
 const rubyPrelude = `require 'date'
 require 'active_support/all'`;

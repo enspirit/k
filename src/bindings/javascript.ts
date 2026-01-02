@@ -2,7 +2,7 @@
  * JavaScript stdlib binding for Elo
  *
  * This module defines how Elo IR functions are emitted as JavaScript code.
- * Uses dayjs for temporal operations.
+ * Uses luxon for temporal operations.
  */
 
 import { IRExpr } from '../ir';
@@ -58,15 +58,15 @@ export function createJavaScriptBinding(): StdLib<string> {
   const jsLib = new StdLib<string>();
 
   // Temporal nullary functions
-  jsLib.register('today', [], nullary("dayjs().startOf('day')"));
-  jsLib.register('now', [], nullary('dayjs()'));
+  jsLib.register('today', [], nullary("DateTime.now().startOf('day')"));
+  jsLib.register('now', [], nullary('DateTime.now()'));
 
   // Period boundary functions
   const periodBoundaryMap: Record<string, string> = {
     'start_of_day': "startOf('day')",
     'end_of_day': "endOf('day')",
-    'start_of_week': "startOf('isoWeek')",
-    'end_of_week': "endOf('isoWeek')",
+    'start_of_week': "startOf('week')",
+    'end_of_week': "endOf('week')",
     'start_of_month': "startOf('month')",
     'end_of_month': "endOf('month')",
     'start_of_quarter': "startOf('quarter')",
@@ -107,55 +107,55 @@ export function createJavaScriptBinding(): StdLib<string> {
 
   // Temporal addition
   jsLib.register('add', [Types.date, Types.duration], (args, ctx) =>
-    `${ctx.emit(args[0])}.add(${ctx.emit(args[1])})`);
+    `${ctx.emit(args[0])}.plus(${ctx.emit(args[1])})`);
   jsLib.register('add', [Types.datetime, Types.duration], (args, ctx) =>
-    `${ctx.emit(args[0])}.add(${ctx.emit(args[1])})`);
+    `${ctx.emit(args[0])}.plus(${ctx.emit(args[1])})`);
   jsLib.register('add', [Types.duration, Types.date], (args, ctx) =>
-    `${ctx.emit(args[1])}.add(${ctx.emit(args[0])})`);
+    `${ctx.emit(args[1])}.plus(${ctx.emit(args[0])})`);
   jsLib.register('add', [Types.duration, Types.datetime], (args, ctx) =>
-    `${ctx.emit(args[1])}.add(${ctx.emit(args[0])})`);
+    `${ctx.emit(args[1])}.plus(${ctx.emit(args[0])})`);
   jsLib.register('add', [Types.duration, Types.duration], (args, ctx) =>
-    `${ctx.emit(args[0])}.add(${ctx.emit(args[1])})`);
+    `${ctx.emit(args[0])}.plus(${ctx.emit(args[1])})`);
 
   // Temporal subtraction
   jsLib.register('sub', [Types.date, Types.duration], (args, ctx) =>
-    `${ctx.emit(args[0])}.subtract(${ctx.emit(args[1])})`);
+    `${ctx.emit(args[0])}.minus(${ctx.emit(args[1])})`);
   jsLib.register('sub', [Types.datetime, Types.duration], (args, ctx) =>
-    `${ctx.emit(args[0])}.subtract(${ctx.emit(args[1])})`);
+    `${ctx.emit(args[0])}.minus(${ctx.emit(args[1])})`);
 
   // Duration scaling: n * duration or duration * n
   jsLib.register('mul', [Types.int, Types.duration], (args, ctx) =>
-    `dayjs.duration(${ctx.emit(args[1])}.asMilliseconds() * ${ctx.emit(args[0])})`);
+    `Duration.fromMillis(${ctx.emit(args[1])}.toMillis() * ${ctx.emit(args[0])})`);
   jsLib.register('mul', [Types.float, Types.duration], (args, ctx) =>
-    `dayjs.duration(${ctx.emit(args[1])}.asMilliseconds() * ${ctx.emit(args[0])})`);
+    `Duration.fromMillis(${ctx.emit(args[1])}.toMillis() * ${ctx.emit(args[0])})`);
   jsLib.register('mul', [Types.duration, Types.int], (args, ctx) =>
-    `dayjs.duration(${ctx.emit(args[0])}.asMilliseconds() * ${ctx.emit(args[1])})`);
+    `Duration.fromMillis(${ctx.emit(args[0])}.toMillis() * ${ctx.emit(args[1])})`);
   jsLib.register('mul', [Types.duration, Types.float], (args, ctx) =>
-    `dayjs.duration(${ctx.emit(args[0])}.asMilliseconds() * ${ctx.emit(args[1])})`);
+    `Duration.fromMillis(${ctx.emit(args[0])}.toMillis() * ${ctx.emit(args[1])})`);
 
   // Duration division
   jsLib.register('div', [Types.duration, Types.int], (args, ctx) =>
-    `dayjs.duration(${ctx.emit(args[0])}.asMilliseconds() / ${ctx.emit(args[1])})`);
+    `Duration.fromMillis(${ctx.emit(args[0])}.toMillis() / ${ctx.emit(args[1])})`);
   jsLib.register('div', [Types.duration, Types.float], (args, ctx) =>
-    `dayjs.duration(${ctx.emit(args[0])}.asMilliseconds() / ${ctx.emit(args[1])})`);
+    `Duration.fromMillis(${ctx.emit(args[0])}.toMillis() / ${ctx.emit(args[1])})`);
 
   // Comparison operators - type generalization handles most combinations
-  // Date/datetime equality needs special valueOf comparison (using +)
+  // Date/datetime equality needs special toMillis comparison
   const temporalTypes = [Types.date, Types.datetime];
   for (const leftType of temporalTypes) {
     for (const rightType of temporalTypes) {
       jsLib.register('eq', [leftType, rightType], (args, ctx) =>
-        `+${ctx.emit(args[0])} === +${ctx.emit(args[1])}`);
+        `${ctx.emit(args[0])}.toMillis() === ${ctx.emit(args[1])}.toMillis()`);
       jsLib.register('neq', [leftType, rightType], (args, ctx) =>
-        `+${ctx.emit(args[0])} !== +${ctx.emit(args[1])}`);
+        `${ctx.emit(args[0])}.toMillis() !== ${ctx.emit(args[1])}.toMillis()`);
     }
   }
 
   // Duration equality needs milliseconds comparison
   jsLib.register('eq', [Types.duration, Types.duration], (args, ctx) =>
-    `${ctx.emit(args[0])}.asMilliseconds() === ${ctx.emit(args[1])}.asMilliseconds()`);
+    `${ctx.emit(args[0])}.toMillis() === ${ctx.emit(args[1])}.toMillis()`);
   jsLib.register('neq', [Types.duration, Types.duration], (args, ctx) =>
-    `${ctx.emit(args[0])}.asMilliseconds() !== ${ctx.emit(args[1])}.asMilliseconds()`);
+    `${ctx.emit(args[0])}.toMillis() !== ${ctx.emit(args[1])}.toMillis()`);
 
   // Numeric/boolean/string equality uses native operators
   const primitiveTypes = [Types.int, Types.float, Types.bool, Types.string];
@@ -313,14 +313,14 @@ export function createJavaScriptBinding(): StdLib<string> {
   jsLib.register('ceil', [Types.any], fnCall('Math.ceil')); // Safe for any numeric type
 
   // Temporal extraction functions
-  jsLib.register('year', [Types.date], (args, ctx) => `${ctx.emit(args[0])}.year()`);
-  jsLib.register('year', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.year()`);
-  jsLib.register('month', [Types.date], (args, ctx) => `(${ctx.emit(args[0])}.month() + 1)`);
-  jsLib.register('month', [Types.datetime], (args, ctx) => `(${ctx.emit(args[0])}.month() + 1)`);
-  jsLib.register('day', [Types.date], (args, ctx) => `${ctx.emit(args[0])}.date()`);
-  jsLib.register('day', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.date()`);
-  jsLib.register('hour', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.utc().hour()`);
-  jsLib.register('minute', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.utc().minute()`);
+  jsLib.register('year', [Types.date], (args, ctx) => `${ctx.emit(args[0])}.year`);
+  jsLib.register('year', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.year`);
+  jsLib.register('month', [Types.date], (args, ctx) => `${ctx.emit(args[0])}.month`);
+  jsLib.register('month', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.month`);
+  jsLib.register('day', [Types.date], (args, ctx) => `${ctx.emit(args[0])}.day`);
+  jsLib.register('day', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.day`);
+  jsLib.register('hour', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.toUTC().hour`);
+  jsLib.register('minute', [Types.datetime], (args, ctx) => `${ctx.emit(args[0])}.toUTC().minute`);
 
   // Runtime helpers for unknown types (dynamic dispatch)
   // These use kAdd, kSub, etc. helper functions that handle temporal/numeric operations at runtime

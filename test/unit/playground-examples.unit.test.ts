@@ -1,19 +1,9 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
 import { compile } from '../../src/compile';
+import { DateTime, Duration } from 'luxon';
 
-// Configure dayjs with required plugins
-import dayjs from 'dayjs';
-import duration from 'dayjs/plugin/duration';
-import isoWeek from 'dayjs/plugin/isoWeek';
-import quarterOfYear from 'dayjs/plugin/quarterOfYear';
-import utc from 'dayjs/plugin/utc';
-dayjs.extend(duration);
-dayjs.extend(isoWeek);
-dayjs.extend(quarterOfYear);
-dayjs.extend(utc);
-
-const runtime = { dayjs };
+const runtime = { DateTime, Duration };
 
 /**
  * This test file validates that all examples in the Playground dropdown
@@ -136,6 +126,6 @@ in {
   it('durations: should evaluate correctly', () => {
     const code = `P1D + PT2H`;
     const result = compile(code, { runtime });
-    assert.ok(dayjs.isDuration(result));
+    assert.ok(Duration.isDuration(result));
   });
 });
