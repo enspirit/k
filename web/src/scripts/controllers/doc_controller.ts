@@ -14,6 +14,6 @@ export default class DocController extends Controller {
 
     // Navigate to playground with code as URL parameter
     const encodedCode = encodeURIComponent(code);
-    window.location.href = `${BASE_URL}/playground?code=${encodedCode}&run=1`;
+    window.location.href = `${BASE_URL}/try?code=${encodedCode}&run=1`;
   }
 }
