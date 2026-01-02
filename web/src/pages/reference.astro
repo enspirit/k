@@ -26,7 +26,8 @@ import Footer from '../components/Footer.astro';
         <a href="#type-definitions">Type Definitions</a>
         <span class="toc-section">Runtime</span>
         <a href="#assertions">Assertions</a>
-        <span class="toc-section">Tools</span>
+        <span class="toc-section">Get Started</span>
+        <a href="#get-started">Installation</a>
         <a href="#javascript-api">JavaScript API</a>
         <a href="#command-line">Command Line</a>
       </nav>
@@ -457,9 +458,45 @@ in &#123; name: 'Alice', age: '30' &#125; |> Person</pre>
         </div>
       </section>
 
+      <section class="doc-section" id="get-started">
+        <h2>Get Started</h2>
+        <p>Ready to use Elo on your computer? Here's how to get started.</p>
+
+        <h3>Try Online First</h3>
+        <p>The easiest way to explore Elo is the <a href="/try">online playground</a> — no installation needed.</p>
+
+        <h3>Install the CLI</h3>
+        <p>To run Elo locally, install the command-line tools via npm:</p>
+        <pre class="code-js">npm install -g @enspirit/elo</pre>
+        <p>This gives you two commands:</p>
+        <ul>
+          <li><code>elo</code> — Evaluate Elo expressions and see results immediately</li>
+          <li><code>eloc</code> — Compile Elo to JavaScript, Ruby, or SQL</li>
+        </ul>
+
+        <h3>Quick Examples</h3>
+        <pre class="code-js"># Evaluate an expression
+elo -e "2 + 3 * 4"          # => 14
+
+# Evaluate from a file
+echo "upper('hello')" > hello.elo
+elo hello.elo               # => HELLO
+
+# Compile to JavaScript
+eloc -e "2 + 3"             # => (function(_) { return 2 + 3; })</pre>
+
+        <h3>What's Next?</h3>
+        <ul>
+          <li><strong>Learning Elo?</strong> Start with the <a href="/learn">Learn</a> tutorial</li>
+          <li><strong>Building an app?</strong> See the <a href="#javascript-api">JavaScript API</a> below</li>
+          <li><strong>Need a function?</strong> Browse the <a href="/stdlib">Standard Library</a></li>
+        </ul>
+      </section>
+
       <section class="doc-section" id="javascript-api">
         <h2>JavaScript API</h2>
-        <p>Install with <code>npm install @enspirit/elo</code>.</p>
+        <p>For Node.js or browser projects, install the library:</p>
+        <pre class="code-js">npm install @enspirit/elo</pre>
         <h3>compile()</h3>
         <p>Every Elo expression compiles to a function that takes <code>_</code> (the implicit input) as parameter.</p>
         <pre class="code-js">import &#123; compile &#125; from '@enspirit/elo';

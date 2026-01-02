@@ -21,7 +21,10 @@ const url = (path: string) => `${base}${path}`;
         <h1>The Elo Language</h1>
         <p class="tagline">A simple, well-designed, portable, and safe data expression language</p>
         <p class="subtitle">Elo compiles to JavaScript, Ruby, and SQL. Built for No-Code tools where non-technical users need to manipulate data easily and safely.</p>
-        <a href={url('/try')} class="cta-button">Try it now</a>
+        <div class="cta-buttons">
+          <a href={url('/try')} class="cta-button">Try it now</a>
+          <a href={url('/reference#get-started')} class="cta-button cta-secondary">Get started</a>
+        </div>
       </section>
 
       <section class="features">

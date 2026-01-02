@@ -1162,6 +1162,24 @@ body.light-theme .hl-sql-operator {
   box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
 }
 
+.cta-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.cta-button.cta-secondary {
+  background: transparent;
+  border: 2px solid var(--accent);
+  color: var(--accent);
+}
+
+.cta-button.cta-secondary:hover {
+  background: var(--accent);
+  color: white;
+}
+
 /* Features Section */
 .features {
   display: grid;
