@@ -19,6 +19,7 @@ const url = (path: string) => `${base}${path}`;
         <a href="#chapter-6" data-learn-progress-target="tocLink"><span class="toc-check"></span>6. Advanced Processing</a>
         <a href="#chapter-7" data-learn-progress-target="tocLink"><span class="toc-check"></span>7. Input Data</a>
         <a href="#chapter-8" data-learn-progress-target="tocLink"><span class="toc-check"></span>8. Data Validation</a>
+        <a href="#chapter-9" data-learn-progress-target="tocLink"><span class="toc-check"></span>9. Guards</a>
         <span class="toc-section">Exercises</span>
         <a href="#ex-greeting" data-exercises-target="tocLink"><span class="toc-check"></span>Build a Greeting</a>
         <a href="#ex-product" data-exercises-target="tocLink"><span class="toc-check"></span>Product Total</a>
@@ -27,6 +28,7 @@ const url = (path: string) => `${base}${path}`;
         <a href="#ex-filter-map" data-exercises-target="tocLink"><span class="toc-check"></span>Filter and Double</a>
         <a href="#ex-input" data-exercises-target="tocLink"><span class="toc-check"></span>Order Total</a>
         <a href="#ex-validate" data-exercises-target="tocLink"><span class="toc-check"></span>Validate Data</a>
+        <a href="#ex-guard" data-exercises-target="tocLink"><span class="toc-check"></span>Guard Input</a>
         <span class="toc-section">Use Cases</span>
         <a href="#uc-validation">Form Validation</a>
         <a href="#uc-order">Order Processing</a>
@@ -519,6 +521,86 @@ in &#123; name: 'Alice', age: '30' &#125; |> Person</pre>
           <strong>Think Finitio:</strong> Elo's type definitions are inspired by <a href="https://finitio.io">Finitio</a>.
           They validate and transform external data in one step—perfect for API responses and user input.
         </p>
+        <p class="lesson-exercise">
+          <a href="#ex-validate">Practice: Validate Data</a>
+        </p>
+      </section>
+
+      <section class="lesson" id="chapter-9" data-learn-progress-target="lesson">
+        <div class="lesson-header">
+          <h2>9. Guards</h2>
+          <button class="lesson-toggle" data-action="click->learn-progress#toggle" data-lesson="chapter-9" data-learn-progress-target="toggleBtn">
+            <span class="toggle-check"></span><span class="toggle-text">Mark as complete</span>
+          </button>
+        </div>
+        <p>
+          Type definitions validate data structure. Guards go further—they validate conditions
+          and make your assumptions explicit. Use guards to reason confidently about your code.
+        </p>
+        <p class="lesson-tip">
+          <strong>Note:</strong> Guards compile to JavaScript and Ruby only. SQL is not supported.
+        </p>
+
+        <h3>Simple Guards</h3>
+        <p>A guard checks a condition before evaluating its body:</p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">guard 10 > 0 in 10 * 2</pre>
+        </div>
+        <p>If the condition is false, an error is thrown. If true, the body is evaluated.</p>
+
+        <h3>Labeled Guards</h3>
+        <p>Add labels to make error messages meaningful:</p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">guard positive: 5 > 0 in 5 * 2</pre>
+        </div>
+        <p>Labels can be identifiers or string messages:</p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">guard 'value must be positive': 5 > 0 in 5 * 2</pre>
+        </div>
+
+        <h3>Multiple Guards</h3>
+        <p>Separate multiple conditions with commas:</p>
+        <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"age": 25}'>
+          <pre class="example-code">guard
+  positive: _.age > 0,
+  adult: _.age >= 18
+in
+  'Welcome!'</pre>
+        </div>
+        <p>Each condition is checked in order. The first failure stops execution.</p>
+
+        <h3>Guard with Let</h3>
+        <p>Guards combine naturally with let bindings:</p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let x = 10 guard x > 0 in x * 2</pre>
+        </div>
+        <p>This is sugar for: <code>let x = 10 in guard x > 0 in x * 2</code></p>
+
+        <h3>Check (Postconditions)</h3>
+        <p><code>check</code> is a synonym for <code>guard</code>, used idiomatically for postconditions:</p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let result = 5 * 4 check result > 0 in result</pre>
+        </div>
+
+        <h3>Pipe-Style Guards</h3>
+        <p>Use guards in pipelines with the predicate binding syntax:</p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">10 |> guard(x | x > 0)</pre>
+        </div>
+        <p>The value is bound to <code>x</code>, checked, and returned if valid. Chain with other operations:</p>
+        <div class="lesson-example" data-action="click->doc#tryExample">
+          <pre class="example-code">let double = fn(n ~> n * 2) in
+  10 |> guard(x | x > 0) |> double</pre>
+        </div>
+
+        <p class="lesson-tip">
+          <strong>Why guards matter:</strong> Guards make your assumptions visible. Instead of hoping
+          data is valid, you state exactly what you expect. When something fails, the labeled error
+          tells you exactly which assumption was violated.
+        </p>
+        <p class="lesson-exercise">
+          <a href="#ex-guard">Practice: Guard Input</a>
+        </p>
       </section>
 
       <section class="exercises-section" id="exercises-intro">
@@ -742,6 +824,36 @@ in
           <div class="lesson-example" data-action="click->doc#tryExample">
             <pre class="example-code">let Product = &#123; name: String, price: Int &#125; in
   assert((&#123; name: 'Widget', price: '99' &#125; |> Product) == &#123; name: 'Widget', price: 99 &#125;)</pre>
+          </div>
+        </div>
+      </section>
+
+      <section class="exercise" id="ex-guard" data-exercises-target="exercise">
+        <div class="exercise-header">
+          <h3>Guard Input</h3>
+          <span class="exercise-chapter">Chapter 9</span>
+          <button class="exercise-toggle" data-action="click->exercises#toggle" data-exercise-id="ex-guard" data-exercises-target="toggleBtn">
+            <span class="toggle-check"></span><span class="toggle-text">Mark as complete</span>
+          </button>
+        </div>
+        <p class="exercise-description">
+          Write a guard that checks the value is positive (greater than 0), then doubles it. The assertion should pass.
+        </p>
+        <div
+          class="exercise-editor"
+          data-exercises-target="editor"
+          data-exercise-id="ex-guard"
+          data-initial-code={'assert((guard ???: 5 > ??? in 5 * 2) == 10)'}
+        ></div>
+        <div class="exercise-actions">
+          <button class="exercise-check" data-action="click->exercises#check" data-exercises-target="checkButton" data-exercise-id="ex-guard">Check</button>
+          <button class="exercise-solution-toggle" data-action="click->exercises#toggleSolution" data-exercises-target="solutionButton" data-exercise-id="ex-guard">Show Solution</button>
+        </div>
+        <div class="exercise-feedback" data-exercises-target="feedback" data-exercise-id="ex-guard"></div>
+        <div class="exercise-solution hidden" data-exercises-target="solution" data-exercise-id="ex-guard">
+          <h4>Solution</h4>
+          <div class="lesson-example" data-action="click->doc#tryExample">
+            <pre class="example-code">assert((guard positive: 5 > 0 in 5 * 2) == 10)</pre>
           </div>
         </div>
       </section>

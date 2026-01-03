@@ -7,6 +7,7 @@ import { parse } from '../../src/parser';
 /**
  * This test ensures that all code examples on the website actually compile.
  * It extracts example-code blocks from .astro pages and tries to parse them.
+ * It also validates the EXAMPLES constant in the playground controller.
  */
 
 const webDir = path.join(process.cwd(), 'web/src');
@@ -60,6 +61,32 @@ function shouldSkip(code: string): boolean {
   // Skip exercise templates with ??? placeholders
   if (code.includes('???')) return true;
   return false;
+}
+
+/**
+ * Extract EXAMPLES constant from playground_controller.ts
+ * Returns a map of example name to code
+ */
+function extractPlaygroundExamples(content: string): Map<string, string> {
+  const examples = new Map<string, string>();
+
+  // Match the EXAMPLES constant object
+  const examplesMatch = content.match(/const EXAMPLES:\s*Record<string,\s*string>\s*=\s*\{([\s\S]*?)\n\};/);
+  if (!examplesMatch) return examples;
+
+  const examplesContent = examplesMatch[1];
+
+  // Match each key: `value` pair (backtick strings)
+  const entryRegex = /'([^']+)':\s*`([^`]+)`/g;
+  let match;
+
+  while ((match = entryRegex.exec(examplesContent)) !== null) {
+    const name = match[1];
+    const code = match[2];
+    examples.set(name, code);
+  }
+
+  return examples;
 }
 
 describe('Website Example Validation', () => {
@@ -144,6 +171,33 @@ describe('Website Example Validation', () => {
           const error = e as Error;
           assert.fail(
             `Example at line ${line} failed to parse:\n` +
+            `Code: ${code}\n` +
+            `Error: ${error.message}`
+          );
+        }
+      });
+    }
+  });
+
+  describe('playground_controller.ts examples', () => {
+    const controllerContent = readFile('scripts/controllers/playground_controller.ts');
+    const examples = extractPlaygroundExamples(controllerContent);
+
+    for (const [name, code] of examples) {
+      it(`example "${name}"`, () => {
+        // Strip comment lines for parsing (comments start with #)
+        const codeWithoutComments = code
+          .split('\n')
+          .filter(line => !line.trim().startsWith('#'))
+          .join('\n')
+          .trim();
+
+        try {
+          parse(codeWithoutComments);
+        } catch (e) {
+          const error = e as Error;
+          assert.fail(
+            `Playground example "${name}" failed to parse:\n` +
             `Code: ${code}\n` +
             `Error: ${error.message}`
           );

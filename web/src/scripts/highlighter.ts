@@ -25,7 +25,7 @@ interface Token {
   text: string;
 }
 
-const KEYWORDS = new Set(['let', 'in', 'if', 'then', 'else', 'fn', 'and', 'or', 'not', 'assert']);
+const KEYWORDS = new Set(['let', 'in', 'if', 'then', 'else', 'fn', 'and', 'or', 'not', 'assert', 'guard', 'check']);
 const BOOLEANS = new Set(['true', 'false']);
 const TEMPORAL_KEYWORDS = new Set([
   'NOW', 'TODAY', 'TOMORROW', 'YESTERDAY',

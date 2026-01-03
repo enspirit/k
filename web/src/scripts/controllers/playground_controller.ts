@@ -98,7 +98,18 @@ in _ |> Person`,
   # Constraints in schemas
   Person = { name: String, age: Adult }
 in
-  { name: 'Alice', age: '30' } |> Person`
+  { name: 'Alice', age: '30' } |> Person`,
+  'guard-basic': `# Simple guard: fail if condition is false
+guard 10 > 0 in 10 * 2`,
+  'guard-labeled': `# Labeled guards with preconditions
+guard
+  positive: _.age > 0,
+  adult: _.age >= 18
+in
+  'Welcome, adult user!'`,
+  'guard-pipe': `# Pipe-style guard: validate in pipeline
+let double = fn(n ~> n * 2) in
+  5 |> guard(x | positive: x > 0) |> double`
 };
 
 interface ExampleInput {
@@ -112,7 +123,8 @@ const EXAMPLE_INPUTS: Record<string, ExampleInput> = {
 Alice,30,Brussels
 Bob,25,Paris
 Carol,35,London`, format: 'csv' },
-  'type-validation': { data: `{"name": "Alice", "age": "30"}`, format: 'json' }
+  'type-validation': { data: `{"name": "Alice", "age": "30"}`, format: 'json' },
+  'guard-labeled': { data: `{"age": 25}`, format: 'json' }
 };
 
 export default class PlaygroundController extends Controller {

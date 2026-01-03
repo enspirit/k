@@ -3,7 +3,7 @@
  */
 import { LanguageSupport, StreamLanguage } from '@codemirror/language';
 
-const KEYWORDS = ['let', 'in', 'if', 'then', 'else', 'fn', 'and', 'or', 'not', 'assert'];
+const KEYWORDS = ['let', 'in', 'if', 'then', 'else', 'fn', 'and', 'or', 'not', 'assert', 'guard', 'check'];
 const BOOLEANS = ['true', 'false'];
 const TEMPORAL_KEYWORDS = [
   'NOW', 'TODAY', 'TOMORROW', 'YESTERDAY',
