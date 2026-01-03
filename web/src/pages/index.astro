@@ -51,7 +51,7 @@ const url = (path: string) => `${base}${path}`;
 
         <div class="unique-grid">
           <div class="unique-example clickable" data-action="click->doc#tryExample">
-            <pre class="example-code">let
+            <pre class="language-elo">let
   signup = D2024-06-15
 in
   TODAY > signup + P30D</pre>
@@ -64,7 +64,7 @@ in
 
         <div class="unique-grid">
           <div class="unique-example clickable" data-action="click->doc#tryExample" data-input='{"name": "Conf", "date": "2025-06-15T09:00", "capacity": "100"}'>
-            <pre class="example-code">{`let Event = {
+            <pre class="language-elo">{`let Event = {
   name: String,
   date: Datetime,
   capacity: Int(c | c > 0)
@@ -78,7 +78,7 @@ in
 
         <div class="unique-grid">
           <div class="unique-example clickable" data-action="click->doc#tryExample" data-input='[{"price": 50}, {"price": 150}, {"price": 200}]'>
-            <pre class="example-code">_
+            <pre class="language-elo">_
   |> filter(i ~> i.price > 100)
   |> map(i ~> i.price * 1.21)
   |> reduce(0, fn(a, b ~> a + b))</pre>
@@ -91,7 +91,7 @@ in
 
         <div class="unique-grid">
           <div class="unique-example clickable" data-action="click->doc#tryExample" data-input='{"age": 25}'>
-            <pre class="example-code">{`guard
+            <pre class="language-elo">{`guard
   positive: _.age > 0,
   adult: _.age >= 18
 in
@@ -128,7 +128,7 @@ in
         <div class="targets-demo">
           <div class="target-input clickable" data-action="click->doc#tryExample">
             <span class="lang-badge elo-badge">Elo</span>
-            <pre class="example-code">2 ^ 10 > 1000 and TODAY >= SOY</pre>
+            <pre class="language-elo">2 ^ 10 > 1000 and TODAY >= SOY</pre>
           </div>
           <div class="targets-output">
             <div class="target-card">

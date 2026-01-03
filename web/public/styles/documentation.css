@@ -199,8 +199,8 @@
   margin-bottom: var(--space-sm);
 }
 
-.example-code,
-.code-js {
+pre[class*="language-"],
+code[class*="language-"] {
   background: var(--bg-panel);
   padding: 0.75rem var(--space-md);
   border-radius: var(--radius-sm);
@@ -212,7 +212,8 @@
   white-space: pre-wrap;
 }
 
-.doc-section .code-js {
+.doc-section .language-shell,
+.doc-section .language-js {
   margin-bottom: var(--space-md);
 }
 

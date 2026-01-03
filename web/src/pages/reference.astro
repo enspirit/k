@@ -66,7 +66,7 @@ import Footer from '../components/Footer.astro';
         <p class="note"><strong>Note:</strong> Use <code>null</code> for absent values. Use <code>isNull()</code> to check for null, and the <code>|</code> operator to provide defaults: <code>x | 'default'</code>.</p>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Type Introspection</div>
-          <pre class="example-code">typeOf(42) == 'Int' and typeOf(P1D) == 'Duration'</pre>
+          <pre class="language-elo">typeOf(42) == 'Int' and typeOf(P1D) == 'Duration'</pre>
           <p class="example-desc">Use <code>typeOf()</code> to get the type name as a string.</p>
         </div>
       </section>
@@ -77,57 +77,57 @@ import Footer from '../components/Footer.astro';
         <h3>Numbers</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Integers &amp; Floats</div>
-          <pre class="example-code">42 + 3.14</pre>
+          <pre class="language-elo">42 + 3.14</pre>
           <p class="example-desc">Numbers include integers and floating-point values.</p>
         </div>
         <h3>Booleans</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Boolean Literals</div>
-          <pre class="example-code">true and not false</pre>
+          <pre class="language-elo">true and not false</pre>
           <p class="example-desc"><code>true</code> and <code>false</code> are boolean literals.</p>
         </div>
         <h3>Strings</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">String Literal</div>
-          <pre class="example-code">'hello world'</pre>
+          <pre class="language-elo">'hello world'</pre>
           <p class="example-desc">Strings use single quotes. Escape with backslash: <code>'it\'s working'</code>.</p>
         </div>
         <h3>Dates &amp; Times</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Date Literal</div>
-          <pre class="example-code">D2025-12-25</pre>
+          <pre class="language-elo">D2025-12-25</pre>
           <p class="example-desc">ISO date format with <code>D</code> prefix.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Temporal Keywords</div>
-          <pre class="example-code">TODAY &lt; NOW</pre>
+          <pre class="language-elo">TODAY &lt; NOW</pre>
           <p class="example-desc"><code>NOW</code> is the current timestamp, <code>TODAY</code> is midnight today.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Period Boundaries</div>
-          <pre class="example-code">SOY &lt;= TODAY and TODAY &lt;= EOY</pre>
+          <pre class="language-elo">SOY &lt;= TODAY and TODAY &lt;= EOY</pre>
           <p class="example-desc">Start/End of Year (<code>SOY</code>/<code>EOY</code>), Quarter (<code>SOQ</code>/<code>EOQ</code>), Month (<code>SOM</code>/<code>EOM</code>), Week (<code>SOW</code>/<code>EOW</code>).</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Time Boundaries</div>
-          <pre class="example-code">TODAY in BOT ... EOT</pre>
+          <pre class="language-elo">TODAY in BOT ... EOT</pre>
           <p class="example-desc">Beginning of Time (<code>BOT</code>) and End of Time (<code>EOT</code>) for open-ended ranges.</p>
         </div>
         <h3>Durations</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Duration Literal</div>
-          <pre class="example-code">P1Y2M3D</pre>
+          <pre class="language-elo">P1Y2M3D</pre>
           <p class="example-desc">1 year, 2 months, 3 days. Use <code>P</code> prefix (ISO 8601).</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Time Durations</div>
-          <pre class="example-code">PT2H30M</pre>
+          <pre class="language-elo">PT2H30M</pre>
           <p class="example-desc">2 hours and 30 minutes. Use <code>PT</code> for time-only durations.</p>
         </div>
         <h3>Data Paths</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Path Literal</div>
-          <pre class="example-code">.user.address.city</pre>
+          <pre class="language-elo">.user.address.city</pre>
           <p class="example-desc">Shorthand for <code>['user', 'address', 'city']</code>. See <a href="#data-paths">Data Paths</a>.</p>
         </div>
       </section>
@@ -137,22 +137,22 @@ import Footer from '../components/Footer.astro';
         <p>Literal syntax (like <code>42</code> or <code>'hello'</code>) is shorthand for type selectors. Type selectors validate and convert values to specific types. They throw an error if parsing fails.</p>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Parse String to Integer</div>
-          <pre class="example-code">Int('123')</pre>
+          <pre class="language-elo">Int('123')</pre>
           <p class="example-desc">Parses the string to the integer <code>123</code>.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Convert to String</div>
-          <pre class="example-code">String(42) + ' items'</pre>
+          <pre class="language-elo">String(42) + ' items'</pre>
           <p class="example-desc">Converts a value to its string representation.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Parse Date</div>
-          <pre class="example-code">Date('2024-12-25')</pre>
+          <pre class="language-elo">Date('2024-12-25')</pre>
           <p class="example-desc">Parses ISO 8601 date string to a date value.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Parse JSON</div>
-          <pre class="example-code">Data('&#123;"name": "Alice"&#125;').name</pre>
+          <pre class="language-elo">Data('&#123;"name": "Alice"&#125;').name</pre>
           <p class="example-desc">Parses a JSON string and accesses a property.</p>
         </div>
         <p>Available: <code>Int()</code>, <code>Float()</code>, <code>Bool()</code>, <code>String()</code>, <code>Null()</code>, <code>Date()</code>, <code>Datetime()</code>, <code>Duration()</code>, <code>Data()</code>.</p>
@@ -165,46 +165,46 @@ import Footer from '../components/Footer.astro';
         <h3>Arithmetic</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Basic Operations</div>
-          <pre class="example-code">(10 + 5) * 2 - 8 / 4</pre>
+          <pre class="language-elo">(10 + 5) * 2 - 8 / 4</pre>
           <p class="example-desc">Addition <code>+</code>, subtraction <code>-</code>, multiplication <code>*</code>, division <code>/</code>.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Power &amp; Modulo</div>
-          <pre class="example-code">2 ^ 10 + 17 % 5</pre>
+          <pre class="language-elo">2 ^ 10 + 17 % 5</pre>
           <p class="example-desc">Power <code>^</code> and remainder <code>%</code> operators.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Date Arithmetic</div>
-          <pre class="example-code">TODAY + P7D</pre>
+          <pre class="language-elo">TODAY + P7D</pre>
           <p class="example-desc">Add durations to dates. Subtract with <code>-</code>.</p>
         </div>
         <h3>Comparison</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Comparison Operators</div>
-          <pre class="example-code">10 > 5 and 3 &lt;= 3</pre>
+          <pre class="language-elo">10 > 5 and 3 &lt;= 3</pre>
           <p class="example-desc">Use <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code>, <code>==</code>, <code>!=</code>.</p>
         </div>
         <h3>Logical</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Logical Operators</div>
-          <pre class="example-code">(5 > 3 and 2 &lt; 4) or not (1 == 2)</pre>
+          <pre class="language-elo">(5 > 3 and 2 &lt; 4) or not (1 == 2)</pre>
           <p class="example-desc">Combine conditions with <code>and</code>, <code>or</code>, and <code>not</code>.</p>
         </div>
         <h3>Pipe Operator</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Function Chaining</div>
-          <pre class="example-code">'  hello world  ' |> trim |> upper</pre>
+          <pre class="language-elo">'  hello world  ' |> trim |> upper</pre>
           <p class="example-desc">The pipe operator <code>|&gt;</code> passes the left value as the first argument to the right function.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Pipe with Arguments</div>
-          <pre class="example-code">'42' |> padStart(5, '0')</pre>
+          <pre class="language-elo">'42' |> padStart(5, '0')</pre>
           <p class="example-desc">Additional arguments follow the piped value.</p>
         </div>
         <h3>Alternative Operator</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Fallback Chain</div>
-          <pre class="example-code">indexOf('hello', 'x') | indexOf('hello', 'l') | -1</pre>
+          <pre class="language-elo">indexOf('hello', 'x') | indexOf('hello', 'l') | -1</pre>
           <p class="example-desc">The <code>|</code> operator returns the first non-null value.</p>
         </div>
       </section>
@@ -214,17 +214,17 @@ import Footer from '../components/Footer.astro';
         <p>Elo tuples are collections of named values. They use JSON-like syntax with key-value pairs and compile to native structures in each target language.</p>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Simple Tuple</div>
-          <pre class="example-code">&#123;name: 'Alice', age: 30&#125;</pre>
+          <pre class="language-elo">&#123;name: 'Alice', age: 30&#125;</pre>
           <p class="example-desc">Create a tuple with named attributes.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Attribute Access</div>
-          <pre class="example-code">&#123;budget: 1500&#125;.budget</pre>
+          <pre class="language-elo">&#123;budget: 1500&#125;.budget</pre>
           <p class="example-desc">Access attributes with dot notation.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Tuple with Let</div>
-          <pre class="example-code">let t = &#123;x: 10, y: 20&#125; in t.x + t.y</pre>
+          <pre class="language-elo">let t = &#123;x: 10, y: 20&#125; in t.x + t.y</pre>
           <p class="example-desc">Bind a tuple to a variable and access its attributes.</p>
         </div>
         <p class="note"><strong>Note:</strong> Tuples look like JavaScript objects but Elo uses relational terminology. In SQL, they compile to PostgreSQL JSONB using <code>jsonb_build_object()</code>.</p>
@@ -235,17 +235,17 @@ import Footer from '../components/Footer.astro';
         <p>Elo lists are ordered sequences using JSON-like array syntax. Lists are heterogeneous and compile to native arrays.</p>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Simple List</div>
-          <pre class="example-code">[1, 2, 3]</pre>
+          <pre class="language-elo">[1, 2, 3]</pre>
           <p class="example-desc">Create a list with integer elements.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Mixed Types</div>
-          <pre class="example-code">[1, 'two', true, null]</pre>
+          <pre class="language-elo">[1, 'two', true, null]</pre>
           <p class="example-desc">Lists can mix different types including null.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Nested Lists</div>
-          <pre class="example-code">[[1, 2], [3, 4]]</pre>
+          <pre class="language-elo">[[1, 2], [3, 4]]</pre>
           <p class="example-desc">Lists can contain other lists.</p>
         </div>
         <p class="note"><strong>Note:</strong> Lists look like JavaScript arrays but Elo uses relational terminology. In SQL, they compile to PostgreSQL <code>ARRAY[...]</code> syntax.</p>
@@ -260,23 +260,23 @@ import Footer from '../components/Footer.astro';
         <h3>Lambda Expressions</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Simple Lambda</div>
-          <pre class="example-code">fn( x ~> x * 2 )</pre>
+          <pre class="language-elo">fn( x ~> x * 2 )</pre>
           <p class="example-desc">A function that doubles its input.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Multiple Parameters</div>
-          <pre class="example-code">fn( x, y ~> x + y )</pre>
+          <pre class="language-elo">fn( x, y ~> x + y )</pre>
           <p class="example-desc">Lambdas can take multiple parameters.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Sugar Syntax</div>
-          <pre class="example-code">[1, 2, 3] |> map(x ~> x * 2)</pre>
+          <pre class="language-elo">[1, 2, 3] |> map(x ~> x * 2)</pre>
           <p class="example-desc">Single-param lambdas can omit <code>fn()</code>. Returns [2, 4, 6].</p>
         </div>
         <h3>Invoking Lambdas</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Call a Lambda</div>
-          <pre class="example-code">let double = fn( x ~> x * 2 ) in double(5)</pre>
+          <pre class="language-elo">let double = fn( x ~> x * 2 ) in double(5)</pre>
           <p class="example-desc">Bind a lambda to a name, then call it. Returns 10.</p>
         </div>
         <p class="note"><strong>Note:</strong> Lambdas compile to JavaScript and Ruby only. SQL does not support function expressions.</p>
@@ -287,12 +287,12 @@ import Footer from '../components/Footer.astro';
         <p>Use <code>let ... in</code> expressions to bind local variables.</p>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Simple Binding</div>
-          <pre class="example-code">let x = 10 in x * 2</pre>
+          <pre class="language-elo">let x = 10 in x * 2</pre>
           <p class="example-desc">Bind a value to a name, then use it in an expression.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Multiple Bindings</div>
-          <pre class="example-code">let width = 5, height = 3 in width * height</pre>
+          <pre class="language-elo">let width = 5, height = 3 in width * height</pre>
           <p class="example-desc">Bind multiple variables separated by commas.</p>
         </div>
       </section>
@@ -302,12 +302,12 @@ import Footer from '../components/Footer.astro';
         <p>Use <code>if ... then ... else</code> expressions to branch based on conditions.</p>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Simple Conditional</div>
-          <pre class="example-code">if 5 > 3 then 'yes' else 'no'</pre>
+          <pre class="language-elo">if 5 > 3 then 'yes' else 'no'</pre>
           <p class="example-desc">Returns 'yes' if the condition is true, 'no' otherwise.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Conditional with Let</div>
-          <pre class="example-code">let x = 10 in if x > 5 then 'big' else 'small'</pre>
+          <pre class="language-elo">let x = 10 in if x > 5 then 'big' else 'small'</pre>
           <p class="example-desc">Combine conditionals with local variables.</p>
         </div>
       </section>
@@ -317,17 +317,17 @@ import Footer from '../components/Footer.astro';
         <p>Check if a value falls within a range using the <code>in</code> operator.</p>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Inclusive Range</div>
-          <pre class="example-code">5 in 1..10</pre>
+          <pre class="language-elo">5 in 1..10</pre>
           <p class="example-desc">True if 5 &gt;= 1 AND 5 &lt;= 10. Both ends are included.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Exclusive End Range</div>
-          <pre class="example-code">5 in 1...10</pre>
+          <pre class="language-elo">5 in 1...10</pre>
           <p class="example-desc">True if 5 &gt;= 1 AND 5 &lt; 10. End is excluded.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Date Range Check</div>
-          <pre class="example-code">TODAY in SOY..EOY</pre>
+          <pre class="language-elo">TODAY in SOY..EOY</pre>
           <p class="example-desc">Check if today is within the current year.</p>
         </div>
       </section>
@@ -337,17 +337,17 @@ import Footer from '../components/Footer.astro';
         <p>The <code>Data()</code> selector parses JSON strings into Elo values. This is useful when receiving data as text from external sources.</p>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Parse JSON Object</div>
-          <pre class="example-code">Data('&#123;"name": "Alice", "age": 30&#125;')</pre>
+          <pre class="language-elo">Data('&#123;"name": "Alice", "age": 30&#125;')</pre>
           <p class="example-desc">Parses a JSON string into a tuple with <code>name</code> and <code>age</code> attributes.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Parse JSON Array</div>
-          <pre class="example-code">Data('[1, 2, 3]')</pre>
+          <pre class="language-elo">Data('[1, 2, 3]')</pre>
           <p class="example-desc">Parses a JSON string into a list.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Access Parsed Data</div>
-          <pre class="example-code">Data('&#123;"user": &#123;"name": "Bob"&#125;&#125;').user.name</pre>
+          <pre class="language-elo">Data('&#123;"user": &#123;"name": "Bob"&#125;&#125;').user.name</pre>
           <p class="example-desc">Parse and immediately access nested properties.</p>
         </div>
         <p class="note"><strong>Note:</strong> See <a href="#type-selectors">Type Selectors</a> for all available selectors. For validating and transforming complex JSON structures, see <a href="#data-schemas">Data Schemas</a>.</p>
@@ -359,17 +359,17 @@ import Footer from '../components/Footer.astro';
            When an expression uses <code>_</code>, the compiled output becomes a function that takes input data as a parameter.</p>
         <div class="example" data-action="click->doc#tryExample" data-input="21">
           <div class="example-header">Simple Input</div>
-          <pre class="example-code">_ * 2</pre>
+          <pre class="language-elo">_ * 2</pre>
           <p class="example-desc">Doubles the input value.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample" data-input='{"price": 100, "quantity": 3}'>
           <div class="example-header">Tuple Input</div>
-          <pre class="example-code">_.price * _.quantity</pre>
+          <pre class="language-elo">_.price * _.quantity</pre>
           <p class="example-desc">Access attributes of an input tuple.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample" data-input='{"budget": 100}'>
           <div class="example-header">Input with Transformation</div>
-          <pre class="example-code">_.budget * 1.21</pre>
+          <pre class="language-elo">_.budget * 1.21</pre>
           <p class="example-desc">Apply VAT to a budget value from input.</p>
         </div>
         <p class="note"><strong>Note:</strong> When using the CLI, use <code>elo</code> with JSON input: <code>elo -e "_.x + _.y" -d '&#123;"x": 1, "y": 2&#125;'</code></p>
@@ -380,39 +380,39 @@ import Footer from '../components/Footer.astro';
         <p>Data paths are <strong>syntactic sugar</strong> for lists of strings and integers. They provide a concise way to describe locations within nested data structures.</p>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Simple Path</div>
-          <pre class="example-code">.name</pre>
+          <pre class="language-elo">.name</pre>
           <p class="example-desc">Equivalent to <code>['name']</code>.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Nested Path</div>
-          <pre class="example-code">.user.address.city</pre>
+          <pre class="language-elo">.user.address.city</pre>
           <p class="example-desc">Equivalent to <code>['user', 'address', 'city']</code>.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Path with Index</div>
-          <pre class="example-code">.items.0.name</pre>
+          <pre class="language-elo">.items.0.name</pre>
           <p class="example-desc">Equivalent to <code>['items', 0, 'name']</code>. Integers access list elements.</p>
         </div>
         <h3>Navigating Data</h3>
         <p>Use <code>fetch()</code> to retrieve values and <code>patch()</code> to update them immutably.</p>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Fetch Value</div>
-          <pre class="example-code">fetch(&#123;user: &#123;name: 'Alice'&#125;&#125;, .user.name)</pre>
+          <pre class="language-elo">fetch(&#123;user: &#123;name: 'Alice'&#125;&#125;, .user.name)</pre>
           <p class="example-desc">Returns <code>'Alice'</code>. Returns <code>null</code> if path doesn't exist.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Fetch Multiple (Tuple)</div>
-          <pre class="example-code">fetch(&#123;a: 1, b: 2&#125;, &#123;x: .a, y: .b&#125;)</pre>
+          <pre class="language-elo">fetch(&#123;a: 1, b: 2&#125;, &#123;x: .a, y: .b&#125;)</pre>
           <p class="example-desc">Fetch multiple paths into a tuple. Returns <code>&#123;x: 1, y: 2&#125;</code>.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Fetch Multiple (List)</div>
-          <pre class="example-code">fetch(&#123;a: 1, b: 2&#125;, [.a, .b])</pre>
+          <pre class="language-elo">fetch(&#123;a: 1, b: 2&#125;, [.a, .b])</pre>
           <p class="example-desc">Fetch multiple paths into a list. Returns <code>[1, 2]</code>.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Patch Value</div>
-          <pre class="example-code">patch(&#123;user: &#123;name: 'Alice'&#125;&#125;, .user.name, 'Bob')</pre>
+          <pre class="language-elo">patch(&#123;user: &#123;name: 'Alice'&#125;&#125;, .user.name, 'Bob')</pre>
           <p class="example-desc">Returns a new tuple with the value updated at the path.</p>
         </div>
         <p class="note"><strong>Note:</strong> Since data paths are lists, <code>typeOf(.name)</code> returns <code>'List'</code>. The stdlib uses "DataPath" as a conceptual name in function signatures.</p>
@@ -427,31 +427,31 @@ import Footer from '../components/Footer.astro';
         <p>All <a href="#type-selectors">type selectors</a> can be used as schema types: <code>Int</code>, <code>Float</code>, <code>Bool</code>, <code>String</code>, <code>Null</code>, <code>Date</code>, <code>Datetime</code>, <code>Duration</code>, <code>Data</code>. Use <code>.</code> (dot) for any value.</p>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Type Coercion</div>
-          <pre class="example-code">let T = Int in '42' |> T</pre>
+          <pre class="language-elo">let T = Int in '42' |> T</pre>
           <p class="example-desc">Coerces the string <code>'42'</code> to integer <code>42</code>.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Any Type</div>
-          <pre class="example-code">let T = . in 'anything' |> T</pre>
+          <pre class="language-elo">let T = . in 'anything' |> T</pre>
           <p class="example-desc">The dot <code>.</code> accepts any value unchanged.</p>
         </div>
 
         <h3>Tuple Types</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Simple Tuple</div>
-          <pre class="example-code">let Person = &#123; name: String, age: Int &#125; in
+          <pre class="language-elo">let Person = &#123; name: String, age: Int &#125; in
 &#123; name: 'Alice', age: '30' &#125; |> Person</pre>
           <p class="example-desc">Validates shape and coerces <code>age</code> from string to integer.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Optional Attributes</div>
-          <pre class="example-code">let T = &#123; name: String, age :? Int &#125; in
+          <pre class="language-elo">let T = &#123; name: String, age :? Int &#125; in
 &#123; name: 'Bob' &#125; |> T</pre>
           <p class="example-desc">Optional attributes (with <code>:?</code>) can be missing. Missing fields are omitted from result.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Open Tuple</div>
-          <pre class="example-code">let T = &#123; name: String, ... &#125; in
+          <pre class="language-elo">let T = &#123; name: String, ... &#125; in
 &#123; name: 'Eve', extra: 42 &#125; |> T</pre>
           <p class="example-desc">Open tuples (<code>...</code>) allow extra attributes. They're ignored in output.</p>
         </div>
@@ -459,12 +459,12 @@ import Footer from '../components/Footer.astro';
         <h3>Array Types</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Array of Integers</div>
-          <pre class="example-code">let Numbers = [Int] in ['1', '2', '3'] |> Numbers</pre>
+          <pre class="language-elo">let Numbers = [Int] in ['1', '2', '3'] |> Numbers</pre>
           <p class="example-desc">Coerces each element. Returns <code>[1, 2, 3]</code>.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Array of Tuples</div>
-          <pre class="example-code">let People = [&#123; name: String &#125;] in
+          <pre class="language-elo">let People = [&#123; name: String &#125;] in
 [&#123; name: 'A' &#125;, &#123; name: 'B' &#125;] |> People</pre>
           <p class="example-desc">Validates each element against the tuple type.</p>
         </div>
@@ -472,36 +472,36 @@ import Footer from '../components/Footer.astro';
         <h3>Union Types</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Union Type</div>
-          <pre class="example-code">let T = Int|String in 'hello' |> T</pre>
+          <pre class="language-elo">let T = Int|String in 'hello' |> T</pre>
           <p class="example-desc">Tries alternatives left-to-right. Returns first successful match.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Mixed Array</div>
-          <pre class="example-code">let T = [Int|String] in ['42', 'hello'] |> T</pre>
+          <pre class="language-elo">let T = [Int|String] in ['42', 'hello'] |> T</pre>
           <p class="example-desc">Returns <code>[42, 'hello']</code> - numeric strings become integers.</p>
         </div>
 
         <h3>Subtype Constraints</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Positive Integer</div>
-          <pre class="example-code">let Positive = Int(i | i > 0) in '42' |> Positive</pre>
+          <pre class="language-elo">let Positive = Int(i | i > 0) in '42' |> Positive</pre>
           <p class="example-desc">Adds a predicate constraint. Throws if value is not positive.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Constrained Tuple</div>
-          <pre class="example-code">let Adult = &#123; age: Int(a | a >= 18) &#125; in
+          <pre class="language-elo">let Adult = &#123; age: Int(a | a >= 18) &#125; in
 &#123; age: '25' &#125; |> Adult</pre>
           <p class="example-desc">Constraints compose with tuple types.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Labeled Constraints</div>
-          <pre class="example-code">let PosEven = Int(i | positive: i > 0, even: i % 2 == 0) in
+          <pre class="language-elo">let PosEven = Int(i | positive: i > 0, even: i % 2 == 0) in
 '42' |> PosEven</pre>
           <p class="example-desc">Multiple labeled constraints (Finitio-style). Label becomes error message.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">String Messages</div>
-          <pre class="example-code">let Adult = Int(a | 'must be 18 or older': a >= 18) in
+          <pre class="language-elo">let Adult = Int(a | 'must be 18 or older': a >= 18) in
 '25' |> Adult</pre>
           <p class="example-desc">Use string labels for human-readable error messages.</p>
         </div>
@@ -509,7 +509,7 @@ import Footer from '../components/Footer.astro';
         <h3>Named Type Aliases</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Reusable Types</div>
-          <pre class="example-code">let
+          <pre class="language-elo">let
   Age = Int(a | a >= 0),
   Person = &#123; name: String, age: Age &#125;
 in &#123; name: 'Alice', age: '30' &#125; |> Person</pre>
@@ -536,7 +536,7 @@ in &#123; name: 'Alice', age: '30' &#125; |> Person</pre>
         </table>
         <div class="example" data-action="click->doc#tryExample" data-input='{"name": "Alice", "age": 30}'>
           <div class="example-header">JSON Input</div>
-          <pre class="example-code">upper(_.name) + ' is ' + String(_.age)</pre>
+          <pre class="language-elo">upper(_.name) + ' is ' + String(_.age)</pre>
           <p class="example-desc">Access fields from a JSON object.</p>
         </div>
 
@@ -561,13 +561,13 @@ Bob,25</pre>
         <p>Since CSV values are strings, you can convert them manually:</p>
         <div class="example" data-action="click->doc#tryExample" data-input='[{"name": "Alice", "age": "30"}, {"name": "Bob", "age": "25"}]'>
           <div class="example-header">Manual Conversion</div>
-          <pre class="example-code">_ |> map(r ~> &#123;name: r.name, age: Int(r.age)&#125;)</pre>
+          <pre class="language-elo">_ |> map(r ~> &#123;name: r.name, age: Int(r.age)&#125;)</pre>
           <p class="example-desc">Convert age strings to integers field by field.</p>
         </div>
         <p class="note"><strong>Better approach:</strong> Use <a href="#data-schemas">data schemas</a> to declare a schema. This validates structure and converts types in one step:</p>
         <div class="example" data-action="click->doc#tryExample" data-input='[{"name": "Alice", "age": "30"}, {"name": "Bob", "age": "25"}]'>
           <div class="example-header">Schema Conversion</div>
-          <pre class="example-code">let Person = &#123;name: String, age: Int&#125;
+          <pre class="language-elo">let Person = &#123;name: String, age: Int&#125;
 in _ |> map(p ~> p |> Person)</pre>
           <p class="example-desc">Define a schema once, apply it to each row.</p>
         </div>
@@ -604,12 +604,12 @@ elo -e "&#123;name: 'test'&#125;" -o elo</code></pre>
         <p>Use <code>assert()</code> to validate conditions at runtime.</p>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Simple Assert</div>
-          <pre class="example-code">assert(2 + 2 == 4)</pre>
+          <pre class="language-elo">assert(2 + 2 == 4)</pre>
           <p class="example-desc">Throws an error if the condition is false.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Fail with Message</div>
-          <pre class="example-code">indexOf('hello', 'x') | fail('character not found')</pre>
+          <pre class="language-elo">indexOf('hello', 'x') | fail('character not found')</pre>
           <p class="example-desc">Use <code>fail(message)</code> to throw an error with a custom message.</p>
         </div>
       </section>
@@ -619,34 +619,34 @@ elo -e "&#123;name: 'test'&#125;" -o elo</code></pre>
         <p>Guards validate conditions before returning a value. Use <code>guard</code> for preconditions and <code>check</code> for postconditions.</p>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Simple Guard</div>
-          <pre class="example-code">guard 5 > 0 in 5 * 2</pre>
+          <pre class="language-elo">guard 5 > 0 in 5 * 2</pre>
           <p class="example-desc">Throws if condition is false, returns the body otherwise.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Labeled Guard</div>
-          <pre class="example-code">guard positive: 10 > 0 in 10</pre>
+          <pre class="language-elo">guard positive: 10 > 0 in 10</pre>
           <p class="example-desc">Labels become part of the error message on failure.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Multiple Guards</div>
-          <pre class="example-code">guard 10 > 0, 10 &lt; 100 in 10</pre>
+          <pre class="language-elo">guard 10 > 0, 10 &lt; 100 in 10</pre>
           <p class="example-desc">Separate multiple constraints with commas.</p>
         </div>
         <h3>Let with Guard</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Guard in Let Binding</div>
-          <pre class="example-code">let x = 5 guard x > 0 in x * 2</pre>
+          <pre class="language-elo">let x = 5 guard x > 0 in x * 2</pre>
           <p class="example-desc">Sugar syntax: bind a value, then guard on it.</p>
         </div>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Check (Postcondition)</div>
-          <pre class="example-code">let x = 10 check x > 0 in x + 5</pre>
+          <pre class="language-elo">let x = 10 check x > 0 in x + 5</pre>
           <p class="example-desc"><code>check</code> is a synonym for <code>guard</code>, used for postconditions.</p>
         </div>
         <h3>Pipe-Style Guards</h3>
         <div class="example" data-action="click->doc#tryExample">
           <div class="example-header">Guard in Pipeline</div>
-          <pre class="example-code">5 |> guard(x | x > 0)</pre>
+          <pre class="language-elo">5 |> guard(x | x > 0)</pre>
           <p class="example-desc">Creates a lambda that validates its input. Returns the value if valid.</p>
         </div>
         <p class="note"><strong>Note:</strong> Guards compile to JavaScript and Ruby only. Use <code>--strip-guards</code> to remove guards in production builds.</p>
@@ -661,7 +661,7 @@ elo -e "&#123;name: 'test'&#125;" -o elo</code></pre>
 
         <h3>Install the CLI</h3>
         <p>To run Elo locally, install the command-line tools via npm:</p>
-        <pre class="code-js">npm install -g @enspirit/elo</pre>
+        <pre class="language-shell">npm install -g @enspirit/elo</pre>
         <p>This gives you two commands:</p>
         <ul>
           <li><code>elo</code> — Evaluate Elo expressions and see results immediately</li>
@@ -669,7 +669,7 @@ elo -e "&#123;name: 'test'&#125;" -o elo</code></pre>
         </ul>
 
         <h3>Quick Examples</h3>
-        <pre class="code-js"># Evaluate an expression
+        <pre class="language-shell"># Evaluate an expression
 elo -e "2 + 3 * 4"          # => 14
 
 # Evaluate from a file
@@ -690,16 +690,16 @@ eloc -e "2 + 3"             # => (function(_) &#123; return 2 + 3; &#125;)</pre>
       <section class="doc-section" id="javascript-api">
         <h2>JavaScript API</h2>
         <p>For Node.js or browser projects, install the library:</p>
-        <pre class="code-js">npm install @enspirit/elo</pre>
+        <pre class="language-shell">npm install @enspirit/elo</pre>
         <h3>compile()</h3>
         <p>Every Elo expression compiles to a function that takes <code>_</code> (the implicit input) as parameter.</p>
-        <pre class="code-js">import &#123; compile &#125; from '@enspirit/elo';
+        <pre class="language-js">import &#123; compile &#125; from '@enspirit/elo';
 import &#123; DateTime, Duration &#125; from 'luxon';
 
 const double = compile('_ * 2', &#123; runtime: &#123; DateTime, Duration &#125; &#125;);
 double(21); // => 42</pre>
         <h3>Lower-Level API</h3>
-        <pre class="code-js">import &#123; parse, compileToJavaScript, compileToRuby, compileToSQL &#125; from '@enspirit/elo';
+        <pre class="language-js">import &#123; parse, compileToJavaScript, compileToRuby, compileToSQL &#125; from '@enspirit/elo';
 
 const ast = parse('2 + 3 * 4');
 compileToJavaScript(ast); // => "2 + 3 * 4"
@@ -713,7 +713,7 @@ compileToSQL(ast);        // => "2 + 3 * 4"</pre>
 
         <h3>Evaluator (elo)</h3>
         <p>Quickly evaluate Elo expressions:</p>
-        <pre class="code-js"># Evaluate an expression
+        <pre class="language-shell"># Evaluate an expression
 elo -e "2 + 3 * 4"     # => 14
 
 # Evaluate with input data
@@ -732,7 +732,7 @@ elo expressions.elo</pre>
 
         <h3>Compiler (eloc)</h3>
         <p>Compile Elo to other languages:</p>
-        <pre class="code-js"># Compile to JavaScript (default)
+        <pre class="language-shell"># Compile to JavaScript (default)
 eloc -e "2 + 3 * 4"
 
 # Compile to Ruby

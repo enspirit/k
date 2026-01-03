@@ -37,49 +37,49 @@ import Footer from '../components/Footer.astro';
             <div class="fn-name">Int</div>
             <div class="fn-sig">(value: String | Int | Float) → Int</div>
             <p class="fn-desc">Parses a string to an integer. Throws on invalid input.</p>
-            <div class="fn-example"><code class="example-code">Int('123')</code><span class="fn-result">→ 123</span></div>
+            <div class="fn-example"><code class="language-elo">Int('123')</code><span class="fn-result">→ 123</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">Float</div>
             <div class="fn-sig">(value: String | Int | Float) → Float</div>
             <p class="fn-desc">Parses a string to a float. Throws on invalid input.</p>
-            <div class="fn-example"><code class="example-code">Float('3.14')</code><span class="fn-result">→ 3.14</span></div>
+            <div class="fn-example"><code class="language-elo">Float('3.14')</code><span class="fn-result">→ 3.14</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">Bool</div>
             <div class="fn-sig">(value: String | Bool) → Bool</div>
             <p class="fn-desc">Parses 'true' or 'false' strings to boolean. Throws on invalid input.</p>
-            <div class="fn-example"><code class="example-code">Bool('true')</code><span class="fn-result">→ true</span></div>
+            <div class="fn-example"><code class="language-elo">Bool('true')</code><span class="fn-result">→ true</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">Null</div>
             <div class="fn-sig">(value: Null) → Null</div>
             <p class="fn-desc">Validates that a value is null. Throws on non-null input.</p>
-            <div class="fn-example"><code class="example-code">let T = Int|Null in null |> T</code><span class="fn-result">→ null</span></div>
+            <div class="fn-example"><code class="language-elo">let T = Int|Null in null |> T</code><span class="fn-result">→ null</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">Date</div>
             <div class="fn-sig">(value: String | Date) → Date</div>
             <p class="fn-desc">Parses an ISO date string (YYYY-MM-DD) to a Date. Throws on invalid input.</p>
-            <div class="fn-example"><code class="example-code">Date('2025-01-15')</code><span class="fn-result">→ D2025-01-15</span></div>
+            <div class="fn-example"><code class="language-elo">Date('2025-01-15')</code><span class="fn-result">→ D2025-01-15</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">Datetime</div>
             <div class="fn-sig">(value: String | DateTime) → DateTime</div>
             <p class="fn-desc">Parses an ISO datetime string to a DateTime. Throws on invalid input.</p>
-            <div class="fn-example"><code class="example-code">Datetime('2025-01-15T10:30:00')</code><span class="fn-result">→ D2025-01-15T10:30:00</span></div>
+            <div class="fn-example"><code class="language-elo">Datetime('2025-01-15T10:30:00')</code><span class="fn-result">→ D2025-01-15T10:30:00</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">Duration</div>
             <div class="fn-sig">(value: String | Duration) → Duration</div>
             <p class="fn-desc">Parses an ISO 8601 duration string. Throws on invalid input.</p>
-            <div class="fn-example"><code class="example-code">Duration('P1D')</code><span class="fn-result">→ P1D</span></div>
+            <div class="fn-example"><code class="language-elo">Duration('P1D')</code><span class="fn-result">→ P1D</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">Data</div>
             <div class="fn-sig">(value: String | Any) → List | Tuple</div>
             <p class="fn-desc">Parses a JSON string. Non-strings are returned as-is. Throws on invalid JSON.</p>
-            <div class="fn-example"><code class="example-code">Data('&#123;"name": "Alice"&#125;')</code><span class="fn-result">→ &#123;name: 'Alice'&#125;</span></div>
+            <div class="fn-example"><code class="language-elo">Data('&#123;"name": "Alice"&#125;')</code><span class="fn-result">→ &#123;name: 'Alice'&#125;</span></div>
           </div>
         </div>
       </section>
@@ -92,13 +92,13 @@ import Footer from '../components/Footer.astro';
             <div class="fn-name">typeOf</div>
             <div class="fn-sig">(value: Any) → String</div>
             <p class="fn-desc">Returns the type name of the value.</p>
-            <div class="fn-example"><code class="example-code">typeOf(42)</code><span class="fn-result">→ 'Int'</span></div>
+            <div class="fn-example"><code class="language-elo">typeOf(42)</code><span class="fn-result">→ 'Int'</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">isNull</div>
             <div class="fn-sig">(value: Any) → Bool</div>
             <p class="fn-desc">Returns <code>true</code> if the value is null.</p>
-            <div class="fn-example"><code class="example-code">isNull(null)</code><span class="fn-result">→ true</span></div>
+            <div class="fn-example"><code class="language-elo">isNull(null)</code><span class="fn-result">→ true</span></div>
           </div>
         </div>
       </section>
@@ -111,37 +111,37 @@ import Footer from '../components/Footer.astro';
             <div class="fn-name">+</div>
             <div class="fn-sig">(Date, Duration) → Date</div>
             <p class="fn-desc">Adds a duration to a date.</p>
-            <div class="fn-example"><code class="example-code">D2024-01-15 + P7D</code><span class="fn-result">→ D2024-01-22</span></div>
+            <div class="fn-example"><code class="language-elo">D2024-01-15 + P7D</code><span class="fn-result">→ D2024-01-22</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">-</div>
             <div class="fn-sig">(Date, Duration) → Date</div>
             <p class="fn-desc">Subtracts a duration from a date.</p>
-            <div class="fn-example"><code class="example-code">D2024-01-15 - P7D</code><span class="fn-result">→ D2024-01-08</span></div>
+            <div class="fn-example"><code class="language-elo">D2024-01-15 - P7D</code><span class="fn-result">→ D2024-01-08</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">-</div>
             <div class="fn-sig">(Date, Date) → Duration</div>
             <p class="fn-desc">Returns the duration between two dates.</p>
-            <div class="fn-example"><code class="example-code">D2024-01-15 - D2024-01-01</code><span class="fn-result">→ P14D</span></div>
+            <div class="fn-example"><code class="language-elo">D2024-01-15 - D2024-01-01</code><span class="fn-result">→ P14D</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">year</div>
             <div class="fn-sig">(d: Date) → Int</div>
             <p class="fn-desc">Extracts the year from a date.</p>
-            <div class="fn-example"><code class="example-code">year(D2024-06-15)</code><span class="fn-result">→ 2024</span></div>
+            <div class="fn-example"><code class="language-elo">year(D2024-06-15)</code><span class="fn-result">→ 2024</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">month</div>
             <div class="fn-sig">(d: Date) → Int</div>
             <p class="fn-desc">Extracts the month (1-12) from a date.</p>
-            <div class="fn-example"><code class="example-code">month(D2024-06-15)</code><span class="fn-result">→ 6</span></div>
+            <div class="fn-example"><code class="language-elo">month(D2024-06-15)</code><span class="fn-result">→ 6</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">day</div>
             <div class="fn-sig">(d: Date) → Int</div>
             <p class="fn-desc">Extracts the day of month (1-31).</p>
-            <div class="fn-example"><code class="example-code">day(D2024-06-15)</code><span class="fn-result">→ 15</span></div>
+            <div class="fn-example"><code class="language-elo">day(D2024-06-15)</code><span class="fn-result">→ 15</span></div>
           </div>
         </div>
       </section>
@@ -154,25 +154,25 @@ import Footer from '../components/Footer.astro';
             <div class="fn-name">+</div>
             <div class="fn-sig">(DateTime, Duration) → DateTime</div>
             <p class="fn-desc">Adds a duration to a datetime.</p>
-            <div class="fn-example"><code class="example-code">D2024-01-15T10:00:00Z + PT2H</code><span class="fn-result">→ D2024-01-15T12:00:00Z</span></div>
+            <div class="fn-example"><code class="language-elo">D2024-01-15T10:00:00Z + PT2H</code><span class="fn-result">→ D2024-01-15T12:00:00Z</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">-</div>
             <div class="fn-sig">(DateTime, Duration) → DateTime</div>
             <p class="fn-desc">Subtracts a duration from a datetime.</p>
-            <div class="fn-example"><code class="example-code">D2024-01-15T10:00:00Z - PT2H</code><span class="fn-result">→ D2024-01-15T08:00:00Z</span></div>
+            <div class="fn-example"><code class="language-elo">D2024-01-15T10:00:00Z - PT2H</code><span class="fn-result">→ D2024-01-15T08:00:00Z</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">hour</div>
             <div class="fn-sig">(dt: DateTime) → Int</div>
             <p class="fn-desc">Extracts the hour (0-23) from a datetime.</p>
-            <div class="fn-example"><code class="example-code">hour(D2024-06-15T14:30:00Z)</code><span class="fn-result">→ 14</span></div>
+            <div class="fn-example"><code class="language-elo">hour(D2024-06-15T14:30:00Z)</code><span class="fn-result">→ 14</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">minute</div>
             <div class="fn-sig">(dt: DateTime) → Int</div>
             <p class="fn-desc">Extracts the minute (0-59) from a datetime.</p>
-            <div class="fn-example"><code class="example-code">minute(D2024-06-15T14:30:00Z)</code><span class="fn-result">→ 30</span></div>
+            <div class="fn-example"><code class="language-elo">minute(D2024-06-15T14:30:00Z)</code><span class="fn-result">→ 30</span></div>
           </div>
         </div>
       </section>
@@ -185,19 +185,19 @@ import Footer from '../components/Footer.astro';
             <div class="fn-name">+</div>
             <div class="fn-sig">(Duration, Duration) → Duration</div>
             <p class="fn-desc">Adds two durations together.</p>
-            <div class="fn-example"><code class="example-code">P1D + PT12H</code><span class="fn-result">→ P1DT12H</span></div>
+            <div class="fn-example"><code class="language-elo">P1D + PT12H</code><span class="fn-result">→ P1DT12H</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">*</div>
             <div class="fn-sig">(Duration, Int | Float) → Duration</div>
             <p class="fn-desc">Scales a duration by a factor.</p>
-            <div class="fn-example"><code class="example-code">P1D * 2</code><span class="fn-result">→ P2D</span></div>
+            <div class="fn-example"><code class="language-elo">P1D * 2</code><span class="fn-result">→ P2D</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">/</div>
             <div class="fn-sig">(Duration, Int | Float) → Duration</div>
             <p class="fn-desc">Divides a duration by a factor.</p>
-            <div class="fn-example"><code class="example-code">P10D / 2</code><span class="fn-result">→ P5D</span></div>
+            <div class="fn-example"><code class="language-elo">P10D / 2</code><span class="fn-result">→ P5D</span></div>
           </div>
         </div>
       </section>
@@ -210,79 +210,79 @@ import Footer from '../components/Footer.astro';
             <div class="fn-name">+</div>
             <div class="fn-sig">(List, List) → List</div>
             <p class="fn-desc">Concatenates two lists.</p>
-            <div class="fn-example"><code class="example-code">[1, 2] + [3, 4]</code><span class="fn-result">→ [1, 2, 3, 4]</span></div>
+            <div class="fn-example"><code class="language-elo">[1, 2] + [3, 4]</code><span class="fn-result">→ [1, 2, 3, 4]</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">all</div>
             <div class="fn-sig">(list: List, predicate: Function) → Bool</div>
             <p class="fn-desc">Returns <code>true</code> if all elements satisfy predicate. <em>JS/Ruby only.</em></p>
-            <div class="fn-example"><code class="example-code">all([1, 2, 3], fn(x ~> x > 0))</code><span class="fn-result">→ true</span></div>
+            <div class="fn-example"><code class="language-elo">all([1, 2, 3], fn(x ~> x > 0))</code><span class="fn-result">→ true</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">any</div>
             <div class="fn-sig">(list: List, predicate: Function) → Bool</div>
             <p class="fn-desc">Returns <code>true</code> if any element satisfies predicate. <em>JS/Ruby only.</em></p>
-            <div class="fn-example"><code class="example-code">any([1, 2, 3], fn(x ~> x > 2))</code><span class="fn-result">→ true</span></div>
+            <div class="fn-example"><code class="language-elo">any([1, 2, 3], fn(x ~> x > 2))</code><span class="fn-result">→ true</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">at</div>
             <div class="fn-sig">(list: List, index: Int) → Any</div>
             <p class="fn-desc">Returns the element at the given index (0-based).</p>
-            <div class="fn-example"><code class="example-code">at([1, 2, 3], 1)</code><span class="fn-result">→ 2</span></div>
+            <div class="fn-example"><code class="language-elo">at([1, 2, 3], 1)</code><span class="fn-result">→ 2</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">filter</div>
             <div class="fn-sig">(list: List, predicate: Function) → List</div>
             <p class="fn-desc">Returns elements where predicate returns <code>true</code>. <em>JS/Ruby only.</em></p>
-            <div class="fn-example"><code class="example-code">filter([1, 2, 3, 4], fn(x ~> x > 2))</code><span class="fn-result">→ [3, 4]</span></div>
+            <div class="fn-example"><code class="language-elo">filter([1, 2, 3, 4], fn(x ~> x > 2))</code><span class="fn-result">→ [3, 4]</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">first</div>
             <div class="fn-sig">(list: List) → Any</div>
             <p class="fn-desc">Returns the first element of the list.</p>
-            <div class="fn-example"><code class="example-code">first([1, 2, 3])</code><span class="fn-result">→ 1</span></div>
+            <div class="fn-example"><code class="language-elo">first([1, 2, 3])</code><span class="fn-result">→ 1</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">isEmpty</div>
             <div class="fn-sig">(list: List) → Bool</div>
             <p class="fn-desc">Returns <code>true</code> if the list is empty.</p>
-            <div class="fn-example"><code class="example-code">isEmpty([])</code><span class="fn-result">→ true</span></div>
+            <div class="fn-example"><code class="language-elo">isEmpty([])</code><span class="fn-result">→ true</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">join</div>
             <div class="fn-sig">(list: List, sep: String) → String</div>
             <p class="fn-desc">Joins list elements into a string using the separator.</p>
-            <div class="fn-example"><code class="example-code">join(['a', 'b', 'c'], ',')</code><span class="fn-result">→ 'a,b,c'</span></div>
+            <div class="fn-example"><code class="language-elo">join(['a', 'b', 'c'], ',')</code><span class="fn-result">→ 'a,b,c'</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">last</div>
             <div class="fn-sig">(list: List) → Any</div>
             <p class="fn-desc">Returns the last element of the list.</p>
-            <div class="fn-example"><code class="example-code">last([1, 2, 3])</code><span class="fn-result">→ 3</span></div>
+            <div class="fn-example"><code class="language-elo">last([1, 2, 3])</code><span class="fn-result">→ 3</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">length</div>
             <div class="fn-sig">(list: List) → Int</div>
             <p class="fn-desc">Returns the number of elements in the list.</p>
-            <div class="fn-example"><code class="example-code">length([1, 2, 3])</code><span class="fn-result">→ 3</span></div>
+            <div class="fn-example"><code class="language-elo">length([1, 2, 3])</code><span class="fn-result">→ 3</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">map</div>
             <div class="fn-sig">(list: List, fn: Function) → List</div>
             <p class="fn-desc">Returns a new list with <code>fn</code> applied to each element. <em>JS/Ruby only.</em></p>
-            <div class="fn-example"><code class="example-code">map([1, 2, 3], fn(x ~> x * 2))</code><span class="fn-result">→ [2, 4, 6]</span></div>
+            <div class="fn-example"><code class="language-elo">map([1, 2, 3], fn(x ~> x * 2))</code><span class="fn-result">→ [2, 4, 6]</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">reduce</div>
             <div class="fn-sig">(list: List, initial: Any, fn: Function) → Any</div>
             <p class="fn-desc">Reduces the list to a single value. <em>JS/Ruby only.</em></p>
-            <div class="fn-example"><code class="example-code">reduce([1, 2, 3], 0, fn(acc, x ~> acc + x))</code><span class="fn-result">→ 6</span></div>
+            <div class="fn-example"><code class="language-elo">reduce([1, 2, 3], 0, fn(acc, x ~> acc + x))</code><span class="fn-result">→ 6</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">reverse</div>
             <div class="fn-sig">(list: List) → List</div>
             <p class="fn-desc">Returns a new list with elements in reverse order.</p>
-            <div class="fn-example"><code class="example-code">reverse([1, 2, 3])</code><span class="fn-result">→ [3, 2, 1]</span></div>
+            <div class="fn-example"><code class="language-elo">reverse([1, 2, 3])</code><span class="fn-result">→ [3, 2, 1]</span></div>
           </div>
         </div>
       </section>
@@ -295,61 +295,61 @@ import Footer from '../components/Footer.astro';
             <div class="fn-name">+</div>
             <div class="fn-sig">(Int | Float, Int | Float) → Int | Float</div>
             <p class="fn-desc">Adds two numbers.</p>
-            <div class="fn-example"><code class="example-code">2 + 3</code><span class="fn-result">→ 5</span></div>
+            <div class="fn-example"><code class="language-elo">2 + 3</code><span class="fn-result">→ 5</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">-</div>
             <div class="fn-sig">(Int | Float, Int | Float) → Int | Float</div>
             <p class="fn-desc">Subtracts two numbers.</p>
-            <div class="fn-example"><code class="example-code">10 - 4</code><span class="fn-result">→ 6</span></div>
+            <div class="fn-example"><code class="language-elo">10 - 4</code><span class="fn-result">→ 6</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">*</div>
             <div class="fn-sig">(Int | Float, Int | Float) → Int | Float</div>
             <p class="fn-desc">Multiplies two numbers.</p>
-            <div class="fn-example"><code class="example-code">3 * 4</code><span class="fn-result">→ 12</span></div>
+            <div class="fn-example"><code class="language-elo">3 * 4</code><span class="fn-result">→ 12</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">/</div>
             <div class="fn-sig">(Int | Float, Int | Float) → Float</div>
             <p class="fn-desc">Divides two numbers.</p>
-            <div class="fn-example"><code class="example-code">10 / 4</code><span class="fn-result">→ 2.5</span></div>
+            <div class="fn-example"><code class="language-elo">10 / 4</code><span class="fn-result">→ 2.5</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">%</div>
             <div class="fn-sig">(Int | Float, Int | Float) → Int | Float</div>
             <p class="fn-desc">Returns the remainder after division.</p>
-            <div class="fn-example"><code class="example-code">10 % 3</code><span class="fn-result">→ 1</span></div>
+            <div class="fn-example"><code class="language-elo">10 % 3</code><span class="fn-result">→ 1</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">^</div>
             <div class="fn-sig">(Int | Float, Int | Float) → Int | Float</div>
             <p class="fn-desc">Raises a number to a power.</p>
-            <div class="fn-example"><code class="example-code">2 ^ 10</code><span class="fn-result">→ 1024</span></div>
+            <div class="fn-example"><code class="language-elo">2 ^ 10</code><span class="fn-result">→ 1024</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">abs</div>
             <div class="fn-sig">(n: Int | Float) → Int | Float</div>
             <p class="fn-desc">Returns the absolute value of a number.</p>
-            <div class="fn-example"><code class="example-code">abs(-5)</code><span class="fn-result">→ 5</span></div>
+            <div class="fn-example"><code class="language-elo">abs(-5)</code><span class="fn-result">→ 5</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">ceil</div>
             <div class="fn-sig">(n: Float) → Int</div>
             <p class="fn-desc">Rounds a number up to the nearest integer.</p>
-            <div class="fn-example"><code class="example-code">ceil(3.2)</code><span class="fn-result">→ 4</span></div>
+            <div class="fn-example"><code class="language-elo">ceil(3.2)</code><span class="fn-result">→ 4</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">floor</div>
             <div class="fn-sig">(n: Float) → Int</div>
             <p class="fn-desc">Rounds a number down to the nearest integer.</p>
-            <div class="fn-example"><code class="example-code">floor(3.9)</code><span class="fn-result">→ 3</span></div>
+            <div class="fn-example"><code class="language-elo">floor(3.9)</code><span class="fn-result">→ 3</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">round</div>
             <div class="fn-sig">(n: Float) → Int</div>
             <p class="fn-desc">Rounds a number to the nearest integer.</p>
-            <div class="fn-example"><code class="example-code">round(3.7)</code><span class="fn-result">→ 4</span></div>
+            <div class="fn-example"><code class="language-elo">round(3.7)</code><span class="fn-result">→ 4</span></div>
           </div>
         </div>
       </section>
@@ -362,109 +362,109 @@ import Footer from '../components/Footer.astro';
             <div class="fn-name">+</div>
             <div class="fn-sig">(String, String) → String</div>
             <p class="fn-desc">Concatenates two strings.</p>
-            <div class="fn-example"><code class="example-code">'hello' + ' world'</code><span class="fn-result">→ 'hello world'</span></div>
+            <div class="fn-example"><code class="language-elo">'hello' + ' world'</code><span class="fn-result">→ 'hello world'</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">*</div>
             <div class="fn-sig">(String, Int) → String</div>
             <p class="fn-desc">Repeats a string n times.</p>
-            <div class="fn-example"><code class="example-code">'hi' * 3</code><span class="fn-result">→ 'hihihi'</span></div>
+            <div class="fn-example"><code class="language-elo">'hi' * 3</code><span class="fn-result">→ 'hihihi'</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">concat</div>
             <div class="fn-sig">(a: String, b: String) → String</div>
             <p class="fn-desc">Concatenates two strings. Same as <code>+</code>.</p>
-            <div class="fn-example"><code class="example-code">concat('hello', ' world')</code><span class="fn-result">→ 'hello world'</span></div>
+            <div class="fn-example"><code class="language-elo">concat('hello', ' world')</code><span class="fn-result">→ 'hello world'</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">contains</div>
             <div class="fn-sig">(s: String, sub: String) → Bool</div>
             <p class="fn-desc">Returns true if the string contains the given substring.</p>
-            <div class="fn-example"><code class="example-code">contains('hello', 'ell')</code><span class="fn-result">→ true</span></div>
+            <div class="fn-example"><code class="language-elo">contains('hello', 'ell')</code><span class="fn-result">→ true</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">endsWith</div>
             <div class="fn-sig">(s: String, suffix: String) → Bool</div>
             <p class="fn-desc">Returns true if the string ends with the given suffix.</p>
-            <div class="fn-example"><code class="example-code">endsWith('hello', 'lo')</code><span class="fn-result">→ true</span></div>
+            <div class="fn-example"><code class="language-elo">endsWith('hello', 'lo')</code><span class="fn-result">→ true</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">indexOf</div>
             <div class="fn-sig">(s: String, sub: String) → Int | Null</div>
             <p class="fn-desc">Returns the index of the first occurrence, or <code>null</code> if not found.</p>
-            <div class="fn-example"><code class="example-code">indexOf('hello', 'l')</code><span class="fn-result">→ 2</span></div>
+            <div class="fn-example"><code class="language-elo">indexOf('hello', 'l')</code><span class="fn-result">→ 2</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">isEmpty</div>
             <div class="fn-sig">(s: String) → Bool</div>
             <p class="fn-desc">Returns true if the string is empty.</p>
-            <div class="fn-example"><code class="example-code">isEmpty('')</code><span class="fn-result">→ true</span></div>
+            <div class="fn-example"><code class="language-elo">isEmpty('')</code><span class="fn-result">→ true</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">length</div>
             <div class="fn-sig">(s: String) → Int</div>
             <p class="fn-desc">Returns the number of characters in the string.</p>
-            <div class="fn-example"><code class="example-code">length('hello')</code><span class="fn-result">→ 5</span></div>
+            <div class="fn-example"><code class="language-elo">length('hello')</code><span class="fn-result">→ 5</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">lower</div>
             <div class="fn-sig">(s: String) → String</div>
             <p class="fn-desc">Converts all characters to lowercase.</p>
-            <div class="fn-example"><code class="example-code">lower('HELLO')</code><span class="fn-result">→ 'hello'</span></div>
+            <div class="fn-example"><code class="language-elo">lower('HELLO')</code><span class="fn-result">→ 'hello'</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">padEnd</div>
             <div class="fn-sig">(s: String, len: Int, pad: String) → String</div>
             <p class="fn-desc">Pads the end of the string to reach the target length.</p>
-            <div class="fn-example"><code class="example-code">padEnd('hi', 5, '.')</code><span class="fn-result">→ 'hi...'</span></div>
+            <div class="fn-example"><code class="language-elo">padEnd('hi', 5, '.')</code><span class="fn-result">→ 'hi...'</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">padStart</div>
             <div class="fn-sig">(s: String, len: Int, pad: String) → String</div>
             <p class="fn-desc">Pads the start of the string to reach the target length.</p>
-            <div class="fn-example"><code class="example-code">padStart('42', 5, '0')</code><span class="fn-result">→ '00042'</span></div>
+            <div class="fn-example"><code class="language-elo">padStart('42', 5, '0')</code><span class="fn-result">→ '00042'</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">replace</div>
             <div class="fn-sig">(s: String, search: String, repl: String) → String</div>
             <p class="fn-desc">Replaces the first occurrence of <code>search</code> with <code>repl</code>.</p>
-            <div class="fn-example"><code class="example-code">replace('abab', 'ab', 'x')</code><span class="fn-result">→ 'xab'</span></div>
+            <div class="fn-example"><code class="language-elo">replace('abab', 'ab', 'x')</code><span class="fn-result">→ 'xab'</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">replaceAll</div>
             <div class="fn-sig">(s: String, search: String, repl: String) → String</div>
             <p class="fn-desc">Replaces all occurrences of <code>search</code> with <code>repl</code>.</p>
-            <div class="fn-example"><code class="example-code">replaceAll('abab', 'ab', 'x')</code><span class="fn-result">→ 'xx'</span></div>
+            <div class="fn-example"><code class="language-elo">replaceAll('abab', 'ab', 'x')</code><span class="fn-result">→ 'xx'</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">split</div>
             <div class="fn-sig">(s: String, sep: String) → List</div>
             <p class="fn-desc">Splits the string into a list using the separator.</p>
-            <div class="fn-example"><code class="example-code">split('a,b,c', ',')</code><span class="fn-result">→ ['a', 'b', 'c']</span></div>
+            <div class="fn-example"><code class="language-elo">split('a,b,c', ',')</code><span class="fn-result">→ ['a', 'b', 'c']</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">startsWith</div>
             <div class="fn-sig">(s: String, prefix: String) → Bool</div>
             <p class="fn-desc">Returns true if the string starts with the given prefix.</p>
-            <div class="fn-example"><code class="example-code">startsWith('hello', 'he')</code><span class="fn-result">→ true</span></div>
+            <div class="fn-example"><code class="language-elo">startsWith('hello', 'he')</code><span class="fn-result">→ true</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">substring</div>
             <div class="fn-sig">(s: String, start: Int, len: Int) → String</div>
             <p class="fn-desc">Extracts a substring starting at <code>start</code> (0-indexed) with length <code>len</code>.</p>
-            <div class="fn-example"><code class="example-code">substring('hello', 1, 3)</code><span class="fn-result">→ 'ell'</span></div>
+            <div class="fn-example"><code class="language-elo">substring('hello', 1, 3)</code><span class="fn-result">→ 'ell'</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">trim</div>
             <div class="fn-sig">(s: String) → String</div>
             <p class="fn-desc">Removes leading and trailing whitespace.</p>
-            <div class="fn-example"><code class="example-code">trim('  hi  ')</code><span class="fn-result">→ 'hi'</span></div>
+            <div class="fn-example"><code class="language-elo">trim('  hi  ')</code><span class="fn-result">→ 'hi'</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">upper</div>
             <div class="fn-sig">(s: String) → String</div>
             <p class="fn-desc">Converts all characters to uppercase.</p>
-            <div class="fn-example"><code class="example-code">upper('hello')</code><span class="fn-result">→ 'HELLO'</span></div>
+            <div class="fn-example"><code class="language-elo">upper('hello')</code><span class="fn-result">→ 'HELLO'</span></div>
           </div>
         </div>
       </section>
@@ -477,7 +477,7 @@ import Footer from '../components/Footer.astro';
             <div class="fn-name">deepMerge</div>
             <div class="fn-sig">(a: Any, b: Any) → Any</div>
             <p class="fn-desc">Recursively merges two objects. Nested objects are merged; other values from <code>b</code> override <code>a</code>.</p>
-            <div class="fn-example"><code class="example-code">deepMerge(&#123;x: &#123;a: 1&#125;&#125;, &#123;x: &#123;b: 2&#125;&#125;)</code><span class="fn-result">→ &#123;x: &#123;a: 1, b: 2&#125;&#125;</span></div>
+            <div class="fn-example"><code class="language-elo">deepMerge(&#123;x: &#123;a: 1&#125;&#125;, &#123;x: &#123;b: 2&#125;&#125;)</code><span class="fn-result">→ &#123;x: &#123;a: 1, b: 2&#125;&#125;</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">fetch</div>
@@ -485,21 +485,21 @@ import Footer from '../components/Footer.astro';
             <div class="fn-sig">(data: Any, paths: Tuple) → Tuple</div>
             <div class="fn-sig">(data: Any, paths: List) → List</div>
             <p class="fn-desc">Navigates the data structure following the path. Returns <code>null</code> if any segment fails. Can fetch multiple paths into a tuple or list.</p>
-            <div class="fn-example"><code class="example-code">fetch(&#123;name: 'Alice'&#125;, .name)</code><span class="fn-result">→ 'Alice'</span></div>
-            <div class="fn-example"><code class="example-code">fetch(&#123;a: 1, b: 2&#125;, &#123;x: .a, y: .b&#125;)</code><span class="fn-result">→ &#123;x: 1, y: 2&#125;</span></div>
-            <div class="fn-example"><code class="example-code">fetch(&#123;a: 1, b: 2&#125;, [.a, .b])</code><span class="fn-result">→ [1, 2]</span></div>
+            <div class="fn-example"><code class="language-elo">fetch(&#123;name: 'Alice'&#125;, .name)</code><span class="fn-result">→ 'Alice'</span></div>
+            <div class="fn-example"><code class="language-elo">fetch(&#123;a: 1, b: 2&#125;, &#123;x: .a, y: .b&#125;)</code><span class="fn-result">→ &#123;x: 1, y: 2&#125;</span></div>
+            <div class="fn-example"><code class="language-elo">fetch(&#123;a: 1, b: 2&#125;, [.a, .b])</code><span class="fn-result">→ [1, 2]</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">merge</div>
             <div class="fn-sig">(a: Any, b: Any) → Any</div>
             <p class="fn-desc">Shallow merges two objects. Properties from <code>b</code> override properties from <code>a</code>.</p>
-            <div class="fn-example"><code class="example-code">merge(&#123;a: 1&#125;, &#123;b: 2&#125;)</code><span class="fn-result">→ &#123;a: 1, b: 2&#125;</span></div>
+            <div class="fn-example"><code class="language-elo">merge(&#123;a: 1&#125;, &#123;b: 2&#125;)</code><span class="fn-result">→ &#123;a: 1, b: 2&#125;</span></div>
           </div>
           <div class="stdlib-fn" data-action="click->doc#tryExample">
             <div class="fn-name">patch</div>
             <div class="fn-sig">(data: Any, path: DataPath, value: Any) → Any</div>
             <p class="fn-desc">Returns a new tuple with the value patched at the given path. Creates intermediate structures as needed.</p>
-            <div class="fn-example"><code class="example-code">patch(&#123;&#125;, .user.name, 'Bob')</code><span class="fn-result">→ &#123;user: &#123;name: 'Bob'&#125;&#125;</span></div>
+            <div class="fn-example"><code class="language-elo">patch(&#123;&#125;, .user.name, 'Bob')</code><span class="fn-result">→ &#123;user: &#123;name: 'Bob'&#125;&#125;</span></div>
           </div>
         </div>
       </section>

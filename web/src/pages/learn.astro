@@ -59,7 +59,7 @@ const url = (path: string) => `${base}${path}`;
           that's what the next chapters are for!
         </p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let
+          <pre class="language-elo">let
   signup = D2024-01-15,
   trial = P30D
 in
@@ -69,13 +69,13 @@ in
           This checks if a 30-day trial has expired. Notice how naturally Elo handles dates and durations.
         </p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">[10, 25, 5, 30] |> filter(x ~> x > 15) |> map(x ~> x * 1.21)</pre>
+          <pre class="language-elo">[10, 25, 5, 30] |> filter(x ~> x > 15) |> map(x ~> x * 1.21)</pre>
         </div>
         <p>
           This filters a list to keep values above 15, then applies VAT to each. Data flows left to right.
         </p>
         <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"email": "Test@Company.com"}'>
-          <pre class="example-code">_.email |> lower |> endsWith('@company.com')</pre>
+          <pre class="language-elo">_.email |> lower |> endsWith('@company.com')</pre>
         </div>
         <p>
           This checks if an input email belongs to a company domain. The <code>_</code> is input data.
@@ -101,49 +101,49 @@ in
         <h3>Numbers</h3>
         <p>Just like a calculator:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">2 + 3 * 4</pre>
+          <pre class="language-elo">2 + 3 * 4</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">2 ^ 10</pre>
+          <pre class="language-elo">2 ^ 10</pre>
         </div>
 
         <h3>Booleans</h3>
         <p>True/false values with <code>and</code>, <code>or</code>, <code>not</code>:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">5 > 3 and 10 <= 10</pre>
+          <pre class="language-elo">5 > 3 and 10 <= 10</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">not (1 == 2) or false</pre>
+          <pre class="language-elo">not (1 == 2) or false</pre>
         </div>
 
         <h3>Strings</h3>
         <p>Text with <code>+</code> for concatenation, <code>*</code> for repetition:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">'Hello, ' + 'World!'</pre>
+          <pre class="language-elo">'Hello, ' + 'World!'</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">'ho! ' * 3</pre>
+          <pre class="language-elo">'ho! ' * 3</pre>
         </div>
 
         <h3>Dates &amp; Durations</h3>
         <p>Dates start with <code>D</code>, durations with <code>P</code> (ISO 8601):</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">D2024-12-25</pre>
+          <pre class="language-elo">D2024-12-25</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">TODAY + P30D</pre>
+          <pre class="language-elo">TODAY + P30D</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">NOW + PT2H30M</pre>
+          <pre class="language-elo">NOW + PT2H30M</pre>
         </div>
         <p>
           You can subtract dates to get durations, and scale durations:
         </p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">D2024-12-31 - D2024-01-01</pre>
+          <pre class="language-elo">D2024-12-31 - D2024-01-01</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">P1D * 7</pre>
+          <pre class="language-elo">P1D * 7</pre>
         </div>
 
         <p class="lesson-tip">
@@ -169,37 +169,37 @@ in
         <h3>Tuples</h3>
         <p>Named fields, like a record or JSON object:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">&#123; name: 'Alice', age: 30, city: 'Brussels' &#125;</pre>
+          <pre class="language-elo">&#123; name: 'Alice', age: 30, city: 'Brussels' &#125;</pre>
         </div>
         <p>Access fields with a dot:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">&#123; name: 'Alice', age: 30 &#125;.name</pre>
+          <pre class="language-elo">&#123; name: 'Alice', age: 30 &#125;.name</pre>
         </div>
 
         <h3>Lists</h3>
         <p>Ordered collections in square brackets:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">[1, 2, 3, 4, 5]</pre>
+          <pre class="language-elo">[1, 2, 3, 4, 5]</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">['apple', 'banana'] + ['cherry']</pre>
+          <pre class="language-elo">['apple', 'banana'] + ['cherry']</pre>
         </div>
         <p>Get elements by position:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">first([10, 20, 30])</pre>
+          <pre class="language-elo">first([10, 20, 30])</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">at([10, 20, 30], 1)</pre>
+          <pre class="language-elo">at([10, 20, 30], 1)</pre>
         </div>
 
         <h3>Data Paths &amp; Fetch</h3>
         <p>Navigate nested data safely with paths:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let data = &#123; user: &#123; name: 'Alice' &#125; &#125; in fetch(data, .user.name)</pre>
+          <pre class="language-elo">let data = &#123; user: &#123; name: 'Alice' &#125; &#125; in fetch(data, .user.name)</pre>
         </div>
         <p>Paths start with a dot. <code>fetch</code> returns <code>null</code> if any part is missing:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let data = &#123; user: null &#125; in fetch(data, .user.name) | 'Unknown'</pre>
+          <pre class="language-elo">let data = &#123; user: null &#125; in fetch(data, .user.name) | 'Unknown'</pre>
         </div>
 
         <p class="lesson-tip">
@@ -226,35 +226,35 @@ in
         <h3>Standard Library</h3>
         <p>Built-in functions for common operations:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">upper('hello')</pre>
+          <pre class="language-elo">upper('hello')</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">abs(-42)</pre>
+          <pre class="language-elo">abs(-42)</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">year(TODAY)</pre>
+          <pre class="language-elo">year(TODAY)</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">length([1, 2, 3])</pre>
+          <pre class="language-elo">length([1, 2, 3])</pre>
         </div>
 
         <h3>Lambdas</h3>
         <p>Define your own functions with <code>fn</code>:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let double = fn(x ~> x * 2) in double(21)</pre>
+          <pre class="language-elo">let double = fn(x ~> x * 2) in double(21)</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let greet = fn(name ~> 'Hello, ' + name + '!') in greet('Elo')</pre>
+          <pre class="language-elo">let greet = fn(name ~> 'Hello, ' + name + '!') in greet('Elo')</pre>
         </div>
         <p>Functions can take multiple parameters:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let add = fn(a, b ~> a + b) in add(3, 4)</pre>
+          <pre class="language-elo">let add = fn(a, b ~> a + b) in add(3, 4)</pre>
         </div>
 
         <h3>Sugar Syntax</h3>
         <p>For single-parameter lambdas, you can skip <code>fn()</code>:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">map([1, 2, 3], x ~> x * 2)</pre>
+          <pre class="language-elo">map([1, 2, 3], x ~> x * 2)</pre>
         </div>
 
         <p class="lesson-tip">
@@ -281,35 +281,35 @@ in
         <h3>Let Bindings</h3>
         <p>Name intermediate values to avoid repetition:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let price = 100 in price * 1.21</pre>
+          <pre class="language-elo">let price = 100 in price * 1.21</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let width = 10, height = 5 in width * height</pre>
+          <pre class="language-elo">let width = 10, height = 5 in width * height</pre>
         </div>
         <p>Names don't change—once bound, a value stays the same. No surprises!</p>
 
         <h3>Conditionals</h3>
         <p>Choose between values with <code>if</code>/<code>then</code>/<code>else</code>:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">if 5 > 3 then 'yes' else 'no'</pre>
+          <pre class="language-elo">if 5 > 3 then 'yes' else 'no'</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let age = 25 in if age >= 18 then 'adult' else 'minor'</pre>
+          <pre class="language-elo">let age = 25 in if age >= 18 then 'adult' else 'minor'</pre>
         </div>
         <p>In Elo, <code>if</code> is an expression—it always produces a value.</p>
 
         <h3>Pipe Operator</h3>
         <p>Chain operations left-to-right with <code>|&gt;</code>:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">'  hello  ' |> trim |> upper</pre>
+          <pre class="language-elo">'  hello  ' |> trim |> upper</pre>
         </div>
         <p>Compare with nested calls:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">upper(trim('  hello  '))</pre>
+          <pre class="language-elo">upper(trim('  hello  '))</pre>
         </div>
         <p>The pipe version reads naturally: take this, then do that, then that.</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let double = fn(n ~> n * 2) in '42' |> Int |> double</pre>
+          <pre class="language-elo">let double = fn(n ~> n * 2) in '42' |> Int |> double</pre>
         </div>
 
         <p class="lesson-tip">
@@ -335,44 +335,44 @@ in
         <h3>Map, Filter, Reduce</h3>
         <p><code>map</code> transforms each element:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">map([1, 2, 3], x ~> x * 2)</pre>
+          <pre class="language-elo">map([1, 2, 3], x ~> x * 2)</pre>
         </div>
         <p><code>filter</code> keeps elements that match:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">filter([1, 2, 3, 4, 5], x ~> x > 2)</pre>
+          <pre class="language-elo">filter([1, 2, 3, 4, 5], x ~> x > 2)</pre>
         </div>
         <p><code>reduce</code> combines all elements into one value:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">reduce([1, 2, 3, 4], 0, fn(sum, x ~> sum + x))</pre>
+          <pre class="language-elo">reduce([1, 2, 3, 4], 0, fn(sum, x ~> sum + x))</pre>
         </div>
         <p>Chain them together:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">[1, 2, 3, 4, 5] |> filter(x ~> x > 2) |> map(x ~> x * 10)</pre>
+          <pre class="language-elo">[1, 2, 3, 4, 5] |> filter(x ~> x > 2) |> map(x ~> x * 10)</pre>
         </div>
 
         <h3>Null Handling</h3>
         <p>Missing data is represented by <code>null</code>. The <code>|</code> operator provides fallbacks:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">null | 'default'</pre>
+          <pre class="language-elo">null | 'default'</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">indexOf('hello', 'x') | -1</pre>
+          <pre class="language-elo">indexOf('hello', 'x') | -1</pre>
         </div>
         <p>Use <code>isNull</code> to check:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">isNull(null)</pre>
+          <pre class="language-elo">isNull(null)</pre>
         </div>
 
         <h3>Type Selectors</h3>
         <p>Parse and validate strings into typed values:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">Int('42')</pre>
+          <pre class="language-elo">Int('42')</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">Date('2024-12-25')</pre>
+          <pre class="language-elo">Date('2024-12-25')</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">Duration('P1D')</pre>
+          <pre class="language-elo">Duration('P1D')</pre>
         </div>
 
         <p class="lesson-tip">
@@ -399,23 +399,23 @@ in
         <h3>The Input Variable</h3>
         <p>When you use <code>_</code>, your expression becomes a function:</p>
         <div class="lesson-example" data-action="click->doc#tryExample" data-input="21">
-          <pre class="example-code">_ * 2</pre>
+          <pre class="language-elo">_ * 2</pre>
         </div>
         <p>Access fields of input data:</p>
         <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"price": 100, "quantity": 3}'>
-          <pre class="example-code">_.price * _.quantity</pre>
+          <pre class="language-elo">_.price * _.quantity</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"name": "alice"}'>
-          <pre class="example-code">_.name |> upper</pre>
+          <pre class="language-elo">_.name |> upper</pre>
         </div>
 
         <h3>Data Transformation</h3>
         <p>Elo expressions are data transformations: input flows in, result flows out.</p>
         <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"items": [{"price": 10}, {"price": 20}, {"price": 30}]}'>
-          <pre class="example-code">_.items |> map(x ~> x.price) |> reduce(0, fn(sum, p ~> sum + p))</pre>
+          <pre class="language-elo">_.items |> map(x ~> x.price) |> reduce(0, fn(sum, p ~> sum + p))</pre>
         </div>
         <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"status": "active", "budget": 1000}'>
-          <pre class="example-code">if _.status == 'active' then _.budget * 1.1 else _.budget</pre>
+          <pre class="language-elo">if _.status == 'active' then _.budget * 1.1 else _.budget</pre>
         </div>
 
         <h3>Try It</h3>
@@ -425,7 +425,7 @@ in
           For example, with input <code>&#123;"price": 100, "quantity": 3&#125;</code>:
         </p>
         <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"price": 100, "quantity": 3}'>
-          <pre class="example-code">_.price * _.quantity</pre>
+          <pre class="language-elo">_.price * _.quantity</pre>
         </div>
 
         <p class="lesson-tip">
@@ -459,14 +459,14 @@ in
         <h3>Type Coercion</h3>
         <p>Type selectors like <code>Int()</code> parse strings. With type definitions, you define reusable types:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let T = Int in '42' |> T</pre>
+          <pre class="language-elo">let T = Int in '42' |> T</pre>
         </div>
         <p>Uppercase names create type definitions. Apply them with the pipe operator.</p>
 
         <h3>Struct Schemas</h3>
         <p>Define the expected shape of objects:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let Person = &#123; name: String, age: Int &#125; in
+          <pre class="language-elo">let Person = &#123; name: String, age: Int &#125; in
 &#123; name: 'Alice', age: '30' &#125; |> Person</pre>
         </div>
         <p>
@@ -477,7 +477,7 @@ in
         <h3>Optional Fields</h3>
         <p>Mark fields as optional with <code>:?</code>:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let T = &#123; name: String, age :? Int &#125; in
+          <pre class="language-elo">let T = &#123; name: String, age :? Int &#125; in
 &#123; name: 'Bob' &#125; |> T</pre>
         </div>
         <p>Missing optional fields are omitted from the result.</p>
@@ -485,32 +485,32 @@ in
         <h3>Arrays</h3>
         <p>Validate arrays where each element matches a type:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let Numbers = [Int] in ['1', '2', '3'] |> Numbers</pre>
+          <pre class="language-elo">let Numbers = [Int] in ['1', '2', '3'] |> Numbers</pre>
         </div>
         <p>Each string is coerced to an integer: <code>[1, 2, 3]</code>.</p>
 
         <h3>Union Types</h3>
         <p>Accept multiple types with <code>|</code>:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let T = Int|String in 'hello' |> T</pre>
+          <pre class="language-elo">let T = Int|String in 'hello' |> T</pre>
         </div>
         <p>Tries each alternative left-to-right, returns the first match.</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let T = [Int|String] in ['42', 'hello'] |> T</pre>
+          <pre class="language-elo">let T = [Int|String] in ['42', 'hello'] |> T</pre>
         </div>
         <p>Returns <code>[42, 'hello']</code>—numeric strings become integers.</p>
 
         <h3>Constraints</h3>
         <p>Add validation predicates to types:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let Positive = Int(n | n > 0) in '42' |> Positive</pre>
+          <pre class="language-elo">let Positive = Int(n | n > 0) in '42' |> Positive</pre>
         </div>
         <p>The value is first coerced to <code>Int</code>, then the constraint <code>n > 0</code> is checked.</p>
 
         <h3>Composing Types</h3>
         <p>Build complex schemas from simpler ones:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let
+          <pre class="language-elo">let
   Age = Int(a | a >= 0),
   Person = &#123; name: String, age: Age &#125;
 in &#123; name: 'Alice', age: '30' &#125; |> Person</pre>
@@ -544,24 +544,24 @@ in &#123; name: 'Alice', age: '30' &#125; |> Person</pre>
         <h3>Simple Guards</h3>
         <p>A guard checks a condition before evaluating its body:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">guard 10 > 0 in 10 * 2</pre>
+          <pre class="language-elo">guard 10 > 0 in 10 * 2</pre>
         </div>
         <p>If the condition is false, an error is thrown. If true, the body is evaluated.</p>
 
         <h3>Labeled Guards</h3>
         <p>Add labels to make error messages meaningful:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">guard positive: 5 > 0 in 5 * 2</pre>
+          <pre class="language-elo">guard positive: 5 > 0 in 5 * 2</pre>
         </div>
         <p>Labels can be identifiers or string messages:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">guard 'value must be positive': 5 > 0 in 5 * 2</pre>
+          <pre class="language-elo">guard 'value must be positive': 5 > 0 in 5 * 2</pre>
         </div>
 
         <h3>Multiple Guards</h3>
         <p>Separate multiple conditions with commas:</p>
         <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"age": 25}'>
-          <pre class="example-code">guard
+          <pre class="language-elo">guard
   positive: _.age > 0,
   adult: _.age >= 18
 in
@@ -572,24 +572,24 @@ in
         <h3>Guard with Let</h3>
         <p>Guards combine naturally with let bindings:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let x = 10 guard x > 0 in x * 2</pre>
+          <pre class="language-elo">let x = 10 guard x > 0 in x * 2</pre>
         </div>
         <p>This is sugar for: <code>let x = 10 in guard x > 0 in x * 2</code></p>
 
         <h3>Check (Postconditions)</h3>
         <p><code>check</code> is a synonym for <code>guard</code>, used idiomatically for postconditions:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let result = 5 * 4 check result > 0 in result</pre>
+          <pre class="language-elo">let result = 5 * 4 check result > 0 in result</pre>
         </div>
 
         <h3>Pipe-Style Guards</h3>
         <p>Use guards in pipelines with the predicate binding syntax:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">10 |> guard(x | x > 0)</pre>
+          <pre class="language-elo">10 |> guard(x | x > 0)</pre>
         </div>
         <p>The value is bound to <code>x</code>, checked, and returned if valid. Chain with other operations:</p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let double = fn(n ~> n * 2) in
+          <pre class="language-elo">let double = fn(n ~> n * 2) in
   10 |> guard(x | x > 0) |> double</pre>
         </div>
 
@@ -637,7 +637,7 @@ in
         <div class="exercise-solution hidden" data-exercises-target="solution" data-exercise-id="ex-greeting">
           <h4>Solution</h4>
           <div class="lesson-example" data-action="click->doc#tryExample">
-            <pre class="example-code">assert('Hello, ' + 'World!' == 'Hello, World!')</pre>
+            <pre class="language-elo">assert('Hello, ' + 'World!' == 'Hello, World!')</pre>
           </div>
         </div>
       </section>
@@ -667,7 +667,7 @@ in
         <div class="exercise-solution hidden" data-exercises-target="solution" data-exercise-id="ex-product">
           <h4>Solution</h4>
           <div class="lesson-example" data-action="click->doc#tryExample">
-            <pre class="example-code">assert(&#123; price: 25, quantity: 4 &#125;.price * &#123; price: 25, quantity: 4 &#125;.quantity == 100)</pre>
+            <pre class="language-elo">assert(&#123; price: 25, quantity: 4 &#125;.price * &#123; price: 25, quantity: 4 &#125;.quantity == 100)</pre>
           </div>
         </div>
       </section>
@@ -697,7 +697,7 @@ in
         <div class="exercise-solution hidden" data-exercises-target="solution" data-exercise-id="ex-transform">
           <h4>Solution</h4>
           <div class="lesson-example" data-action="click->doc#tryExample">
-            <pre class="example-code">assert(upper(trim('  hello  ')) == 'HELLO')</pre>
+            <pre class="language-elo">assert(upper(trim('  hello  ')) == 'HELLO')</pre>
           </div>
         </div>
       </section>
@@ -727,7 +727,7 @@ in
         <div class="exercise-solution hidden" data-exercises-target="solution" data-exercise-id="ex-area">
           <h4>Solution</h4>
           <div class="lesson-example" data-action="click->doc#tryExample">
-            <pre class="example-code">let
+            <pre class="language-elo">let
   width = 8,
   height = 5
 in
@@ -761,7 +761,7 @@ in
         <div class="exercise-solution hidden" data-exercises-target="solution" data-exercise-id="ex-filter-map">
           <h4>Solution</h4>
           <div class="lesson-example" data-action="click->doc#tryExample">
-            <pre class="example-code">assert(([5, 12, 8, 20, 3, 15] |> filter(x ~> x > 10) |> map(x ~> x * 2)) == [24, 40, 30])</pre>
+            <pre class="language-elo">assert(([5, 12, 8, 20, 3, 15] |> filter(x ~> x > 10) |> map(x ~> x * 2)) == [24, 40, 30])</pre>
           </div>
         </div>
       </section>
@@ -791,7 +791,7 @@ in
         <div class="exercise-solution hidden" data-exercises-target="solution" data-exercise-id="ex-input">
           <h4>Solution</h4>
           <div class="lesson-example" data-action="click->doc#tryExample">
-            <pre class="example-code">let order = &#123; price: 50, quantity: 3 &#125; in
+            <pre class="language-elo">let order = &#123; price: 50, quantity: 3 &#125; in
   assert(order.price * order.quantity == 150)</pre>
           </div>
         </div>
@@ -822,7 +822,7 @@ in
         <div class="exercise-solution hidden" data-exercises-target="solution" data-exercise-id="ex-validate">
           <h4>Solution</h4>
           <div class="lesson-example" data-action="click->doc#tryExample">
-            <pre class="example-code">let Product = &#123; name: String, price: Int &#125; in
+            <pre class="language-elo">let Product = &#123; name: String, price: Int &#125; in
   assert((&#123; name: 'Widget', price: '99' &#125; |> Product) == &#123; name: 'Widget', price: 99 &#125;)</pre>
           </div>
         </div>
@@ -853,7 +853,7 @@ in
         <div class="exercise-solution hidden" data-exercises-target="solution" data-exercise-id="ex-guard">
           <h4>Solution</h4>
           <div class="lesson-example" data-action="click->doc#tryExample">
-            <pre class="example-code">assert((guard positive: 5 > 0 in 5 * 2) == 10)</pre>
+            <pre class="language-elo">assert((guard positive: 5 > 0 in 5 * 2) == 10)</pre>
           </div>
         </div>
       </section>
@@ -873,7 +873,7 @@ in
           ensuring fields have the right types and constraints.
         </p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let
+          <pre class="language-elo">let
   Email = String(e | contains(e, '@') and length(e) >= 5),
   Age = Int(a | a >= 13 and a <= 120),
   Username = String(u | length(u) >= 3 and length(u) <= 20),
@@ -908,7 +908,7 @@ in
           This example shows how to transform order data using pipes and list operations.
         </p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let
+          <pre class="language-elo">let
   order = &#123;
     items: [
       &#123; name: 'Widget', price: 25, quantity: 2 &#125;,
@@ -938,7 +938,7 @@ in
           Elo's date arithmetic makes this business logic clear and portable.
         </p>
         <div class="lesson-example" data-action="click->doc#tryExample">
-          <pre class="example-code">let
+          <pre class="language-elo">let
   subscription = &#123;
     plan: 'pro',
     startDate: D2024-01-15,

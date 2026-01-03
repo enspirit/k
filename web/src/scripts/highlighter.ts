@@ -209,16 +209,6 @@ export function highlight(source: string): string {
   }).join('');
 }
 
-/**
- * Highlight all elements matching a selector
- */
-export function highlightAll(selector: string): void {
-  const elements = document.querySelectorAll(selector);
-  elements.forEach(el => {
-    const code = el.textContent || '';
-    el.innerHTML = highlight(code);
-  });
-}
 
 // =============================================================================
 // JavaScript/TypeScript Highlighter
@@ -427,16 +417,6 @@ export function highlightJS(source: string): string {
   }).join('');
 }
 
-/**
- * Highlight all JS/TS code blocks matching a selector
- */
-export function highlightAllJS(selector: string): void {
-  const elements = document.querySelectorAll(selector);
-  elements.forEach(el => {
-    const code = el.textContent || '';
-    el.innerHTML = highlightJS(code);
-  });
-}
 
 // =============================================================================
 // Ruby Highlighter
@@ -792,43 +772,72 @@ export function highlightSQL(source: string): string {
   }).join('');
 }
 
+// =============================================================================
+// Unified Highlighter
+// =============================================================================
+
 /**
- * Highlight markdown code blocks with automatic language detection.
- * Finds pre elements containing code elements with language-xxx classes,
- * and applies highlighting directly to the pre (same as .example-code).
+ * Detect language from class name.
+ * Supports both <pre class="language-xxx"> and <code class="language-xxx">
  */
-export function highlightCodeBlocks(containerSelector: string): void {
-  const containers = document.querySelectorAll(containerSelector);
-  containers.forEach(container => {
-    // Find all pre > code[class*="language-"] patterns
-    const codeElements = container.querySelectorAll('pre > code[class*="language-"]');
-    codeElements.forEach(codeEl => {
-      const pre = codeEl.parentElement;
-      if (!pre) return;
+function detectLanguage(className: string): string | null {
+  const match = className.match(/language-(\w+)/);
+  return match ? match[1] : null;
+}
 
-      const code = codeEl.textContent || '';
-      const classList = codeEl.className;
+/**
+ * Get the appropriate highlighter for a language
+ */
+function getHighlighter(lang: string): ((code: string) => string) | null {
+  switch (lang) {
+    case 'elo':
+      return highlight;
+    case 'js':
+    case 'javascript':
+    case 'ts':
+    case 'typescript':
+    case 'shell':
+    case 'bash':
+      return highlightJS;
+    case 'ruby':
+    case 'rb':
+      return highlightRuby;
+    case 'sql':
+      return highlightSQL;
+    default:
+      return null;
+  }
+}
 
-      // Add example-code class for consistent styling
-      pre.classList.add('example-code');
+/**
+ * Highlight all code elements with language-xxx classes.
+ *
+ * Supports:
+ * - <pre class="language-xxx">code</pre>
+ * - <code class="language-xxx">code</code>
+ * - <pre><code class="language-xxx">code</code></pre> (markdown style)
+ */
+export function highlightAll(): void {
+  // Find all elements with language-* class
+  const elements = document.querySelectorAll('[class*="language-"]');
 
-      // Detect language and apply highlighting to the pre element
-      if (classList.includes('language-elo')) {
-        pre.innerHTML = highlight(code);
-      } else if (classList.includes('language-js') || classList.includes('language-javascript') || classList.includes('language-ts') || classList.includes('language-typescript')) {
-        pre.innerHTML = highlightJS(code);
-      } else if (classList.includes('language-ruby') || classList.includes('language-rb')) {
-        pre.innerHTML = highlightRuby(code);
-      } else if (classList.includes('language-sql')) {
-        pre.innerHTML = highlightSQL(code);
-      } else {
-        // Default: try Elo highlighter for Elo-like code, otherwise JS
-        if (code.includes('let ') && code.includes(' in ') || code.includes('~>') || code.includes('_.')) {
-          pre.innerHTML = highlight(code);
-        } else {
-          pre.innerHTML = highlightJS(code);
-        }
-      }
-    });
+  elements.forEach(el => {
+    const lang = detectLanguage(el.className);
+    if (!lang) return;
+
+    const highlighter = getHighlighter(lang);
+    if (!highlighter) return;
+
+    // Handle <pre><code class="language-xxx"> pattern (markdown)
+    if (el.tagName === 'CODE' && el.parentElement?.tagName === 'PRE') {
+      const pre = el.parentElement;
+      const code = el.textContent || '';
+      pre.innerHTML = highlighter(code);
+      return;
+    }
+
+    // Handle <pre class="language-xxx"> or <code class="language-xxx">
+    const code = el.textContent || '';
+    el.innerHTML = highlighter(code);
   });
 }
