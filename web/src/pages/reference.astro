@@ -287,17 +287,17 @@ import Footer from '../components/Footer.astro';
         <h2>Input Data</h2>
         <p>Every Elo program has access to external input via the special <code>_</code> variable.
            When an expression uses <code>_</code>, the compiled output becomes a function that takes input data as a parameter.</p>
-        <div class="example" data-action="click->doc#tryExample">
+        <div class="example" data-action="click->doc#tryExample" data-input="21">
           <div class="example-header">Simple Input</div>
           <pre class="example-code">_ * 2</pre>
           <p class="example-desc">Doubles the input value.</p>
         </div>
-        <div class="example" data-action="click->doc#tryExample">
+        <div class="example" data-action="click->doc#tryExample" data-input='{"price": 100, "quantity": 3}'>
           <div class="example-header">Tuple Input</div>
           <pre class="example-code">_.price * _.quantity</pre>
           <p class="example-desc">Access attributes of an input tuple.</p>
         </div>
-        <div class="example" data-action="click->doc#tryExample">
+        <div class="example" data-action="click->doc#tryExample" data-input='{"budget": 100}'>
           <div class="example-header">Input with Transformation</div>
           <pre class="example-code">_.budget * 1.21</pre>
           <p class="example-desc">Apply VAT to a budget value from input.</p>

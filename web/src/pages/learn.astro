@@ -72,7 +72,7 @@ in
         <p>
           This filters a list to keep values above 15, then applies VAT to each. Data flows left to right.
         </p>
-        <div class="lesson-example" data-action="click->doc#tryExample">
+        <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"email": "Test@Company.com"}'>
           <pre class="example-code">_.email |> lower |> endsWith('@company.com')</pre>
         </div>
         <p>
@@ -396,23 +396,23 @@ in
 
         <h3>The Input Variable</h3>
         <p>When you use <code>_</code>, your expression becomes a function:</p>
-        <div class="lesson-example" data-action="click->doc#tryExample">
+        <div class="lesson-example" data-action="click->doc#tryExample" data-input="21">
           <pre class="example-code">_ * 2</pre>
         </div>
         <p>Access fields of input data:</p>
-        <div class="lesson-example" data-action="click->doc#tryExample">
+        <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"price": 100, "quantity": 3}'>
           <pre class="example-code">_.price * _.quantity</pre>
         </div>
-        <div class="lesson-example" data-action="click->doc#tryExample">
+        <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"name": "alice"}'>
           <pre class="example-code">_.name |> upper</pre>
         </div>
 
         <h3>Data Transformation</h3>
         <p>Elo expressions are data transformations: input flows in, result flows out.</p>
-        <div class="lesson-example" data-action="click->doc#tryExample">
+        <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"items": [{"price": 10}, {"price": 20}, {"price": 30}]}'>
           <pre class="example-code">_.items |> map(x ~> x.price) |> reduce(0, fn(sum, p ~> sum + p))</pre>
         </div>
-        <div class="lesson-example" data-action="click->doc#tryExample">
+        <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"status": "active", "budget": 1000}'>
           <pre class="example-code">if _.status == 'active' then _.budget * 1.1 else _.budget</pre>
         </div>
 
@@ -421,7 +421,7 @@ in
           In the <a href={url('/try')}>playground</a>, enter input data as JSON in the bottom panel.
           For example, with input <code>&#123;"price": 100, "quantity": 3&#125;</code>:
         </p>
-        <div class="lesson-example" data-action="click->doc#tryExample">
+        <div class="lesson-example" data-action="click->doc#tryExample" data-input='{"price": 100, "quantity": 3}'>
           <pre class="example-code">_.price * _.quantity</pre>
         </div>
 
