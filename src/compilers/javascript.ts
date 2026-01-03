@@ -359,15 +359,25 @@ function emitTypeExprParser(
     }
 
     case 'subtype_constraint': {
-      // Subtype constraint: Int(i | i > 0)
-      // First parse with base type, then check constraint
+      // Subtype constraint: Int(i | i > 0) or Int(i | positive: i > 0, even: i % 2 == 0)
+      // First parse with base type, then check all constraints
       ctx.requireHelper?.('pOk');
       ctx.requireHelper?.('pFail');
       const baseParser = emitTypeExprParser(typeExpr.baseType, ctx);
-      const constraintCode = ctx.emit(typeExpr.constraint);
       const varName = typeExpr.variable;
 
-      return `(v, p) => { const _r = ${baseParser}(v, p); if (!_r.success) return _r; const ${varName} = _r.value; if (!(${constraintCode})) return pFail(p, 'constraint violated'); return _r; }`;
+      // Generate constraint checks
+      const constraintChecks = typeExpr.constraints.map(c => {
+        const conditionCode = ctx.emit(c.condition);
+        const errorMsg = c.label
+          ? (c.label.includes(' ') ? c.label : `constraint '${c.label}' failed`)
+          : 'constraint failed';
+        // Escape single quotes in the error message for JS string
+        const escapedMsg = errorMsg.replace(/'/g, "\\'");
+        return `if (!(${conditionCode})) return pFail(p, '${escapedMsg}');`;
+      }).join(' ');
+
+      return `(v, p) => { const _r = ${baseParser}(v, p); if (!_r.success) return _r; const ${varName} = _r.value; ${constraintChecks} return _r; }`;
     }
 
     case 'array_type': {

@@ -87,3 +87,18 @@ assert((let T = Int|Null in '42' |> T) == 42)
 # Nullable object property
 assert((let T = { value: Int|Null } in { value: null } |> T) == { value: null })
 assert((let T = { value: Int|Null } in { value: 42 } |> T) == { value: 42 })
+# Labeled constraints (Finitio-style named constraints)
+# Single labeled constraint with identifier
+assert((let PosInt = Int(i | positive: i > 0) in '42' |> PosInt) == 42)
+assertFails(fn( ~> let PosInt = Int(i | positive: i > 0) in '-5' |> PosInt ))
+# Single labeled constraint with string message
+assert((let PosInt = Int(i | 'must be positive': i > 0) in '42' |> PosInt) == 42)
+# Multiple labeled constraints
+assert((let PosEven = Int(i | positive: i > 0, even: i % 2 == 0) in '42' |> PosEven) == 42)
+assertFails(fn( ~> let PosEven = Int(i | positive: i > 0, even: i % 2 == 0) in '41' |> PosEven ))
+assertFails(fn( ~> let PosEven = Int(i | positive: i > 0, even: i % 2 == 0) in '-2' |> PosEven ))
+# Mixed labeled and unlabeled constraints
+assert((let T = Int(i | i > 0, even: i % 2 == 0) in '42' |> T) == 42)
+# Labeled constraint in schema
+assert((let Person = { age: Int(a | adult: a >= 18) } in { age: 18 } |> Person) == { age: 18 })
+assertFails(fn( ~> let Person = { age: Int(a | adult: a >= 18) } in { age: 17 } |> Person ))

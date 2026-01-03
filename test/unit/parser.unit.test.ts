@@ -1432,3 +1432,88 @@ describe('Parser - Type Schema Optional Commas', () => {
     }
   });
 });
+
+describe('Parser - Subtype Constraints with Labels', () => {
+  it('should parse single unlabeled constraint', () => {
+    const ast = parse('let T = Int(i | i > 0) in x |> T');
+    assert.strictEqual(ast.type, 'typedef');
+    if (ast.type === 'typedef') {
+      assert.strictEqual(ast.typeExpr.kind, 'subtype_constraint');
+      if (ast.typeExpr.kind === 'subtype_constraint') {
+        assert.strictEqual(ast.typeExpr.variable, 'i');
+        assert.strictEqual(ast.typeExpr.constraints.length, 1);
+        assert.strictEqual(ast.typeExpr.constraints[0].label, undefined);
+        assert.strictEqual(ast.typeExpr.constraints[0].condition.type, 'binary');
+      }
+    }
+  });
+
+  it('should parse single labeled constraint with identifier', () => {
+    const ast = parse('let T = Int(i | positive: i > 0) in x |> T');
+    assert.strictEqual(ast.type, 'typedef');
+    if (ast.type === 'typedef') {
+      assert.strictEqual(ast.typeExpr.kind, 'subtype_constraint');
+      if (ast.typeExpr.kind === 'subtype_constraint') {
+        assert.strictEqual(ast.typeExpr.variable, 'i');
+        assert.strictEqual(ast.typeExpr.constraints.length, 1);
+        assert.strictEqual(ast.typeExpr.constraints[0].label, 'positive');
+        assert.strictEqual(ast.typeExpr.constraints[0].condition.type, 'binary');
+      }
+    }
+  });
+
+  it('should parse single labeled constraint with string message', () => {
+    const ast = parse("let T = Int(i | 'must be positive': i > 0) in x |> T");
+    assert.strictEqual(ast.type, 'typedef');
+    if (ast.type === 'typedef') {
+      assert.strictEqual(ast.typeExpr.kind, 'subtype_constraint');
+      if (ast.typeExpr.kind === 'subtype_constraint') {
+        assert.strictEqual(ast.typeExpr.variable, 'i');
+        assert.strictEqual(ast.typeExpr.constraints.length, 1);
+        assert.strictEqual(ast.typeExpr.constraints[0].label, 'must be positive');
+        assert.strictEqual(ast.typeExpr.constraints[0].condition.type, 'binary');
+      }
+    }
+  });
+
+  it('should parse multiple labeled constraints', () => {
+    const ast = parse('let T = Int(i | positive: i > 0, even: i % 2 == 0) in x |> T');
+    assert.strictEqual(ast.type, 'typedef');
+    if (ast.type === 'typedef') {
+      assert.strictEqual(ast.typeExpr.kind, 'subtype_constraint');
+      if (ast.typeExpr.kind === 'subtype_constraint') {
+        assert.strictEqual(ast.typeExpr.variable, 'i');
+        assert.strictEqual(ast.typeExpr.constraints.length, 2);
+        assert.strictEqual(ast.typeExpr.constraints[0].label, 'positive');
+        assert.strictEqual(ast.typeExpr.constraints[1].label, 'even');
+      }
+    }
+  });
+
+  it('should parse mixed labeled and unlabeled constraints', () => {
+    const ast = parse('let T = Int(i | i > 0, even: i % 2 == 0) in x |> T');
+    assert.strictEqual(ast.type, 'typedef');
+    if (ast.type === 'typedef') {
+      assert.strictEqual(ast.typeExpr.kind, 'subtype_constraint');
+      if (ast.typeExpr.kind === 'subtype_constraint') {
+        assert.strictEqual(ast.typeExpr.variable, 'i');
+        assert.strictEqual(ast.typeExpr.constraints.length, 2);
+        assert.strictEqual(ast.typeExpr.constraints[0].label, undefined);
+        assert.strictEqual(ast.typeExpr.constraints[1].label, 'even');
+      }
+    }
+  });
+
+  it('should parse constraint with string and identifier labels mixed', () => {
+    const ast = parse("let T = Int(i | positive: i > 0, 'must be even': i % 2 == 0) in x |> T");
+    assert.strictEqual(ast.type, 'typedef');
+    if (ast.type === 'typedef') {
+      assert.strictEqual(ast.typeExpr.kind, 'subtype_constraint');
+      if (ast.typeExpr.kind === 'subtype_constraint') {
+        assert.strictEqual(ast.typeExpr.constraints.length, 2);
+        assert.strictEqual(ast.typeExpr.constraints[0].label, 'positive');
+        assert.strictEqual(ast.typeExpr.constraints[1].label, 'must be even');
+      }
+    }
+  });
+});

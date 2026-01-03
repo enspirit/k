@@ -365,15 +365,23 @@ function emitTypeExprParser(
     }
 
     case 'subtype_constraint': {
-      // Subtype constraint: Int(i | i > 0)
-      // First parse with base type, then check constraint
+      // Subtype constraint: Int(i | i > 0) or Int(i | positive: i > 0, even: i % 2 == 0)
+      // First parse with base type, then check all constraints
       ctx.requireHelper?.('p_ok');
       ctx.requireHelper?.('p_fail');
       const baseParser = emitTypeExprParser(typeExpr.baseType, ctx);
-      const constraintCode = ctx.emit(typeExpr.constraint);
       const varName = typeExpr.variable;
 
-      return `->(v, p) { _r = (${baseParser}).call(v, p); return _r unless _r[:success]; ${varName} = _r[:value]; return p_fail(p, 'constraint violated') unless (${constraintCode}); _r }`;
+      // Generate constraint checks
+      const constraintChecks = typeExpr.constraints.map(c => {
+        const conditionCode = ctx.emit(c.condition);
+        const errorMsg = c.label
+          ? (c.label.includes(' ') ? c.label : `constraint '${c.label}' failed`)
+          : 'constraint failed';
+        return `return p_fail(p, '${errorMsg}') unless (${conditionCode});`;
+      }).join(' ');
+
+      return `->(v, p) { _r = (${baseParser}).call(v, p); return _r unless _r[:success]; ${varName} = _r[:value]; ${constraintChecks} _r }`;
     }
 
     case 'array_type': {

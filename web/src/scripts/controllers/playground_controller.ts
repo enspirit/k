@@ -84,7 +84,21 @@ in {
   'type-validation': `let
   Age = Int(a | a >= 0),
   Person = { name: String, age: Age }
-in _ |> Person`
+in _ |> Person`,
+  'type-constraints': `let
+  # Labeled constraint (Finitio-style)
+  Positive = Int(i | positive: i > 0),
+
+  # Multiple constraints
+  PosEven = Int(i | positive: i > 0, even: i % 2 == 0),
+
+  # String message for clear errors
+  Adult = Int(a | 'must be 18 or older': a >= 18),
+
+  # Constraints in schemas
+  Person = { name: String, age: Adult }
+in
+  { name: 'Alice', age: '30' } |> Person`
 };
 
 interface ExampleInput {

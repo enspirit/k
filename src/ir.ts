@@ -262,13 +262,21 @@ export interface IRTypeSchema {
 }
 
 /**
- * Subtype constraint: Int(i | i > 0)
+ * A single constraint with optional label (IR version)
+ */
+export interface IRConstraint {
+  label?: string;         // Optional label: 'positive' or 'must be positive'
+  condition: IRExpr;      // The constraint expression transformed to IR
+}
+
+/**
+ * Subtype constraint: Int(i | i > 0) or Int(i | positive: i > 0, even: i % 2 == 0)
  */
 export interface IRSubtypeConstraint {
   kind: 'subtype_constraint';
   baseType: IRTypeExpr;
   variable: string;
-  constraint: IRExpr;  // The constraint expression transformed to IR
+  constraints: IRConstraint[];  // One or more labeled constraints
 }
 
 /**
@@ -395,8 +403,8 @@ export function irTypeSchema(properties: IRTypeSchemaProperty[], extras?: 'close
   return { kind: 'type_schema', properties, extras };
 }
 
-export function irSubtypeConstraint(baseType: IRTypeExpr, variable: string, constraint: IRExpr): IRSubtypeConstraint {
-  return { kind: 'subtype_constraint', baseType, variable, constraint };
+export function irSubtypeConstraint(baseType: IRTypeExpr, variable: string, constraints: IRConstraint[]): IRSubtypeConstraint {
+  return { kind: 'subtype_constraint', baseType, variable, constraints };
 }
 
 export function irArrayType(elementType: IRTypeExpr): IRArrayType {

@@ -482,6 +482,18 @@ import Footer from '../components/Footer.astro';
 &#123; age: '25' &#125; |> Adult</pre>
           <p class="example-desc">Constraints compose with tuple types.</p>
         </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">Labeled Constraints</div>
+          <pre class="example-code">let PosEven = Int(i | positive: i > 0, even: i % 2 == 0) in
+'42' |> PosEven</pre>
+          <p class="example-desc">Multiple labeled constraints (Finitio-style). Label becomes error message.</p>
+        </div>
+        <div class="example" data-action="click->doc#tryExample">
+          <div class="example-header">String Messages</div>
+          <pre class="example-code">let Adult = Int(a | 'must be 18 or older': a >= 18) in
+'25' |> Adult</pre>
+          <p class="example-desc">Use string labels for human-readable error messages.</p>
+        </div>
 
         <h3>Named Type Aliases</h3>
         <div class="example" data-action="click->doc#tryExample">

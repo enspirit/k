@@ -249,11 +249,14 @@ function transformTypeExprWithContext(
     case 'subtype_constraint': {
       // Transform the base type
       const baseTypeIR = transformTypeExprWithContext(typeExpr.baseType, env, defining, depth, maxDepth, allowUndefinedVariables);
-      // Transform the constraint with the variable in scope
+      // Transform each constraint with the variable in scope
       const constraintEnv = new Map(env);
       constraintEnv.set(typeExpr.variable, Types.any);
-      const constraintIR = transformWithDepth(typeExpr.constraint, constraintEnv, defining, depth, maxDepth, allowUndefinedVariables);
-      return irSubtypeConstraint(baseTypeIR, typeExpr.variable, constraintIR);
+      const constraintsIR = typeExpr.constraints.map(c => ({
+        label: c.label,
+        condition: transformWithDepth(c.condition, constraintEnv, defining, depth, maxDepth, allowUndefinedVariables)
+      }));
+      return irSubtypeConstraint(baseTypeIR, typeExpr.variable, constraintsIR);
     }
 
     case 'array_type':

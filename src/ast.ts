@@ -356,14 +356,22 @@ export interface TypeSchema {
 }
 
 /**
- * Subtype constraint: Int(i | i > 0)
- * A base type with a predicate constraint
+ * A single constraint with optional label
+ */
+export interface Constraint {
+  label?: string;         // Optional label: 'positive' or 'must be positive'
+  condition: Expr;        // The constraint expression: i > 0
+}
+
+/**
+ * Subtype constraint: Int(i | i > 0) or Int(i | positive: i > 0, even: i % 2 == 0)
+ * A base type with one or more predicate constraints
  */
 export interface SubtypeConstraint {
   kind: 'subtype_constraint';
   baseType: TypeExpr;     // The base type (can be any type expr)
   variable: string;       // 'i' in Int(i | i > 0)
-  constraint: Expr;       // The constraint expression: i > 0
+  constraints: Constraint[];  // One or more labeled constraints
 }
 
 /**
@@ -426,10 +434,10 @@ export function typeDef(name: string, typeExpr: TypeExpr, body: Expr): TypeDef {
 }
 
 /**
- * Creates a subtype constraint: Int(i | i > 0)
+ * Creates a subtype constraint: Int(i | i > 0) or Int(i | positive: i > 0, even: i % 2 == 0)
  */
-export function subtypeConstraint(baseType: TypeExpr, variable: string, constraint: Expr): SubtypeConstraint {
-  return { kind: 'subtype_constraint', baseType, variable, constraint };
+export function subtypeConstraint(baseType: TypeExpr, variable: string, constraints: Constraint[]): SubtypeConstraint {
+  return { kind: 'subtype_constraint', baseType, variable, constraints };
 }
 
 /**

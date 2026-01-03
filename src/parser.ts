@@ -1,4 +1,4 @@
-import { Expr, literal, nullLiteral, stringLiteral, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral, temporalKeyword, functionCall, memberAccess, letExpr, ifExpr, lambda, LetBinding, objectLiteral, ObjectProperty, arrayLiteral, alternative, apply, dataPath, TypeExpr, TypeSchemaProperty, typeRef, typeSchema, typeDef, subtypeConstraint, arrayType, unionType } from './ast';
+import { Expr, literal, nullLiteral, stringLiteral, variable, binary, unary, dateLiteral, dateTimeLiteral, durationLiteral, temporalKeyword, functionCall, memberAccess, letExpr, ifExpr, lambda, LetBinding, objectLiteral, ObjectProperty, arrayLiteral, alternative, apply, dataPath, TypeExpr, TypeSchemaProperty, typeRef, typeSchema, typeDef, subtypeConstraint, arrayType, unionType, Constraint } from './ast';
 
 /**
  * Token types
@@ -1204,8 +1204,13 @@ export class Parser {
   }
 
   /**
-   * Parse a subtype constraint: Int(i | i > 0)
+   * Parse a subtype constraint: Int(i | i > 0) or Int(i | positive: i > 0, even: i % 2 == 0)
    * Called after the base type has been parsed, when we see '('
+   * Supports:
+   * - Single constraint: Int(i | i > 0)
+   * - Labeled constraint: Int(i | positive: i > 0)
+   * - Multiple constraints: Int(i | positive: i > 0, even: i % 2 == 0)
+   * - String labels: Int(i | 'must be positive': i > 0)
    */
   private subtypeConstraintExpr(baseType: TypeExpr): TypeExpr {
     this.eat('LPAREN');
@@ -1217,12 +1222,67 @@ export class Parser {
     // Expect '|' separator
     this.eat('PIPE');
 
-    // Parse constraint expression
-    const constraint = this.expr();
+    // Parse constraints (one or more, comma-separated)
+    const constraints: Constraint[] = [];
+    constraints.push(this.parseConstraint());
+
+    while ((this.currentToken as Token).type === 'COMMA') {
+      this.eat('COMMA');
+      constraints.push(this.parseConstraint());
+    }
 
     this.eat('RPAREN');
 
-    return subtypeConstraint(baseType, varName, constraint);
+    return subtypeConstraint(baseType, varName, constraints);
+  }
+
+  /**
+   * Parse a single constraint with optional label
+   * Formats:
+   * - condition (no label)
+   * - identifier: condition
+   * - 'string message': condition
+   */
+  private parseConstraint(): Constraint {
+    // Check for label (identifier or string followed by colon)
+    let label: string | undefined;
+
+    if (this.currentToken.type === 'IDENTIFIER') {
+      // Could be a label or the start of the condition
+      // Look ahead: if next is COLON, it's a label
+      const savedState = this.saveState();
+      const potentialLabel = this.currentToken.value;
+      this.eat('IDENTIFIER');
+
+      if ((this.currentToken as Token).type === 'COLON') {
+        // It's a label
+        this.eat('COLON');
+        label = potentialLabel;
+      } else {
+        // Not a label, restore and parse as expression
+        this.restoreState(savedState);
+      }
+    } else if (this.currentToken.type === 'STRING') {
+      // String label
+      const savedState = this.saveState();
+      const potentialLabel = this.currentToken.value;
+      this.eat('STRING');
+
+      if ((this.currentToken as Token).type === 'COLON') {
+        // It's a label
+        this.eat('COLON');
+        label = potentialLabel;
+      } else {
+        // Not a label, restore and parse as expression
+        this.restoreState(savedState);
+      }
+    }
+
+    // Parse the constraint condition
+    // Use logical_or to avoid consuming COMMA and RPAREN which delimit constraints
+    const condition = this.logical_or();
+
+    return { label, condition };
   }
 
   /**
