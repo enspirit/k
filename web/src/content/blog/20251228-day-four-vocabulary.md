@@ -27,7 +27,7 @@ This isn't just style—it's enforced by the parser. Writing `let Date = 5 in Da
 Every Elo program now implicitly receives its input as `_`. This simple convention enables powerful patterns:
 
 ```elo
-_.name | 'Anonymous'
+let user = { name: null } in user.name | 'Anonymous'
 ```
 
 The input is always there, waiting to be accessed. No need to declare parameters for the common case.

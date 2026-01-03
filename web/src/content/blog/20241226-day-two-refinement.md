@@ -30,7 +30,7 @@ The biggest feature of day two was error handling—but not the usual try/catch 
 We designed an **alternative operator**. The `|` symbol means "try this, or else try that":
 
 ```elo
-Date(_) | 'Invalid date'
+Date('2024-12-25') | 'Invalid date'
 ```
 
 ## From K to Elo: The Rebranding
