@@ -407,7 +407,7 @@ function emitTypeExprParser(
         const errorMsg = c.label
           ? (c.label.includes(' ') ? c.label : `constraint '${c.label}' failed`)
           : 'constraint failed';
-        return `return p_fail(p, '${errorMsg}') unless (${conditionCode});`;
+        return `return p_fail(p, "${errorMsg}") unless (${conditionCode});`;
       }).join(' ');
 
       return `->(v, p) { _r = (${baseParser}).call(v, p); return _r unless _r[:success]; ${varName} = _r[:value]; ${constraintChecks} _r }`;
