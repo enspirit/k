@@ -79,6 +79,15 @@ in {
   'input-csv': `_
   |> filter(r ~> Int(r.age) >= 30)
   |> map(r ~> r.name)`,
+  'fetch-tuple': `# Extract multiple paths into a named structure
+fetch(_, {
+  fullName: .user.name,
+  userCity: .user.address.city,
+  itemCount: .order.items.0
+})`,
+  'fetch-list': `# Extract paths into a list, then process
+fetch(_, [.scores.0, .scores.1, .scores.2])
+  |> reduce(0, fn(sum, x ~> sum + x))`,
   'type-simple': `let Person = { name: String, age: Int } in
 { name: 'Alice', age: '30' } |> Person`,
   'type-validation': `let
@@ -123,6 +132,14 @@ const EXAMPLE_INPUTS: Record<string, ExampleInput> = {
 Alice,30,Brussels
 Bob,25,Paris
 Carol,35,London`, format: 'csv' },
+  'fetch-tuple': { data: `{
+  "user": {
+    "name": "Alice Smith",
+    "address": { "city": "Brussels", "country": "Belgium" }
+  },
+  "order": { "items": [3, 5, 2] }
+}`, format: 'json' },
+  'fetch-list': { data: `{"scores": [85, 92, 78]}`, format: 'json' },
   'type-validation': { data: `{"name": "Alice", "age": "30"}`, format: 'json' },
   'guard-labeled': { data: `{"age": 25}`, format: 'json' }
 };
