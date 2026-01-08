@@ -20,3 +20,6 @@ logs:
 
 status:
 	@docker compose ps
+
+ps:
+	docker compose ps

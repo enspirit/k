@@ -3,7 +3,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.claude
-    container_name: claude
     volumes:
       - ../..:/workspace
       - claude-history:/home/elo/.claude
@@ -21,7 +20,6 @@ services:
 
   postgres:
     image: postgres:16-alpine
-    container_name: claude-postgres
     environment:
       - POSTGRES_USER=elo
       - POSTGRES_PASSWORD=elo
